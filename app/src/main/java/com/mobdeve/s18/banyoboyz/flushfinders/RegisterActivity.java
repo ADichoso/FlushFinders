@@ -1,6 +1,8 @@
 package com.mobdeve.s18.banyoboyz.flushfinders;
 
 import android.os.Bundle;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -9,6 +11,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 public class RegisterActivity extends AppCompatActivity {
+    Spinner sp_acc_type;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,5 +23,15 @@ public class RegisterActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+        sp_acc_type = findViewById(R.id.sp_register_acc_type);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource
+        (
+          this,
+          R.array.user_types_array,
+          android.R.layout.simple_spinner_dropdown_item
+        );
+
+        sp_acc_type.setAdapter(adapter);
     }
 }

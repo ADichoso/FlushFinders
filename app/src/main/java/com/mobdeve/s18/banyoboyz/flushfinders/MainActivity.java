@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void registerButton(View view)
     {
-        Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+        Intent intent = new Intent(MainActivity.this, RegisterActivity.class);
 
         startActivity(intent);
     }

@@ -12,7 +12,6 @@ import androidx.core.view.WindowInsetsCompat;
 
 public class LoginActivity extends AppCompatActivity {
 
-    Spinner sp_acc_type;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,14 +24,6 @@ public class LoginActivity extends AppCompatActivity {
             return insets;
         });
 
-        sp_acc_type = findViewById(R.id.sp_register_acc_type);
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource
-        (
-          this,
-          R.array.user_types_array,
-          android.R.layout.simple_spinner_dropdown_item
-        );
 
-        sp_acc_type.setAdapter(adapter);
     }
 }
