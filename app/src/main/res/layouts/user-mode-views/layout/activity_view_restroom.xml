@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".RateRestroomActivity">
+    tools:context=".usermode.ViewBuildingActivity">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView"
@@ -79,30 +79,48 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:gravity="center_horizontal"
-            android:orientation="vertical"
-            android:paddingStart="5dp"
-            android:paddingEnd="5dp">
+            android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/textView2"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
-                android:text="Gokongwei Building"
-                android:textAlignment="center"
-                android:textSize="24sp" />
+                android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/textView6"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
-                android:text="1st Floor"
-                android:textAlignment="center"
-                android:textSize="24sp" />
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/textView2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:text="Gokongwei Building"
+                        android:textAlignment="textStart"
+                        android:textSize="24sp" />
+
+                    <TextView
+                        android:id="@+id/textView6"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:text="1st Floor"
+                        android:textAlignment="textStart"
+                        android:textSize="24sp" />
+
+                </LinearLayout>
+
+                <ImageButton
+                    android:id="@+id/imageButton8"
+                    android:layout_width="54dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    app:srcCompat="@android:drawable/ic_media_ff" />
+
+            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -112,15 +130,13 @@
 
                 <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_marginBottom="5dp">
 
                     <LinearLayout
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:orientation="horizontal"
-                        android:paddingTop="5dp"
-                        android:paddingBottom="5dp">
+                        android:orientation="horizontal">
 
                         <TextView
                             android:id="@+id/textView7"
@@ -129,28 +145,24 @@
                             android:layout_marginLeft="5dp"
                             android:text="Cleanliness" />
 
-                        <SeekBar
-                            android:id="@+id/seekBar"
-                            android:layout_width="match_parent"
+                        <ProgressBar
+                            android:id="@+id/progressBar3"
+                            style="?android:attr/progressBarStyleHorizontal"
+                            android:layout_width="200dp"
                             android:layout_height="match_parent"
-                            android:max="100"
-                            android:progress="80"
-                            android:progressTint="#2554E0" />
-
+                            android:layout_marginLeft="5dp" />
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
 
                 <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_marginBottom="5dp">
 
                     <LinearLayout
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:orientation="horizontal"
-                        android:paddingTop="5dp"
-                        android:paddingBottom="5dp">
+                        android:orientation="horizontal">
 
                         <TextView
                             android:id="@+id/textView7"
@@ -159,29 +171,24 @@
                             android:layout_marginLeft="5dp"
                             android:text="Maintenance" />
 
-                        <SeekBar
-                            android:id="@+id/seekBar2"
-                            android:layout_width="match_parent"
+                        <ProgressBar
+                            android:id="@+id/progressBar3"
+                            style="?android:attr/progressBarStyleHorizontal"
+                            android:layout_width="200dp"
                             android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            android:max="100"
-                            android:progress="80"
-                            android:progressTint="#2554E0" />
-
+                            android:layout_marginLeft="5dp" />
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
 
                 <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_marginBottom="5dp">
 
                     <LinearLayout
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:orientation="horizontal"
-                        android:paddingTop="5dp"
-                        android:paddingBottom="5dp">
+                        android:orientation="horizontal">
 
                         <TextView
                             android:id="@+id/textView7"
@@ -190,47 +197,42 @@
                             android:layout_marginLeft="5dp"
                             android:text="Vacancy" />
 
-                        <SeekBar
-                            android:id="@+id/seekBar3"
-                            android:layout_width="match_parent"
+                        <ProgressBar
+                            android:id="@+id/progressBar3"
+                            style="?android:attr/progressBarStyleHorizontal"
+                            android:layout_width="200dp"
                             android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            android:max="100"
-                            android:progress="80"
-                            android:progressTint="#2554E0" />
-
+                            android:layout_marginLeft="5dp" />
                     </LinearLayout>
 
                 </androidx.cardview.widget.CardView>
 
             </LinearLayout>
 
-            <ScrollView
+            <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
-                android:layout_height="300dp">
+                android:layout_height="match_parent"
+                android:layout_marginStart="5dp"
+                android:layout_marginEnd="5dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
                     android:orientation="vertical">
 
                     <TextView
                         android:id="@+id/textView8"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Amenities Switch List" />
+                        android:text="Amenities" />
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent" />
-                </LinearLayout>
-            </ScrollView>
 
-            <Button
-                android:id="@+id/button8"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Submit Building Info" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
 
         </LinearLayout>
     </androidx.cardview.widget.CardView>

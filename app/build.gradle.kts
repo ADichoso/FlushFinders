@@ -32,6 +32,17 @@ android {
     buildFeatures {
         viewBinding = true
     }
+    sourceSets {
+        getByName("main") {
+            res {
+                srcDirs(
+                    "src\\main\\res\\layouts\\main-menu-views",
+                    "src\\main\\res\\layouts\\user-mode-views",
+                    "src\\main\\res\\layouts\\mod-mode-views",
+                    "src\\main\\res\\layouts\\admin-mode-views")
+            }
+        }
+    }
 }
 
 dependencies {

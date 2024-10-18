@@ -5,49 +5,63 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".UserAccountDeleteActivity">
+    tools:context=".mainmenu.MainActivity">
 
-    <TextView
-        android:id="@+id/tv_register_acc"
+    <ImageView
+        android:id="@+id/imageView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Are you sure you want to delete your account?"
-        android:textAlignment="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.17000002"
+        app:srcCompat="@drawable/ic_launcher_foreground" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Flush Finder"
         android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.148" />
+        app:layout_constraintTop_toBottomOf="@+id/imageView3"
+        app:layout_constraintVertical_bias="0.0" />
 
     <LinearLayout
-        android:id="@+id/ll_register_form"
+        android:id="@+id/linearLayout"
         android:layout_width="250dp"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_register_acc"
-        app:layout_constraintVertical_bias="0.100000024">
+        app:layout_constraintTop_toBottomOf="@+id/textView">
 
         <Button
-            android:id="@+id/btn_register_acc"
+            android:id="@+id/btn_login"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="loginButton"
+            android:text="Login" />
+
+        <Button
+            android:id="@+id/btn_register"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="registerButton"
+            android:text="Register" />
+
+        <Button
+            android:id="@+id/btn_guest"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:backgroundTint="#825CBD"
             android:onClick="useGuestButton"
-            android:text="Delete Account" />
+            android:text="Use as Guest" />
 
-        <Button
-            android:id="@+id/btn_register_acc2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:backgroundTint="#825CBD"
-            android:onClick="useGuestButton"
-            android:text="Go back to Account Menu" />
     </LinearLayout>
-
 </androidx.constraintlayout.widget.ConstraintLayout>
