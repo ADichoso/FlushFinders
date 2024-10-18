@@ -8,7 +8,7 @@
     tools:context=".accounts.AccountDeleteActivity">
 
     <TextView
-        android:id="@+id/tv_register_acc"
+        android:id="@+id/tv_delete_acc"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Are you sure you want to delete your account?"
@@ -23,18 +23,18 @@
         app:layout_constraintVertical_bias="0.148" />
 
     <LinearLayout
-        android:id="@+id/ll_register_form"
+        android:id="@+id/ll_delete_form"
         android:layout_width="250dp"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_register_acc"
+        app:layout_constraintTop_toBottomOf="@+id/tv_delete_acc"
         app:layout_constraintVertical_bias="0.100000024">
 
         <Button
-            android:id="@+id/btn_register_acc"
+            android:id="@+id/btn_delete_user_account"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:backgroundTint="#825CBD"
@@ -42,7 +42,7 @@
             android:text="Delete Account" />
 
         <Button
-            android:id="@+id/btn_register_acc2"
+            android:id="@+id/btn_return_menu"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:backgroundTint="#825CBD"

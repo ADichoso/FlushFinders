@@ -9,7 +9,7 @@
 
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/cardView"
+        android:id="@+id/cv_map_menu_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingStart="10dp"
@@ -28,31 +28,32 @@
         app:layout_constraintVertical_bias="0.0">
 
         <LinearLayout
+            android:id="@+id/ll_map_menu_bar"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="horizontal">
 
             <ImageButton
-                android:id="@+id/imageButton"
+                android:id="@+id/btn_recommended_restrooms"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:srcCompat="@android:drawable/btn_star" />
 
             <ImageButton
-                android:id="@+id/imageButton2"
+                android:id="@+id/btn_search_restroom_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:srcCompat="@android:drawable/ic_search_category_default" />
 
             <EditText
-                android:id="@+id/editTextText"
+                android:id="@+id/et_search_restroom_name"
                 android:layout_width="200dp"
                 android:layout_height="match_parent"
                 android:inputType="text"
                 android:textAlignment="viewEnd" />
 
             <ImageButton
-                android:id="@+id/imageButton3"
+                android:id="@+id/btn_account_details"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -63,22 +64,22 @@
     </androidx.cardview.widget.CardView>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/constraintLayout"
+        android:id="@+id/cl_restroom_map"
         android:layout_width="match_parent"
         android:layout_height="545dp"
         android:background="@drawable/maptest"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cardView"
+        app:layout_constraintTop_toBottomOf="@+id/cv_map_menu_bar"
         app:layout_constraintVertical_bias="0.0">
 
         <ImageButton
-            android:id="@+id/imageButton4"
+            android:id="@+id/btn_restroom_test_1"
             android:layout_width="31dp"
             android:layout_height="29dp"
             android:background="@null"
-            android:tint="#1C3E8E"
+            app:tint="#1C3E8E"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.284"
@@ -88,11 +89,11 @@
             app:srcCompat="@android:drawable/arrow_down_float" />
 
         <ImageButton
-            android:id="@+id/imageButton5"
+            android:id="@+id/btn_restroom_test_2"
             android:layout_width="31dp"
             android:layout_height="29dp"
             android:background="@null"
-            android:tint="#1C8E24"
+            app:tint="#1C8E24"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.423"
@@ -102,11 +103,11 @@
             app:srcCompat="@android:drawable/arrow_down_float" />
 
         <ImageButton
-            android:id="@+id/imageButton6"
+            android:id="@+id/btn_restroom_test_3"
             android:layout_width="31dp"
             android:layout_height="29dp"
             android:background="@null"
-            android:tint="#8C8E1C"
+            app:tint="#8C8E1C"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.8"
@@ -116,11 +117,11 @@
             app:srcCompat="@android:drawable/arrow_down_float" />
 
         <ImageButton
-            android:id="@+id/imageButton7"
+            android:id="@+id/btn_restroom_test_4"
             android:layout_width="31dp"
             android:layout_height="29dp"
             android:background="@null"
-            android:tint="#8E1C1C"
+            app:tint="#8E1C1C"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.676"
@@ -130,10 +131,10 @@
             app:srcCompat="@android:drawable/arrow_down_float" />
 
         <ImageView
-            android:id="@+id/imageView6"
+            android:id="@+id/btn_restroom_test_5"
             android:layout_width="48dp"
             android:layout_height="51dp"
-            android:tint="#2B54E0"
+            app:tint="#2B54E0"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.955"
@@ -144,6 +145,7 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.cardview.widget.CardView
+        android:id="@+id/cl_restroom_directions"
         android:layout_width="match_parent"
         android:layout_height="200dp"
         android:layout_marginLeft="20dp"
@@ -154,10 +156,11 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayout"
+        app:layout_constraintTop_toBottomOf="@+id/cl_restroom_map"
         app:layout_constraintVertical_bias="0.0" />
 
     <androidx.cardview.widget.CardView
+        android:id="@+id/cv_restroom_rating"
         android:layout_width="250dp"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -167,31 +170,33 @@
         app:layout_constraintVertical_bias="0.5">
 
         <LinearLayout
+            android:id="@+id/ll_restroom_rating"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/textView5"
+                android:id="@+id/tv_restroom_rating"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Leave a Rating?"
                 android:textAlignment="center" />
 
             <LinearLayout
+                android:id="@+id/ll_restroom_rating_buttons"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
                 android:orientation="horizontal">
 
                 <Button
-                    android:id="@+id/button3"
+                    android:id="@+id/btn_rate_restroom"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Yes!" />
 
                 <Button
-                    android:id="@+id/button6"
+                    android:id="@+id/btn_close_rating_view"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="No" />

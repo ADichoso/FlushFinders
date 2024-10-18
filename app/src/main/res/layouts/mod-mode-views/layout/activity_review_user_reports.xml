@@ -9,6 +9,7 @@
 
 
     <ScrollView
+        android:id="@+id/sv_restroom_user_reports"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_margin="5dp"
@@ -19,11 +20,13 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
+            android:id="@+id/ll_restroom_user_reports"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
             <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_restroom_user_reports"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
         </LinearLayout>

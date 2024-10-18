@@ -9,7 +9,7 @@
 
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/cardView"
+        android:id="@+id/cv_account_info"
         android:layout_width="match_parent"
         android:layout_height="220dp"
         android:paddingStart="10dp"
@@ -32,7 +32,7 @@
             android:layout_height="match_parent">
 
             <ImageButton
-                android:id="@+id/imageButton"
+                android:id="@+id/btn_return_home"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -44,7 +44,7 @@
                 app:srcCompat="@android:drawable/ic_media_rew" />
 
             <ImageView
-                android:id="@+id/imageView"
+                android:id="@+id/iv_account_pp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -56,7 +56,7 @@
                 tools:srcCompat="@tools:sample/avatars" />
 
             <TextView
-                android:id="@+id/textView3"
+                android:id="@+id/tv_account_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -66,11 +66,11 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.498"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/imageView"
+                app:layout_constraintTop_toBottomOf="@+id/iv_account_pp"
                 app:layout_constraintVertical_bias="0.0" />
 
             <TextView
-                android:id="@+id/textView4"
+                android:id="@+id/tv_account_email"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -79,23 +79,24 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.493"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView3"
+                app:layout_constraintTop_toBottomOf="@+id/tv_account_name"
                 app:layout_constraintVertical_bias="0.026" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.cardview.widget.CardView>
 
     <androidx.cardview.widget.CardView
+        android:id="@+id/cv_account_actions"
         android:layout_width="256dp"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cardView"
+        app:layout_constraintTop_toBottomOf="@+id/cv_account_info"
         app:layout_constraintVertical_bias="0.06999999">
 
         <LinearLayout
-            android:id="@+id/margin"
+            android:id="@+id/ll_account_actions"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
@@ -106,7 +107,7 @@
             android:paddingBottom="5dp">
 
             <Button
-                android:id="@+id/button5"
+                android:id="@+id/btn_view_saved_restrooms"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="2dp"
@@ -114,7 +115,7 @@
                 android:text="View Saved Restrooms" />
 
             <Button
-                android:id="@+id/button"
+                android:id="@+id/btn_view_restroom_history"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="2dp"
@@ -122,7 +123,7 @@
                 android:text="View Restroom History" />
 
             <Button
-                android:id="@+id/button4"
+                android:id="@+id/btn_edit_account"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="2dp"
@@ -130,7 +131,7 @@
                 android:text="Edit Account Information" />
 
             <Button
-                android:id="@+id/button2"
+                android:id="@+id/btn_delete_account"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="2dp"
@@ -141,16 +142,17 @@
     </androidx.cardview.widget.CardView>
 
     <androidx.cardview.widget.CardView
+        android:id="@+id/cv_sign_out"
         android:layout_width="256dp"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cardView"
+        app:layout_constraintTop_toBottomOf="@+id/cv_account_actions"
         app:layout_constraintVertical_bias="0.83">
 
         <LinearLayout
-            android:id="@+id/margin"
+            android:id="@+id/ll_sign_out"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
@@ -161,7 +163,7 @@
             android:paddingBottom="5dp">
 
             <Button
-                android:id="@+id/button2"
+                android:id="@+id/btn_sign_out"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="2dp"

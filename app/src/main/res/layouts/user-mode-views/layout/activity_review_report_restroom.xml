@@ -8,7 +8,7 @@
     tools:context=".usermode.RateRestroomActivity">
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/cardView"
+        android:id="@+id/cv_map_menu_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingStart="10dp"
@@ -27,31 +27,32 @@
         app:layout_constraintVertical_bias="0.0">
 
         <LinearLayout
+            android:id="@+id/ll_map_menu_bar"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="horizontal">
 
             <ImageButton
-                android:id="@+id/imageButton"
+                android:id="@+id/btn_recommended_restrooms"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:srcCompat="@android:drawable/btn_star" />
 
             <ImageButton
-                android:id="@+id/imageButton2"
+                android:id="@+id/btn_search_restroom_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:srcCompat="@android:drawable/ic_search_category_default" />
 
             <EditText
-                android:id="@+id/editTextText"
+                android:id="@+id/et_search_restroom_name"
                 android:layout_width="200dp"
                 android:layout_height="match_parent"
                 android:inputType="text"
                 android:textAlignment="viewEnd" />
 
             <ImageButton
-                android:id="@+id/imageButton3"
+                android:id="@+id/btn_account_details"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -62,6 +63,7 @@
     </androidx.cardview.widget.CardView>
 
     <androidx.cardview.widget.CardView
+        android:id="@+id/cv_review_restroom"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginLeft="20dp"
@@ -74,16 +76,17 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cardView">
+        app:layout_constraintTop_toBottomOf="@+id/cv_map_menu_bar">
 
         <LinearLayout
+            android:id="@+id/ll_review_restroom"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center_horizontal"
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/textView2"
+                android:id="@+id/tv_restroom_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
@@ -93,7 +96,7 @@
                 android:textSize="24sp" />
 
             <TextView
-                android:id="@+id/textView6"
+                android:id="@+id/tv_restroom_floor"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
@@ -103,29 +106,31 @@
                 android:textSize="24sp" />
 
             <RatingBar
-                android:id="@+id/ratingBar"
+                android:id="@+id/rb_restroom_rating"
                 android:layout_width="wrap_content"
                 android:layout_height="50dp"
                 android:numStars="5" />
 
             <androidx.cardview.widget.CardView
+                android:id="@+id/cv_restroom_review_report"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="5dp">
 
                 <LinearLayout
+                    android:id="@+id/ll_restroom_review_report"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="vertical">
 
                     <TextView
-                        android:id="@+id/textView9"
+                        android:id="@+id/tv_restroom_review_report"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Leave a Review/Report!" />
 
                     <EditText
-                        android:id="@+id/editTextText2"
+                        android:id="@+id/et_restroom_review_report"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:ems="10"
@@ -136,7 +141,7 @@
             </androidx.cardview.widget.CardView>
 
             <Button
-                android:id="@+id/button7"
+                android:id="@+id/btn_submit_restroom_review_report"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Submit Review/Report" />

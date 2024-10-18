@@ -9,7 +9,7 @@
 
 
     <TextView
-        android:id="@+id/tv_register_acc"
+        android:id="@+id/tv_create_acc"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Create a New Account"
@@ -23,50 +23,52 @@
         app:layout_constraintVertical_bias="0.148" />
 
     <LinearLayout
-        android:id="@+id/ll_register_form"
+        android:id="@+id/ll_create_admin_mod_account_form"
         android:layout_width="250dp"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_register_acc"
-        app:layout_constraintVertical_bias="0.100000024">><LinearLayout
-        android:id="@+id/ll_register_group_name"
+        app:layout_constraintTop_toBottomOf="@+id/tv_create_acc"
+        app:layout_constraintVertical_bias="0.100000024">
+
+        <LinearLayout
+        android:id="@+id/ll_create_admin_mod_account_group_name"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/tv_register_label_name"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="TextView" />
+            <TextView
+                android:id="@+id/tv_create_admin_mod_account_label_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="TextView" />
 
-        <EditText
-            android:id="@+id/et_register_name"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:inputType="text"
-            android:text="Name" />
+            <EditText
+                android:id="@+id/et_create_admin_mod_account_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="text"
+                android:text="Name" />
 
-    </LinearLayout>
+        </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/ll_register_group_email"
+            android:id="@+id/ll_create_admin_mod_account_group_email"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/tv_register_label_email"
+                android:id="@+id/tv_create_admin_mod_account_label_email"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Email Address" />
 
             <EditText
-                android:id="@+id/et_register_email"
+                android:id="@+id/et_create_admin_mod_account_email"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
@@ -74,19 +76,19 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/ll_register_group_password"
+            android:id="@+id/ll_create_admin_mod_account_group_password"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/tv_register_label_password"
+                android:id="@+id/tv_create_admin_mod_account_label_password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Password" />
 
             <EditText
-                android:id="@+id/et_register_password"
+                android:id="@+id/et_create_admin_mod_account_password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
@@ -94,19 +96,19 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/ll_register_group_type"
+            android:id="@+id/ll_create_admin_mod_account_group_type"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/tv_register_label_acc_type"
+                android:id="@+id/tv_create_admin_mod_account_label_acc_type"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Account Type" />
 
             <Spinner
-                android:id="@+id/sp_register_acc_type"
+                android:id="@+id/sp_create_admin_mod_account_acc_type"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:spinnerMode="dropdown" />
@@ -114,7 +116,7 @@
     </LinearLayout>
 
     <Button
-        android:id="@+id/btn_register_acc"
+        android:id="@+id/btn_create_admin_mod_account_acc"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:backgroundTint="#825CBD"
@@ -123,6 +125,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ll_register_form" />
+        app:layout_constraintTop_toBottomOf="@+id/ll_create_admin_mod_account_form" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -7,9 +7,8 @@
     android:layout_height="match_parent"
     tools:context=".modmode.ModHomeActivity">
 
-
     <androidx.cardview.widget.CardView
-        android:id="@+id/cardView"
+        android:id="@+id/cv_admin_mod_home_menu_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingStart="10dp"
@@ -28,19 +27,14 @@
         app:layout_constraintVertical_bias="0.0">
 
         <LinearLayout
+            android:id="@+id/ll_admin_home_menu_bar"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center_horizontal"
             android:orientation="horizontal">
 
             <ImageButton
-                android:id="@+id/imageButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:srcCompat="@android:drawable/btn_star" />
-
-            <ImageButton
-                android:id="@+id/imageButton3"
+                android:id="@+id/btn_account_details"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:srcCompat="@android:drawable/ic_menu_myplaces" />
@@ -50,13 +44,14 @@
     </androidx.cardview.widget.CardView>
 
     <androidx.cardview.widget.CardView
+        android:id="@+id/cv_mod_functions"
         android:layout_width="250dp"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cardView"
-        app:layout_constraintVertical_bias="0.39">
+        app:layout_constraintTop_toBottomOf="@+id/cv_admin_mod_home_menu_bar"
+        app:layout_constraintVertical_bias="0.08">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -64,25 +59,25 @@
             android:orientation="vertical">
 
             <Button
-                android:id="@+id/button13"
+                android:id="@+id/create_restroom_btn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Add New Restroom" />
 
             <Button
-                android:id="@+id/button14"
+                android:id="@+id/edit_restrooms_btn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Edit Restroom" />
 
             <Button
-                android:id="@+id/button11"
+                android:id="@+id/review_restrooms_btn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Review Restrooms" />
 
             <Button
-                android:id="@+id/button12"
+                android:id="@+id/view_user_suggestions_btn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="View User Suggestions" />

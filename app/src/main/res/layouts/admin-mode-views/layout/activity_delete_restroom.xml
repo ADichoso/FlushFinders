@@ -11,7 +11,7 @@
 
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/cardView"
+        android:id="@+id/cv_search_restrooms"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingStart="10dp"
@@ -30,18 +30,19 @@
         app:layout_constraintVertical_bias="0.0">
 
         <LinearLayout
+            android:id="@+id/ll_search_restrooms"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="horizontal">
 
             <ImageButton
-                android:id="@+id/imageButton2"
+                android:id="@+id/btn_search_restroom_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:srcCompat="@android:drawable/ic_search_category_default" />
 
             <EditText
-                android:id="@+id/editTextText"
+                android:id="@+id/et_search_restroom_name"
                 android:layout_width="200dp"
                 android:layout_height="match_parent"
                 android:inputType="text"
@@ -52,43 +53,49 @@
     </androidx.cardview.widget.CardView>
 
     <ScrollView
+        android:id="@+id/sv_restrooms"
         android:layout_width="match_parent"
         android:layout_height="450dp"
         android:layout_margin="5dp"
         android:background="#B7BAED">
 
         <LinearLayout
+            android:id="@+id/ll_restrooms"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
             <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_restrooms"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent"
+            />
+
         </LinearLayout>
     </ScrollView>
 
     <LinearLayout
+        android:id="@+id/ll_delete_restrooms"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/textView11"
+            android:id="@+id/tv_delete_selected"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Delete Selected: [N] Restrooms"
             android:textAlignment="center" />
 
         <Button
-            android:id="@+id/button17"
+            android:id="@+id/btn_delete_selected_restrooms"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Delete Selected" />
 
         <Button
-            android:id="@+id/button18"
+            android:id="@+id/btn_clear_restroom_selection"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Clear Selection" />
