@@ -13,6 +13,24 @@
         android:theme="@style/Theme.FlushFinders"
         tools:targetApi="31">
         <activity
+            android:name=".UserAccountDeleteActivity"
+            android:exported="false" />
+        <activity
+            android:name=".UserAccountEditActivity"
+            android:exported="false" />
+        <activity
+            android:name=".SuggestRestroomLocationActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ReviewReportRestroomActivity"
+            android:exported="false" />
+        <activity
+            android:name=".RateRestroomActivity"
+            android:exported="false" />
+        <activity
+            android:name=".SavedRestroomsActivity"
+            android:exported="false" />
+        <activity
             android:name=".ViewBuildingActivity"
             android:exported="false" />
         <activity
