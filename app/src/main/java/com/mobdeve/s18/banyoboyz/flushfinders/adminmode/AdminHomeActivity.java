@@ -13,9 +13,11 @@ import androidx.core.view.WindowInsetsCompat;
 import com.mobdeve.s18.banyoboyz.flushfinders.R;
 import com.mobdeve.s18.banyoboyz.flushfinders.accounts.AccountHomeActivity;
 import com.mobdeve.s18.banyoboyz.flushfinders.modmode.CreateEditRestroomActivity;
+import com.mobdeve.s18.banyoboyz.flushfinders.modmode.EditRestroomActivity;
 import com.mobdeve.s18.banyoboyz.flushfinders.modmode.ModHomeActivity;
 import com.mobdeve.s18.banyoboyz.flushfinders.modmode.ReviewUserReportsActivity;
 import com.mobdeve.s18.banyoboyz.flushfinders.modmode.ViewUserSuggestionsActivity;
+import com.mobdeve.s18.banyoboyz.flushfinders.sharedviews.SuggestRestroomLocationActivity;
 
 public class AdminHomeActivity extends AppCompatActivity {
 
@@ -38,10 +40,18 @@ public class AdminHomeActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void createEditRestroomButton(View view)
+    public void editRestroomButton(View view)
     {
-        Intent intent = new Intent(AdminHomeActivity.this, CreateEditRestroomActivity.class);
+        Intent intent = new Intent(AdminHomeActivity.this, EditRestroomActivity.class);
 
+        startActivity(intent);
+    }
+
+    public void createRestroomButton(View view)
+    {
+        Intent intent = new Intent(AdminHomeActivity.this, SuggestRestroomLocationActivity.class);
+
+        intent.putExtra("CALLER", "MOD_ADMIN");
         startActivity(intent);
     }
 

@@ -1,4 +1,4 @@
-package com.mobdeve.s18.banyoboyz.flushfinders.usermode;
+package com.mobdeve.s18.banyoboyz.flushfinders.modmode;
 
 import android.os.Bundle;
 
@@ -11,29 +11,27 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.mobdeve.s18.banyoboyz.flushfinders.R;
-import com.mobdeve.s18.banyoboyz.flushfinders.adminmode.DeleteRestroomActivity;
 import com.mobdeve.s18.banyoboyz.flushfinders.data.AmenityData;
 import com.mobdeve.s18.banyoboyz.flushfinders.data.BuildingRestroomAdapter;
 import com.mobdeve.s18.banyoboyz.flushfinders.data.RestroomData;
 
-public class ViewBuildingActivity extends AppCompatActivity {
+public class EditRestroomActivity extends AppCompatActivity {
 
-
-    RecyclerView rv_building_restrooms;
+    RecyclerView rv_restrooms;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_view_building);
+        setContentView(R.layout.activity_select_restroom);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
 
-        rv_building_restrooms = findViewById(R.id.rv_building_restrooms);
-        rv_building_restrooms.setHasFixedSize(true);
-        rv_building_restrooms.setLayoutManager(new LinearLayoutManager(this));
+        rv_restrooms = findViewById(R.id.rv_restrooms);
+        rv_restrooms.setHasFixedSize(true);
+        rv_restrooms.setLayoutManager(new LinearLayoutManager(this));
 
         AmenityData[] amenityData = new AmenityData[]{
                 new AmenityData("For Males", R.drawable.male),
@@ -50,7 +48,7 @@ public class ViewBuildingActivity extends AppCompatActivity {
                 new RestroomData(R.drawable.goks, "Gokongwei Hall", "DLSU - Taft Avenue","44th Floor", 50, 60, 90, amenityData)
         };
 
-        BuildingRestroomAdapter buildingRestroomAdapter = new BuildingRestroomAdapter(restroomData, ViewBuildingActivity.this);
-        rv_building_restrooms.setAdapter(buildingRestroomAdapter);
+        BuildingRestroomAdapter buildingRestroomAdapter = new BuildingRestroomAdapter(restroomData, EditRestroomActivity.this);
+        rv_restrooms.setAdapter(buildingRestroomAdapter);
     }
 }

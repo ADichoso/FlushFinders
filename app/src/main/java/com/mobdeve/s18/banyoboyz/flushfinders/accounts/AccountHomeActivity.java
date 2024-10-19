@@ -12,9 +12,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.mobdeve.s18.banyoboyz.flushfinders.R;
 import com.mobdeve.s18.banyoboyz.flushfinders.mainmenu.MainActivity;
-import com.mobdeve.s18.banyoboyz.flushfinders.usermode.RateRestroomActivity;
-import com.mobdeve.s18.banyoboyz.flushfinders.usermode.ReviewReportRestroomActivity;
-import com.mobdeve.s18.banyoboyz.flushfinders.usermode.SavedRestroomsActivity;
+import com.mobdeve.s18.banyoboyz.flushfinders.usermode.SavedBuildingsActivity;
 
 public class AccountHomeActivity extends AppCompatActivity {
 
@@ -32,7 +30,7 @@ public class AccountHomeActivity extends AppCompatActivity {
 
     public void viewSavedRestroomsButton(View view)
     {
-        Intent intent = new Intent(AccountHomeActivity.this, SavedRestroomsActivity.class);
+        Intent intent = new Intent(AccountHomeActivity.this, SavedBuildingsActivity.class);
 
         startActivity(intent);
     }

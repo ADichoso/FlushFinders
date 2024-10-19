@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".usermode.RateRestroomActivity">
+    tools:context=".usermode.SuggestRestroomDetailsActivity">
 
 
     <androidx.cardview.widget.CardView
@@ -239,12 +239,6 @@
                         android:layout_height="match_parent" />
                 </LinearLayout>
             </ScrollView>
-
-            <RatingBar
-                android:id="@+id/rb_restroom_rating"
-                android:layout_width="wrap_content"
-                android:layout_height="50dp"
-                android:numStars="5" />
 
             <Button
                 android:id="@+id/btn_submit_restroom_info"

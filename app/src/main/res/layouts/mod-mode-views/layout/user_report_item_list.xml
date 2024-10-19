@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
     tools:context=".modmode.UserReportActivity">
 
     <androidx.cardview.widget.CardView
@@ -14,12 +15,7 @@
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         app:cardBackgroundColor="#BBD9E9"
-        app:cardCornerRadius="12dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:cardCornerRadius="12dp">
 
         <LinearLayout
             android:id="@+id/ll_restroom_user_report"
@@ -28,31 +24,44 @@
             android:orientation="vertical">
 
             <LinearLayout
-                android:id="@+id/ll_restroom_location"
+                android:id="@+id/ll_report_details"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="horizontal">
 
-                <TextView
-                    android:id="@+id/tv_restroom_building"
-                    android:layout_width="match_parent"
+                <ImageView
+                    android:id="@+id/iv_building"
+                    android:layout_width="150dp"
+                    android:layout_height="150dp"
+                    app:srcCompat="@drawable/goks" />
+
+                <LinearLayout
+                    android:id="@+id/ll_restroom_location"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginRight="5dp"
-                    android:text="Gokongwei Building"
-                    android:textAlignment="center"
-                    android:textSize="24sp" />
+                    android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/tv_restroom_floor"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginRight="5dp"
-                    android:text="1st Floor"
-                    android:textAlignment="center"
-                    android:textSize="24sp" />
+                    <TextView
+                        android:id="@+id/tv_restroom_building"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:text="Gokongwei Building"
+                        android:textAlignment="center"
+                        android:textSize="24sp" />
 
+                    <TextView
+                        android:id="@+id/tv_restroom_floor"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:text="1st Floor"
+                        android:textAlignment="center"
+                        android:textSize="24sp" />
+
+                </LinearLayout>
             </LinearLayout>
 
 
@@ -159,30 +168,17 @@
 
             </LinearLayout>
 
+            <RatingBar
+                android:id="@+id/rb_restroom_rating"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:numStars="5" />
 
-            <ScrollView
-                android:id="@+id/sv_restroom_amenities"
+            <TextView
+                android:id="@+id/tv_user_review_report"
                 android:layout_width="match_parent"
-                android:layout_height="400dp">
-
-                <LinearLayout
-                    android:id="@+id/ll_restroom_amenities"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/tv_restroom_amenities"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Amenities Switch List" />
-
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/rv_restroom_amenities"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent" />
-                </LinearLayout>
-            </ScrollView>
+                android:layout_height="wrap_content"
+                android:text="This is a user report, they type all kinds of things in here regarding a restroom!" />
 
             <Button
                 android:id="@+id/btn_mark_user_report_resolved"
@@ -192,4 +188,4 @@
 
         </LinearLayout>
     </androidx.cardview.widget.CardView>
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

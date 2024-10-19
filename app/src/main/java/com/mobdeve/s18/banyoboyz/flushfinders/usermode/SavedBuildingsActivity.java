@@ -11,20 +11,18 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.mobdeve.s18.banyoboyz.flushfinders.R;
-import com.mobdeve.s18.banyoboyz.flushfinders.adminmode.DeleteRestroomActivity;
 import com.mobdeve.s18.banyoboyz.flushfinders.data.BuildingAdapter;
 import com.mobdeve.s18.banyoboyz.flushfinders.data.BuildingData;
-import com.mobdeve.s18.banyoboyz.flushfinders.data.BuildingRestroomAdapter;
 import com.mobdeve.s18.banyoboyz.flushfinders.data.RestroomData;
 
-public class SearchBuildingActivity extends AppCompatActivity {
+public class SavedBuildingsActivity extends AppCompatActivity {
 
     RecyclerView rv_buildings;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_search_building);
+        setContentView(R.layout.activity_saved_buildings);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
@@ -41,7 +39,7 @@ public class SearchBuildingActivity extends AppCompatActivity {
                 new BuildingData("Gokongwei Hall3", "De La Salle University - Taft Avenue", "12 Minutes", R.drawable.goks, new RestroomData[]{})
         };
 
-        BuildingAdapter buildingAdapter = new BuildingAdapter(buildingData, SearchBuildingActivity.this);
+        BuildingAdapter buildingAdapter = new BuildingAdapter(buildingData, SavedBuildingsActivity.this);
         rv_buildings.setAdapter(buildingAdapter);
     }
 }

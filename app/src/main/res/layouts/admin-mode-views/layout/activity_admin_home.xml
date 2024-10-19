@@ -103,14 +103,14 @@
                 android:id="@+id/btn_create_restroom"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:onClick="createEditRestroomButton"
+                android:onClick="createRestroomButton"
                 android:text="Add New Restroom" />
 
             <Button
                 android:id="@+id/btn_edit_restrooms"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:onClick="createEditRestroomButton"
+                android:onClick="editRestroomButton"
                 android:text="Edit Restroom" />
 
             <Button

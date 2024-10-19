@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".adminmode.DeleteRestroomActivity">
+
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cv_search_restrooms"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingStart="10dp"
+        android:paddingLeft="10dp"
+        android:paddingTop="10dp"
+        android:paddingEnd="10dp"
+        android:paddingRight="10dp"
+        android:paddingBottom="10dp"
+        app:cardBackgroundColor="#BBD9E9"
+        app:cardCornerRadius="12dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0">
+
+        <LinearLayout
+            android:id="@+id/ll_search_restrooms"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:id="@+id/btn_search_restroom_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:srcCompat="@android:drawable/ic_search_category_default" />
+
+            <EditText
+                android:id="@+id/et_search_restroom_name"
+                android:layout_width="200dp"
+                android:layout_height="match_parent"
+                android:inputType="text"
+                android:textAlignment="viewEnd" />
+
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_restrooms"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="#B7BAED"
+        app:layout_constraintBottom_toTopOf="@+id/ll_delete_restrooms"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cv_search_restrooms"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <LinearLayout
+        android:id="@+id/ll_delete_restrooms"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <TextView
+            android:id="@+id/tv_delete_selected"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Delete Selected: [N] Restrooms"
+            android:textAlignment="center" />
+
+        <Button
+            android:id="@+id/btn_delete_selected_restrooms"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="deleteRestroomButton"
+            android:text="Delete Selected" />
+
+        <Button
+            android:id="@+id/btn_clear_restroom_selection"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Clear Selection" />
+
+    </LinearLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

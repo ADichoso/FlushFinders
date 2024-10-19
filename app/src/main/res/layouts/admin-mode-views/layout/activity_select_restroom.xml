@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center"
     android:orientation="vertical"
     tools:context=".adminmode.DeleteRestroomActivity">
 
@@ -52,55 +51,15 @@
 
     </androidx.cardview.widget.CardView>
 
-    <ScrollView
-        android:id="@+id/sv_restrooms"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_restrooms"
         android:layout_width="match_parent"
-        android:layout_height="450dp"
-        android:layout_margin="5dp"
-        android:background="#B7BAED">
-
-        <LinearLayout
-            android:id="@+id/ll_restrooms"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rv_restrooms"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-            />
-
-        </LinearLayout>
-    </ScrollView>
-
-    <LinearLayout
-        android:id="@+id/ll_delete_restrooms"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:orientation="vertical">
-
-        <TextView
-            android:id="@+id/tv_delete_selected"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Delete Selected: [N] Restrooms"
-            android:textAlignment="center" />
-
-        <Button
-            android:id="@+id/btn_delete_selected_restrooms"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Delete Selected" />
-
-        <Button
-            android:id="@+id/btn_clear_restroom_selection"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Clear Selection" />
-
-    </LinearLayout>
+        android:layout_height="0dp"
+        android:background="#B7BAED"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cv_search_restrooms" />
 
 
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

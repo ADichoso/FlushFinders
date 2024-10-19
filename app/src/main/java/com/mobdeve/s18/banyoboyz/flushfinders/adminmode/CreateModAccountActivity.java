@@ -1,14 +1,16 @@
 package com.mobdeve.s18.banyoboyz.flushfinders.adminmode;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
-
 import com.mobdeve.s18.banyoboyz.flushfinders.R;
+import com.mobdeve.s18.banyoboyz.flushfinders.modmode.ReviewUserReportsActivity;
 
 public class CreateModAccountActivity extends AppCompatActivity {
 
@@ -22,5 +24,10 @@ public class CreateModAccountActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+    }
+
+    public void createAccountButton(View view)
+    {
+        finish();
     }
 }

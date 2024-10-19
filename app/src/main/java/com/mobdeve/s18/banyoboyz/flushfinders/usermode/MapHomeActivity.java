@@ -12,8 +12,6 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.mobdeve.s18.banyoboyz.flushfinders.R;
 import com.mobdeve.s18.banyoboyz.flushfinders.accounts.AccountHomeActivity;
-import com.mobdeve.s18.banyoboyz.flushfinders.mainmenu.LoginActivity;
-import com.mobdeve.s18.banyoboyz.flushfinders.mainmenu.ResetPasswordActivity;
 import com.mobdeve.s18.banyoboyz.flushfinders.sharedviews.SuggestRestroomLocationActivity;
 
 public class MapHomeActivity extends AppCompatActivity {
@@ -32,7 +30,7 @@ public class MapHomeActivity extends AppCompatActivity {
 
     public void recommendedRestroomsButton(View view)
     {
-        Intent intent = new Intent(MapHomeActivity.this, SavedRestroomsActivity.class);
+        Intent intent = new Intent(MapHomeActivity.this, SavedBuildingsActivity.class);
 
         startActivity(intent);
     }
@@ -53,7 +51,7 @@ public class MapHomeActivity extends AppCompatActivity {
 
     public void rateRestroomsButton(View view)
     {
-        Intent intent = new Intent(MapHomeActivity.this, RateRestroomActivity.class);
+        Intent intent = new Intent(MapHomeActivity.this, ReviewReportRestroomActivity.class);
 
         startActivity(intent);
     }
@@ -62,6 +60,7 @@ public class MapHomeActivity extends AppCompatActivity {
     {
         Intent intent = new Intent(MapHomeActivity.this, SuggestRestroomLocationActivity.class);
 
+        intent.putExtra("CALLER", "USER");
         startActivity(intent);
     }
 
