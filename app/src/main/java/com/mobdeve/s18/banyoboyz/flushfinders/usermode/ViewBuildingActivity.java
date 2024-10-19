@@ -1,6 +1,8 @@
 package com.mobdeve.s18.banyoboyz.flushfinders.usermode;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -52,5 +54,13 @@ public class ViewBuildingActivity extends AppCompatActivity {
 
         BuildingRestroomAdapter buildingRestroomAdapter = new BuildingRestroomAdapter(restroomData, ViewBuildingActivity.this);
         rv_building_restrooms.setAdapter(buildingRestroomAdapter);
+    }
+
+    public void getBuildingDirectionsButton(View view)
+    {
+        Intent intent = new Intent(ViewBuildingActivity.this, MapHomeActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+        finish();
     }
 }

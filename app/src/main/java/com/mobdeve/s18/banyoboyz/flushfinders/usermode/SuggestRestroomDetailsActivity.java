@@ -3,6 +3,7 @@ package com.mobdeve.s18.banyoboyz.flushfinders.usermode;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,10 +16,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.mobdeve.s18.banyoboyz.flushfinders.R;
 import com.mobdeve.s18.banyoboyz.flushfinders.data.AmenitiesAdapter;
 import com.mobdeve.s18.banyoboyz.flushfinders.data.AmenityData;
+import com.mobdeve.s18.banyoboyz.flushfinders.modmode.CreateEditRestroomActivity;
+import com.mobdeve.s18.banyoboyz.flushfinders.modmode.ModHomeActivity;
 
 public class SuggestRestroomDetailsActivity extends AppCompatActivity {
 
     RecyclerView rv_restroom_amenities;
+    Button btn_submit_restroom_info;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,9 +50,17 @@ public class SuggestRestroomDetailsActivity extends AppCompatActivity {
 
         AmenitiesAdapter amenitiesAdapter = new AmenitiesAdapter(amenityData, SuggestRestroomDetailsActivity.this);
         rv_restroom_amenities.setAdapter(amenitiesAdapter);
+
+        btn_submit_restroom_info = findViewById(R.id.btn_submit_restroom_info);
+        btn_submit_restroom_info.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                suggestRestroomButton(v);
+            }
+        });
     }
 
-    public void submitSuggestionButton(View view)
+    public void suggestRestroomButton(View view)
     {
         Intent intent = new Intent(SuggestRestroomDetailsActivity.this, MapHomeActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);

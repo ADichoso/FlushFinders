@@ -39,7 +39,7 @@ public class SuggestRestroomLocationActivity extends AppCompatActivity {
         btn_submit_restroom_location.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(SuggestRestroomLocationActivity.this, ViewBuildingActivity.class);
+                Intent i = new Intent(SuggestRestroomLocationActivity.this, SuggestRestroomDetailsActivity.class);
 
                 if(caller.equals("MOD_ADMIN"))
                     i = new Intent(SuggestRestroomLocationActivity.this, CreateEditRestroomActivity.class);
