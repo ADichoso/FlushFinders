@@ -71,7 +71,8 @@
                         android:layout_height="match_parent"
                         android:layout_weight="1"
                         android:onClick="getRestroomDirectionsButton"
-                        app:srcCompat="@android:drawable/ic_media_ff" />
+                        android:scaleType="centerInside"
+                        app:srcCompat="@drawable/icon_navigate" />
 
                 </LinearLayout>
 

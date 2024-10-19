@@ -36,7 +36,7 @@
                 android:id="@+id/btn_search_restroom_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:srcCompat="@android:drawable/ic_search_category_default" />
+                app:srcCompat="@drawable/icon_search" />
 
             <EditText
                 android:id="@+id/et_search_restroom_name"

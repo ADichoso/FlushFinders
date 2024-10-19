@@ -35,10 +35,11 @@
 
             <ImageButton
                 android:id="@+id/btn_account_details"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="64dp"
+                android:layout_height="64dp"
                 android:onClick="accountHomeButton"
-                app:srcCompat="@android:drawable/ic_menu_myplaces" />
+                android:scaleType="fitCenter"
+                app:srcCompat="@drawable/icon_account" />
 
         </LinearLayout>
 

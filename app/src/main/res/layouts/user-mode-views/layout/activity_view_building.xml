@@ -60,10 +60,11 @@
                 <ImageButton
                     android:id="@+id/btn_start_building_directions"
                     android:layout_width="54dp"
-                    android:layout_height="match_parent"
+                    android:layout_height="59dp"
                     android:layout_weight="1"
                     android:onClick="getBuildingDirectionsButton"
-                    app:srcCompat="@android:drawable/ic_media_ff" />
+                    android:scaleType="fitCenter"
+                    app:srcCompat="@drawable/icon_navigate" />
 
             </LinearLayout>
 
