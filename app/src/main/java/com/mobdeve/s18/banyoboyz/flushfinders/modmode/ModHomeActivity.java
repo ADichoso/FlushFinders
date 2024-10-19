@@ -1,6 +1,8 @@
 package com.mobdeve.s18.banyoboyz.flushfinders.modmode;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -9,6 +11,8 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.mobdeve.s18.banyoboyz.flushfinders.R;
+import com.mobdeve.s18.banyoboyz.flushfinders.accounts.AccountHomeActivity;
+import com.mobdeve.s18.banyoboyz.flushfinders.usermode.MapHomeActivity;
 
 public class ModHomeActivity extends AppCompatActivity {
 
@@ -22,5 +26,33 @@ public class ModHomeActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+    }
+
+    public void accountHomeButton(View view)
+    {
+        Intent intent = new Intent(ModHomeActivity.this, AccountHomeActivity.class);
+
+        startActivity(intent);
+    }
+
+    public void createEditRestroomButton(View view)
+    {
+        Intent intent = new Intent(ModHomeActivity.this, CreateEditRestroomActivity.class);
+
+        startActivity(intent);
+    }
+
+    public void reviewRestroomsButton(View view)
+    {
+        Intent intent = new Intent(ModHomeActivity.this, ReviewUserReportsActivity.class);
+
+        startActivity(intent);
+    }
+
+    public void viewUserSuggestionsButton(View view)
+    {
+        Intent intent = new Intent(ModHomeActivity.this, ViewUserSuggestionsActivity.class);
+
+        startActivity(intent);
     }
 }

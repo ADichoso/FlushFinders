@@ -1,6 +1,9 @@
 package com.mobdeve.s18.banyoboyz.flushfinders.mainmenu;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
@@ -11,9 +14,9 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.mobdeve.s18.banyoboyz.flushfinders.R;
+import com.mobdeve.s18.banyoboyz.flushfinders.usermode.MapHomeActivity;
 
 public class RegisterActivity extends AppCompatActivity {
-    Spinner sp_acc_type;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,15 +28,12 @@ public class RegisterActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+    }
 
-        sp_acc_type = findViewById(R.id.sp_register_acc_type);
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource
-        (
-          this,
-          R.array.user_types_array,
-          android.R.layout.simple_spinner_dropdown_item
-        );
+    public void registerButton(View view)
+    {
+        Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
 
-        sp_acc_type.setAdapter(adapter);
+        startActivity(intent);
     }
 }

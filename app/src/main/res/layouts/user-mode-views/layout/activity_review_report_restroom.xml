@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".usermode.RateRestroomActivity">
+    tools:context=".usermode.ReviewReportRestroomActivity">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cv_map_menu_bar"
@@ -105,12 +105,6 @@
                 android:textAlignment="center"
                 android:textSize="24sp" />
 
-            <RatingBar
-                android:id="@+id/rb_restroom_rating"
-                android:layout_width="wrap_content"
-                android:layout_height="50dp"
-                android:numStars="5" />
-
             <androidx.cardview.widget.CardView
                 android:id="@+id/cv_restroom_review_report"
                 android:layout_width="match_parent"
@@ -144,6 +138,7 @@
                 android:id="@+id/btn_submit_restroom_review_report"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:onClick="submitReviewButton"
                 android:text="Submit Review/Report" />
 
         </LinearLayout>

@@ -1,6 +1,8 @@
 package com.mobdeve.s18.banyoboyz.flushfinders.mainmenu;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -22,5 +24,12 @@ public class ResetPasswordActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+    }
+
+    public void resetPasswordButton(View view)
+    {
+        Intent intent = new Intent(ResetPasswordActivity.this, LoginActivity.class);
+
+        startActivity(intent);
     }
 }

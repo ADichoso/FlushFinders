@@ -37,12 +37,14 @@
                 android:id="@+id/btn_recommended_restrooms"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:onClick="recommendedRestroomsButton"
                 app:srcCompat="@android:drawable/btn_star" />
 
             <ImageButton
                 android:id="@+id/btn_search_restroom_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:onClick="searchRestroomButton"
                 app:srcCompat="@android:drawable/ic_search_category_default" />
 
             <EditText
@@ -57,6 +59,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:onClick="accountHomeButton"
                 app:srcCompat="@android:drawable/ic_menu_myplaces" />
 
         </LinearLayout>
@@ -79,69 +82,75 @@
             android:layout_width="31dp"
             android:layout_height="29dp"
             android:background="@null"
-            app:tint="#1C3E8E"
+            android:onClick="viewBuildingButton"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.284"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.375"
-            app:srcCompat="@android:drawable/arrow_down_float" />
+            app:srcCompat="@android:drawable/arrow_down_float"
+            app:tint="#1C3E8E" />
 
         <ImageButton
             android:id="@+id/btn_restroom_test_2"
             android:layout_width="31dp"
             android:layout_height="29dp"
             android:background="@null"
-            app:tint="#1C8E24"
+            android:onClick="viewBuildingButton"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.423"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.699"
-            app:srcCompat="@android:drawable/arrow_down_float" />
+            app:srcCompat="@android:drawable/arrow_down_float"
+            app:tint="#1C8E24" />
 
         <ImageButton
             android:id="@+id/btn_restroom_test_3"
             android:layout_width="31dp"
             android:layout_height="29dp"
             android:background="@null"
-            app:tint="#8C8E1C"
+            android:onClick="viewBuildingButton"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.8"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.864"
-            app:srcCompat="@android:drawable/arrow_down_float" />
+            app:srcCompat="@android:drawable/arrow_down_float"
+            app:tint="#8C8E1C" />
 
         <ImageButton
             android:id="@+id/btn_restroom_test_4"
             android:layout_width="31dp"
             android:layout_height="29dp"
             android:background="@null"
-            app:tint="#8E1C1C"
+            android:onClick="viewBuildingButton"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.676"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.279"
-            app:srcCompat="@android:drawable/arrow_down_float" />
+            app:srcCompat="@android:drawable/arrow_down_float"
+            app:tint="#8E1C1C" />
 
-        <ImageView
-            android:id="@+id/btn_restroom_test_5"
+        <ImageButton
+            android:id="@+id/btn_restroom_suggest"
             android:layout_width="48dp"
             android:layout_height="51dp"
-            app:tint="#2B54E0"
+            android:background="@null"
+            android:onClick="suggestRestroomButton"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.955"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.961"
-            app:srcCompat="@android:drawable/stat_notify_more" />
+            app:srcCompat="@android:drawable/stat_notify_more"
+            app:tint="#2B54E0" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.cardview.widget.CardView
@@ -193,6 +202,7 @@
                     android:id="@+id/btn_rate_restroom"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:onClick="rateRestroomsButton"
                     android:text="Yes!" />
 
                 <Button

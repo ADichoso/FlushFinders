@@ -1,6 +1,8 @@
 package com.mobdeve.s18.banyoboyz.flushfinders.mainmenu;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -9,6 +11,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.mobdeve.s18.banyoboyz.flushfinders.R;
+import com.mobdeve.s18.banyoboyz.flushfinders.adminmode.AdminHomeActivity;
 
 public class ForgotPasswordActivity extends AppCompatActivity {
 
@@ -22,5 +25,12 @@ public class ForgotPasswordActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+    }
+
+    public void loginAdminTestButton(View view)
+    {
+        Intent intent = new Intent(ForgotPasswordActivity.this, ResetPasswordActivity.class);
+
+        startActivity(intent);
     }
 }

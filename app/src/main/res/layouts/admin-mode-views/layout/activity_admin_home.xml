@@ -37,6 +37,7 @@
                 android:id="@+id/btn_account_details"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:onClick="accountHomeButton"
                 app:srcCompat="@android:drawable/ic_menu_myplaces" />
 
         </LinearLayout>
@@ -63,18 +64,21 @@
                 android:id="@+id/btn_create_mod_admin_account"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:onClick="createModAdminAccountButton"
                 android:text="Create Mod/Admin Account" />
 
             <Button
                 android:id="@+id/btn_manage_mod_account"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:onClick="manageModAccountsButton"
                 android:text="Manage Mod Accounts" />
 
             <Button
                 android:id="@+id/btn_delete_restrooms"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:onClick="deleteRestroomButton"
                 android:text="Delete a Restroom" />
 
         </LinearLayout>
@@ -99,24 +103,28 @@
                 android:id="@+id/btn_create_restroom"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:onClick="createEditRestroomButton"
                 android:text="Add New Restroom" />
 
             <Button
                 android:id="@+id/btn_edit_restrooms"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:onClick="createEditRestroomButton"
                 android:text="Edit Restroom" />
 
             <Button
                 android:id="@+id/btn_review_restrooms"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:onClick="reviewRestroomsButton"
                 android:text="Review Restrooms" />
 
             <Button
                 android:id="@+id/btn_view_user_suggestions"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:onClick="viewUserSuggestionsButton"
                 android:text="View User Suggestions" />
 
         </LinearLayout>

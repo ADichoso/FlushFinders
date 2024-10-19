@@ -37,6 +37,7 @@
                 android:id="@+id/btn_account_details"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:onClick="accountHomeButton"
                 app:srcCompat="@android:drawable/ic_menu_myplaces" />
 
         </LinearLayout>
@@ -62,24 +63,28 @@
                 android:id="@+id/create_restroom_btn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:onClick="createEditRestroomButton"
                 android:text="Add New Restroom" />
 
             <Button
                 android:id="@+id/edit_restrooms_btn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:onClick="createEditRestroomButton"
                 android:text="Edit Restroom" />
 
             <Button
                 android:id="@+id/review_restrooms_btn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:onClick="reviewRestroomsButton"
                 android:text="Review Restrooms" />
 
             <Button
                 android:id="@+id/view_user_suggestions_btn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:onClick="viewUserSuggestionsButton"
                 android:text="View User Suggestions" />
 
         </LinearLayout>
