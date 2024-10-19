@@ -8,134 +8,87 @@
     tools:context=".usermode.MapHomeActivity">
 
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/cv_map_menu_bar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingStart="10dp"
-        android:paddingLeft="10dp"
-        android:paddingTop="10dp"
-        android:paddingEnd="10dp"
-        android:paddingRight="10dp"
-        android:paddingBottom="10dp"
-        app:cardBackgroundColor="#BBD9E9"
-        app:cardCornerRadius="12dp"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_restroom_map"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0">
 
-        <LinearLayout
-            android:id="@+id/ll_map_menu_bar"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal">
-
-            <ImageButton
-                android:id="@+id/btn_recommended_restrooms"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:onClick="recommendedRestroomsButton"
-                app:srcCompat="@android:drawable/btn_star" />
-
-            <ImageButton
-                android:id="@+id/btn_search_restroom_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:onClick="searchRestroomButton"
-                app:srcCompat="@android:drawable/ic_search_category_default" />
-
-            <EditText
-                android:id="@+id/et_search_restroom_name"
-                android:layout_width="200dp"
-                android:layout_height="match_parent"
-                android:inputType="text"
-                android:textAlignment="viewEnd" />
-
-            <ImageButton
-                android:id="@+id/btn_account_details"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:onClick="accountHomeButton"
-                app:srcCompat="@android:drawable/ic_menu_myplaces" />
-
-        </LinearLayout>
-
-    </androidx.cardview.widget.CardView>
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/cl_restroom_map"
-        android:layout_width="match_parent"
-        android:layout_height="545dp"
-        android:background="@drawable/maptest"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cv_map_menu_bar"
-        app:layout_constraintVertical_bias="0.0">
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:scaleType="centerCrop"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0"
+            app:srcCompat="@drawable/maptest" />
 
         <ImageButton
             android:id="@+id/btn_restroom_test_1"
-            android:layout_width="31dp"
-            android:layout_height="29dp"
+            android:layout_width="75dp"
+            android:layout_height="104dp"
             android:background="@null"
             android:onClick="viewBuildingButton"
+            android:scaleType="centerInside"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.284"
+            app:layout_constraintHorizontal_bias="0.94"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.375"
-            app:srcCompat="@android:drawable/arrow_down_float"
-            app:tint="#1C3E8E" />
+            app:srcCompat="@drawable/marker_unknown" />
 
         <ImageButton
             android:id="@+id/btn_restroom_test_2"
-            android:layout_width="31dp"
-            android:layout_height="29dp"
+            android:layout_width="75dp"
+            android:layout_height="104dp"
             android:background="@null"
             android:onClick="viewBuildingButton"
+            android:scaleType="fitCenter"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.423"
+            app:layout_constraintHorizontal_bias="0.47"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.699"
-            app:srcCompat="@android:drawable/arrow_down_float"
-            app:tint="#1C8E24" />
+            app:layout_constraintVertical_bias="0.32999998"
+            app:srcCompat="@drawable/marker_open" />
 
         <ImageButton
             android:id="@+id/btn_restroom_test_3"
-            android:layout_width="31dp"
-            android:layout_height="29dp"
+            android:layout_width="75dp"
+            android:layout_height="104dp"
             android:background="@null"
             android:onClick="viewBuildingButton"
+            android:scaleType="centerInside"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.8"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.864"
-            app:srcCompat="@android:drawable/arrow_down_float"
-            app:tint="#8C8E1C" />
+            app:srcCompat="@drawable/marker_slow" />
 
         <ImageButton
             android:id="@+id/btn_restroom_test_4"
-            android:layout_width="31dp"
-            android:layout_height="29dp"
+            android:layout_width="75dp"
+            android:layout_height="104dp"
             android:background="@null"
             android:onClick="viewBuildingButton"
+            android:scaleType="fitCenter"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.676"
+            app:layout_constraintHorizontal_bias="0.33"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.279"
-            app:srcCompat="@android:drawable/arrow_down_float"
-            app:tint="#8E1C1C" />
+            app:layout_constraintVertical_bias="0.49"
+            app:srcCompat="@drawable/marker_closed" />
 
         <ImageButton
             android:id="@+id/btn_restroom_suggest"
@@ -151,43 +104,138 @@
             app:layout_constraintVertical_bias="0.961"
             app:srcCompat="@android:drawable/stat_notify_more"
             app:tint="#2B54E0" />
+
+        <ImageView
+            android:id="@+id/imageView2"
+            android:layout_width="74dp"
+            android:layout_height="89dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.78"
+            app:srcCompat="@drawable/marker_user" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cv_map_menu_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="20dp"
+        android:paddingStart="10dp"
+        android:paddingLeft="10dp"
+        android:paddingTop="10dp"
+        android:paddingEnd="10dp"
+        android:paddingRight="10dp"
+        android:paddingBottom="10dp"
+        app:cardBackgroundColor="#CCFFFFFF"
+        app:cardCornerRadius="100dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0">
+
+        <LinearLayout
+            android:id="@+id/ll_map_menu_bar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:paddingLeft="8dp"
+            android:paddingTop="8dp"
+            android:paddingRight="8dp"
+            android:paddingBottom="8dp">
+
+            <ImageButton
+                android:id="@+id/btn_search_restroom_name"
+                android:layout_width="39dp"
+                android:layout_height="43dp"
+                android:onClick="searchRestroomButton"
+                android:scaleType="center"
+                app:srcCompat="@android:drawable/ic_search_category_default" />
+
+            <EditText
+                android:id="@+id/et_search_restroom_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/mitr_regular"
+                android:hint="Find empty toilets near you."
+                android:inputType="text"
+                android:textAlignment="viewStart" />
+
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cl_restroom_directions"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="150dp"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
-        app:cardBackgroundColor="#BBD9E9"
+        app:cardBackgroundColor="#B2FFFFFF"
         app:cardCornerRadius="12dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cl_restroom_map"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="0.0" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:id="@+id/btn_account_details"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="accountHomeButton"
+                app:srcCompat="@android:drawable/ic_menu_myplaces" />
+
+            <ImageButton
+                android:id="@+id/btn_recommended_restrooms"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="recommendedRestroomsButton"
+                app:srcCompat="@android:drawable/btn_star" />
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cv_restroom_rating"
         android:layout_width="250dp"
         android:layout_height="wrap_content"
+        app:cardBackgroundColor="#CCFFFFFF"
+        app:cardCornerRadius="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.5">
+        app:layout_constraintVertical_bias="0.63">
 
         <LinearLayout
             android:id="@+id/ll_restroom_rating"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:paddingLeft="2dp"
+            android:paddingTop="4dp"
+            android:paddingRight="2dp"
+            android:paddingBottom="4dp">
 
             <TextView
                 android:id="@+id/tv_restroom_rating"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:fontFamily="sans-serif"
                 android:text="Leave a Rating?"
                 android:textAlignment="center" />
 
@@ -209,6 +257,7 @@
                     android:id="@+id/btn_close_rating_view"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
                     android:text="No" />
             </LinearLayout>
 
