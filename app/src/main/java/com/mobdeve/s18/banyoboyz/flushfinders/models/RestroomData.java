@@ -1,6 +1,9 @@
-package com.mobdeve.s18.banyoboyz.flushfinders.data;
+package com.mobdeve.s18.banyoboyz.flushfinders.models;
+
+import com.mobdeve.s18.banyoboyz.flushfinders.models.adapters.RestroomMetrics;
 
 public class RestroomData {
+    private long id;
     private int buildingImageResource;
     private String buildingName;
     private String buildingAddress;
@@ -8,13 +11,24 @@ public class RestroomData {
     private RestroomMetrics metrics;
     private AmenityData[] amenities;
 
-    public RestroomData(int buildingImageResource, String buildingName, String buildingAddress, String name, int cleanliness, int maintenance, int vacancy, AmenityData[] amenities) {
+    public RestroomData(){}
+
+    public RestroomData(long id, int buildingImageResource, String buildingName, String buildingAddress, String name, int cleanliness, int maintenance, int vacancy, AmenityData[] amenities) {
+        this.id = id;
         this.buildingImageResource = buildingImageResource;
         this.buildingName = buildingName;
         this.buildingAddress = buildingAddress;
         this.name = name;
         this.metrics = new RestroomMetrics(cleanliness, maintenance, vacancy);
         this.amenities = amenities;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public int getBuildingImageResource() {

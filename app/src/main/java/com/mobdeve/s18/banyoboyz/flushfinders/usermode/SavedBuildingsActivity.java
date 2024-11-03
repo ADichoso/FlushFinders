@@ -11,9 +11,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.mobdeve.s18.banyoboyz.flushfinders.R;
-import com.mobdeve.s18.banyoboyz.flushfinders.data.BuildingAdapter;
-import com.mobdeve.s18.banyoboyz.flushfinders.data.BuildingData;
-import com.mobdeve.s18.banyoboyz.flushfinders.data.RestroomData;
+import com.mobdeve.s18.banyoboyz.flushfinders.models.adapters.BuildingAdapter;
+import com.mobdeve.s18.banyoboyz.flushfinders.models.BuildingData;
+import com.mobdeve.s18.banyoboyz.flushfinders.models.RestroomData;
 
 public class SavedBuildingsActivity extends AppCompatActivity {
 
@@ -34,9 +34,9 @@ public class SavedBuildingsActivity extends AppCompatActivity {
         rv_buildings.setLayoutManager(new LinearLayoutManager(this));
 
         BuildingData[] buildingData = new BuildingData[]{
-                new BuildingData("Gokongwei Hall", "De La Salle University - Taft Avenue", "12 Minutes", R.drawable.goks, new RestroomData[]{}),
-                new BuildingData("Gokongwei Hall2", "De La Salle University - Taft Avenue", "12 Minutes", R.drawable.goks, new RestroomData[]{}),
-                new BuildingData("Gokongwei Hall3", "De La Salle University - Taft Avenue", "12 Minutes", R.drawable.goks, new RestroomData[]{})
+                new BuildingData(0, "Gokongwei Hall", "De La Salle University - Taft Avenue", "12 Minutes", R.drawable.goks, new RestroomData[]{}),
+                new BuildingData(1, "Gokongwei Hall2", "De La Salle University - Taft Avenue", "12 Minutes", R.drawable.goks, new RestroomData[]{}),
+                new BuildingData(2, "Gokongwei Hall3", "De La Salle University - Taft Avenue", "12 Minutes", R.drawable.goks, new RestroomData[]{})
         };
 
         BuildingAdapter buildingAdapter = new BuildingAdapter(buildingData, SavedBuildingsActivity.this);

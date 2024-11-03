@@ -1,4 +1,4 @@
-package com.mobdeve.s18.banyoboyz.flushfinders.data;
+package com.mobdeve.s18.banyoboyz.flushfinders.models.adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;

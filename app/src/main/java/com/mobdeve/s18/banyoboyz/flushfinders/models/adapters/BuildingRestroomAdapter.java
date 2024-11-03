@@ -1,4 +1,4 @@
-package com.mobdeve.s18.banyoboyz.flushfinders.data;
+package com.mobdeve.s18.banyoboyz.flushfinders.models.adapters;
 
 import android.content.Context;
 import android.content.Intent;
@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.mobdeve.s18.banyoboyz.flushfinders.R;
 import com.mobdeve.s18.banyoboyz.flushfinders.adminmode.DeleteRestroomActivity;
+import com.mobdeve.s18.banyoboyz.flushfinders.models.RestroomData;
 import com.mobdeve.s18.banyoboyz.flushfinders.modmode.CreateEditRestroomActivity;
 import com.mobdeve.s18.banyoboyz.flushfinders.modmode.EditRestroomActivity;
 import com.mobdeve.s18.banyoboyz.flushfinders.modmode.ViewUserSuggestionsActivity;

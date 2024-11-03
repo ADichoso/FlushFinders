@@ -1,21 +1,56 @@
 package com.mobdeve.s18.banyoboyz.flushfinders.mainmenu;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.widget.EditText;
+import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.mobdeve.s18.banyoboyz.flushfinders.R;
 import com.mobdeve.s18.banyoboyz.flushfinders.adminmode.AdminHomeActivity;
+import com.mobdeve.s18.banyoboyz.flushfinders.models.AccountData;
+import com.mobdeve.s18.banyoboyz.flushfinders.models.FirestoreReferences;
+import com.mobdeve.s18.banyoboyz.flushfinders.models.SharedPrefReferences;
 import com.mobdeve.s18.banyoboyz.flushfinders.modmode.ModHomeActivity;
 import com.mobdeve.s18.banyoboyz.flushfinders.usermode.MapHomeActivity;
 
+import org.mindrot.jbcrypt.BCrypt;
+
+import java.util.Map;
+import java.util.Objects;
+
 public class LoginActivity extends AppCompatActivity {
+
+
+
+    private CollectionReference accountsDBRef;
+
+    EditText et_login_email;
+    EditText et_login_password;
+    TextView tv_login_invalid_message;
+
+
+    SharedPreferences sharedpreferences;
+    String account_name;
+    String account_email;
+    String account_type;
+    int account_pp;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,30 +61,142 @@ public class LoginActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+        // Initialize accounts DB reference
+        this.accountsDBRef = FirebaseFirestore.getInstance().collection(FirestoreReferences.Accounts.COLLECTION);
+
+        et_login_email = findViewById(R.id.et_login_email);
+        et_login_password = findViewById(R.id.et_login_password);
+        tv_login_invalid_message = findViewById(R.id.tv_login_invalid_message);
+
+        tv_login_invalid_message.setVisibility(View.INVISIBLE);
+
+        // getting the data which is stored in shared preferences.
+        sharedpreferences = getSharedPreferences(SharedPrefReferences.SHARED_PREFS, Context.MODE_PRIVATE);
+
+        // Check if user is already logged in
+        account_name = sharedpreferences.getString(SharedPrefReferences.ACCOUNT_NAME_KEY, "");
+        account_email = sharedpreferences.getString(SharedPrefReferences.ACCOUNT_EMAIL_KEY, "");
+        account_type = sharedpreferences.getString(SharedPrefReferences.ACCOUNT_TYPE_KEY, "");
+        account_pp = sharedpreferences.getInt(SharedPrefReferences.ACCOUNT_PP_KEY, -1);
+
+        // check if the fields are not null then one current user is logged in
+        if (areFieldsNotEmpty(new String[]{account_name, account_email, account_type}) && account_pp != -1)
+        {
+            Intent intent = null;
+
+            //Map Home Screen according to Account Type
+            switch(Objects.requireNonNull(AccountData.convertType(account_type)))
+            {
+                case USER:
+                    intent = new Intent(LoginActivity.this, MapHomeActivity.class);
+                    break;
+                case MODERATOR:
+                    intent = new Intent(LoginActivity.this, ModHomeActivity.class);
+                    break;
+                case ADMINISTRATOR:
+                    intent = new Intent(LoginActivity.this, AdminHomeActivity.class);
+                    break;
+                default:
+                    //INVALID ACCOUNT
+                    tv_login_invalid_message.setVisibility(View.VISIBLE);
+                    break;
+            }
+
+            goToHomePage(intent);
+        }
+
     }
 
-    public void loginUserTestButton(View view)
+
+
+    public void loginButton(View view)
     {
-        Intent intent = new Intent(LoginActivity.this, MapHomeActivity.class);
+        account_email = et_login_email.getText().toString();
+        String account_password = et_login_password.getText().toString();
+
+        //Check if all fields are not null
+        if(areFieldsNotEmpty(new String[]{account_email, account_password}))
+        {
+            //Check the database and see if there is an account with the given email & password is correct
+            accountsDBRef.document(account_email).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                    //Found the correct account
+                    if(task.isSuccessful())
+                    {
+                        Map<String, Object> data = task.getResult().getData();
+
+                        //Compare Passwords
+                        if(BCrypt.checkpw(account_password, data.get(FirestoreReferences.Accounts.PASSWORD).toString()))
+                        {
+                            //Save account details for shared preferences
+                            account_name = data.get(FirestoreReferences.Accounts.NAME).toString();
+                            account_type = data.get(FirestoreReferences.Accounts.TYPE).toString();
+                            account_pp = Integer.parseInt(data.get(FirestoreReferences.Accounts.PROFILE_PICTURE_RESOURCE).toString());
+
+
+                            //Map Home Screen Activity according to Account Type
+                            Intent intent = null;
+                            switch(Objects.requireNonNull(AccountData.convertType(account_type)))
+                            {
+                                case USER:
+                                    intent = new Intent(LoginActivity.this, MapHomeActivity.class);
+                                    break;
+                                case MODERATOR:
+                                    intent = new Intent(LoginActivity.this, ModHomeActivity.class);
+                                    break;
+                                case ADMINISTRATOR:
+                                    intent = new Intent(LoginActivity.this, AdminHomeActivity.class);
+                                    break;
+                                default:
+                                    //INVALID ACCOUNT
+                                    tv_login_invalid_message.setVisibility(View.VISIBLE);
+                                    break;
+                            }
+
+                            //Go to that home page
+                            if(intent != null) goToHomePage(intent);
+                        }
+                        else
+                        {
+                            tv_login_invalid_message.setVisibility(View.VISIBLE);
+                        }
+
+                    }
+                    else
+                    {
+                        tv_login_invalid_message.setVisibility(View.VISIBLE);
+                        Log.w("ManageModAccountsActivity", "TASK NOT SUCCESSFUL", task.getException());
+                    }
+                }
+            });
+        }
+    }
+
+    private void goToHomePage(Intent intent)
+    {
+        tv_login_invalid_message.setVisibility(View.INVISIBLE);
+
+        SharedPreferences.Editor editor = sharedpreferences.edit();
+
+        editor.putString(SharedPrefReferences.ACCOUNT_NAME_KEY, account_name);
+        editor.putString(SharedPrefReferences.ACCOUNT_EMAIL_KEY, account_email);
+        editor.putString(SharedPrefReferences.ACCOUNT_TYPE_KEY, account_type);
+        editor.putInt(SharedPrefReferences.ACCOUNT_PP_KEY, account_pp);
+        editor.apply();
+
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
         finish();
     }
-
-    public void loginModTestButton(View view)
+    private boolean areFieldsNotEmpty(String[] fields)
     {
-        Intent intent = new Intent(LoginActivity.this, ModHomeActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(intent);
-        finish();
-    }
+        for(String field : fields)
+            if (!field.isEmpty())
+                return true;
 
-    public void loginAdminTestButton(View view)
-    {
-        Intent intent = new Intent(LoginActivity.this, AdminHomeActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(intent);
-        finish();
+        return false;
     }
 
     public void forgotPasswordButton(View view)

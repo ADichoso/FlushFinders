@@ -1,4 +1,6 @@
-package com.mobdeve.s18.banyoboyz.flushfinders.data;
+package com.mobdeve.s18.banyoboyz.flushfinders.models;
+
+import java.time.Instant;
 
 public class AccountData {
     public enum AccountType
@@ -10,17 +12,36 @@ public class AccountData {
 
     private String name;
     private String email;
+    private String password;
     private boolean isActive;
     private int profilePictureResource;
-
+    private Instant creationTime;
     private AccountType type;
 
-    public AccountData(String name, String email, boolean isActive, int profilePictureResource, AccountType type) {
+    public AccountData(){}
+
+    public AccountData(String email, String name, String password, boolean isActive, int profilePictureResource, Instant creationTime, AccountType type) {
         this.name = name;
         this.email = email;
+        this.password = password;
         this.isActive = isActive;
         this.profilePictureResource = profilePictureResource;
+        this.creationTime = creationTime;
         this.type = type;
+    }
+
+    public static AccountType convertType(String type)
+    {
+        switch (type) {
+            case "USER":
+                return AccountType.USER;
+            case "MODERATOR":
+                return AccountType.MODERATOR;
+            case "ADMINISTRATOR":
+                return AccountType.ADMINISTRATOR;
+        }
+
+        return null;
     }
 
     public String getName() {
@@ -39,6 +60,14 @@ public class AccountData {
         this.email = email;
     }
 
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
     public boolean isActive() {
         return isActive;
     }
@@ -53,6 +82,14 @@ public class AccountData {
 
     public void setProfilePictureResource(int profilePictureResource) {
         this.profilePictureResource = profilePictureResource;
+    }
+
+    public Instant getCreationTime() {
+        return creationTime;
+    }
+
+    public void setCreationTime(Instant creationTime) {
+        this.creationTime = creationTime;
     }
 
     public AccountType getType() {

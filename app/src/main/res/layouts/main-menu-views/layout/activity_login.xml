@@ -22,6 +22,22 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.148" />
 
+    <TextView
+        android:id="@+id/tv_login_invalid_message"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:enabled="false"
+        android:text="Incorrect Email/Password!"
+        android:textColor="#CA2020"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_login_acc"
+        app:layout_constraintVertical_bias="0.022" />
+
     <LinearLayout
         android:id="@+id/ll_login_form"
         android:layout_width="250dp"
@@ -30,8 +46,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_login_acc"
-        app:layout_constraintVertical_bias="0.100000024">
+        app:layout_constraintTop_toBottomOf="@+id/tv_login_invalid_message"
+        app:layout_constraintVertical_bias="0.060000002">
 
         <LinearLayout
             android:id="@+id/ll_login_group_email"
@@ -52,7 +68,7 @@
                 android:ems="10"
                 android:inputType="textEmailAddress" />
         </LinearLayout>
-        
+
         <LinearLayout
             android:id="@+id/ll_login_group_password"
             android:layout_width="match_parent"
@@ -74,28 +90,12 @@
         </LinearLayout>
 
         <Button
-            android:id="@+id/btn_login_account_user"
+            android:id="@+id/btn_login_account"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:backgroundTint="#825CBD"
-            android:onClick="loginUserTestButton"
-            android:text="Login (User Test)" />
-
-        <Button
-            android:id="@+id/btn_login_account_mod"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:backgroundTint="#825CBD"
-            android:onClick="loginModTestButton"
-            android:text="Login (Mod Test)" />
-
-        <Button
-            android:id="@+id/btn_login_account_admin"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:backgroundTint="#825CBD"
-            android:onClick="loginAdminTestButton"
-            android:text="Login (Admin Test)" />
+            android:onClick="loginButton"
+            android:text="Login" />
 
         <TextView
             android:id="@+id/tv_forgot_password"

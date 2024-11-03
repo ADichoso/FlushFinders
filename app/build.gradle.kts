@@ -1,5 +1,6 @@
 plugins {
-    alias(libs.plugins.android.application)
+    id("com.android.application")
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -46,6 +47,11 @@ android {
 }
 
 dependencies {
+    // Firebase Realtime Database
+    implementation(platform("com.google.firebase:firebase-bom:33.5.1"))
+    implementation("com.google.firebase:firebase-firestore")
+    implementation("com.firebaseui:firebase-ui-firestore:8.0.2")
+    implementation("org.mindrot:jbcrypt:0.4")
 
     implementation(libs.appcompat)
     implementation(libs.material)

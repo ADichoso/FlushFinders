@@ -1,8 +1,12 @@
 package com.mobdeve.s18.banyoboyz.flushfinders.adminmode;
 
+import android.nfc.Tag;
+import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -10,12 +14,30 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.mobdeve.s18.banyoboyz.flushfinders.R;
-import com.mobdeve.s18.banyoboyz.flushfinders.data.AccountAdapter;
-import com.mobdeve.s18.banyoboyz.flushfinders.data.AccountData;
+import com.mobdeve.s18.banyoboyz.flushfinders.models.adapters.AccountAdapter;
+import com.mobdeve.s18.banyoboyz.flushfinders.models.AccountData;
+import com.mobdeve.s18.banyoboyz.flushfinders.models.FirestoreReferences;
+
+import java.time.Instant;
+import java.util.Map;
+
 public class ManageModAccountsActivity extends AppCompatActivity {
 
     RecyclerView rv_mod_accounts;
+
+    // DB reference
+    private CollectionReference accountsDBRef;
+    private AccountAdapter accountAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,12 +53,52 @@ public class ManageModAccountsActivity extends AppCompatActivity {
         rv_mod_accounts.setHasFixedSize(true);
         rv_mod_accounts.setLayoutManager(new LinearLayoutManager(this));
 
-        AccountData[] accountData = new AccountData[]{
-                new AccountData("Aaron Dichoso","aarondichoso17@gmail.com", true, R.drawable.dichoso, AccountData.AccountType.MODERATOR),
-                new AccountData("Nanashi Mumei","Mumei7@gmail.com", true, R.drawable.mumei, AccountData.AccountType.MODERATOR)
-        };
+        // Initialize accounts DB reference
+        this.accountsDBRef = FirebaseFirestore.getInstance().collection(FirestoreReferences.Accounts.COLLECTION);
 
-        AccountAdapter accountAdapter = new AccountAdapter(accountData, ManageModAccountsActivity.this);
-        rv_mod_accounts.setAdapter(accountAdapter);
+        //Query the accounts from the database
+        Query query = accountsDBRef.orderBy(FirestoreReferences.Accounts.NAME);
+
+        query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if(task.isSuccessful())
+                {
+                    Log.d("ManageModAccountsActivity", "Account Results:" + task.getResult().toString());
+                    Log.d("ManageModAccountsActivity", "Account Results Length:" + task.getResult().size());
+
+                    AccountData[] accountData = new AccountData[task.getResult().size()];
+                    int i = 0;
+                    for(QueryDocumentSnapshot document : task.getResult())
+                    {
+                        Map<String, Object> data = document.getData();
+
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                            accountData[i++] = new AccountData(
+                                    document.getId(),
+                                    data.get(FirestoreReferences.Accounts.NAME).toString(),
+                                    data.get(FirestoreReferences.Accounts.PASSWORD).toString(),
+                                    Boolean.parseBoolean(data.get(FirestoreReferences.Accounts.IS_ACTIVE).toString()),
+                                    Integer.parseInt(data.get(FirestoreReferences.Accounts.PROFILE_PICTURE_RESOURCE).toString()),
+                                    Instant.ofEpochSecond(Long.parseLong(data.get(FirestoreReferences.Accounts.CREATION_TIME).toString())),
+                                    AccountData.convertType(data.get(FirestoreReferences.Accounts.TYPE).toString()
+                                    )
+                            );
+                        }
+                    }
+
+                    Log.d("ManageModAccountsActivity", "ACCOUNTS FROM DATABASE:" + accountData[0].getName());
+
+                    accountAdapter = new AccountAdapter(accountData, ManageModAccountsActivity.this);
+                    rv_mod_accounts.setAdapter(accountAdapter);
+                }
+                else
+                {
+                    Log.w("ManageModAccountsActivity", "TASK NOT SUCCESSFUL", task.getException());
+                }
+            }
+        });
+
+
     }
 }

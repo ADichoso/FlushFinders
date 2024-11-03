@@ -1,4 +1,4 @@
-package com.mobdeve.s18.banyoboyz.flushfinders.data;
+package com.mobdeve.s18.banyoboyz.flushfinders.models.adapters;
 
 import android.content.Context;
 import android.content.Intent;
@@ -6,13 +6,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.mobdeve.s18.banyoboyz.flushfinders.R;
+import com.mobdeve.s18.banyoboyz.flushfinders.models.BuildingData;
 import com.mobdeve.s18.banyoboyz.flushfinders.usermode.ViewBuildingActivity;
 
 public class BuildingAdapter extends RecyclerView.Adapter<BuildingAdapter.BuildingHolder> {

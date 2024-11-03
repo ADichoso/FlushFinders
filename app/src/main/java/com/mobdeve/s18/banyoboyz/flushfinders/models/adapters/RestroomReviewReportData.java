@@ -1,4 +1,4 @@
-package com.mobdeve.s18.banyoboyz.flushfinders.data;
+package com.mobdeve.s18.banyoboyz.flushfinders.models.adapters;
 
 public class RestroomReviewReportData {
     private int buildingImageResource;

@@ -11,9 +11,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.mobdeve.s18.banyoboyz.flushfinders.R;
-import com.mobdeve.s18.banyoboyz.flushfinders.data.BuildingRestroomAdapter;
-import com.mobdeve.s18.banyoboyz.flushfinders.data.RestroomReviewReportAdapter;
-import com.mobdeve.s18.banyoboyz.flushfinders.data.RestroomReviewReportData;
+import com.mobdeve.s18.banyoboyz.flushfinders.models.adapters.RestroomReviewReportAdapter;
+import com.mobdeve.s18.banyoboyz.flushfinders.models.adapters.RestroomReviewReportData;
 
 public class ReviewUserReportsActivity extends AppCompatActivity {
 
