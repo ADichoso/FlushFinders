@@ -15,7 +15,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.FlushFinders"
         android:screenOrientation="sensorPortrait"
-        tools:targetApi="31">
+        tools:targetApi="31"
+        tools:ignore="DiscouragedApi">
 
         <!--
              TODO: Before you run your application, you need a Google Maps API key.
@@ -35,83 +36,110 @@
         <activity
             android:name=".usermode.MapsTestActivity"
             android:exported="false"
+            android:screenOrientation="sensorPortrait"
             android:label="@string/title_activity_maps_test" />
         <activity
             android:name=".usermode.ViewRestroomActivity"
+            android:screenOrientation="sensorPortrait"
             android:exported="false" />
         <activity
             android:name=".modmode.ViewUserSuggestionsActivity"
+            android:screenOrientation="sensorPortrait"
             android:exported="false" />
         <activity
+            android:screenOrientation="sensorPortrait"
             android:name=".adminmode.DeleteRestroomActivity"
             android:exported="false" />
         <activity
+            android:screenOrientation="sensorPortrait"
             android:name=".adminmode.CreateModAccountActivity"
             android:exported="false" />
         <activity
+            android:screenOrientation="sensorPortrait"
             android:name=".adminmode.ManageModAccountsActivity"
             android:exported="false" />
         <activity
+            android:screenOrientation="sensorPortrait"
             android:name=".adminmode.AdminHomeActivity"
             android:exported="false" />
         <activity
+            android:screenOrientation="sensorPortrait"
             android:name=".modmode.CreateEditRestroomActivity"
             android:exported="false" />
         <activity
+            android:screenOrientation="sensorPortrait"
             android:name=".modmode.EditRestroomActivity"
             android:exported="false" />
         <activity
+            android:screenOrientation="sensorPortrait"
             android:name=".modmode.UserReportActivity"
             android:exported="false" />
         <activity
+            android:screenOrientation="sensorPortrait"
             android:name=".modmode.ReviewUserReportsActivity"
             android:exported="false" />
         <activity
+            android:screenOrientation="sensorPortrait"
             android:name=".modmode.ModHomeActivity"
             android:exported="false" />
         <activity
+            android:screenOrientation="sensorPortrait"
             android:name=".accounts.AccountDeleteActivity"
             android:exported="false" />
         <activity
+            android:screenOrientation="sensorPortrait"
             android:name=".accounts.AccountEditActivity"
             android:exported="false" />
         <activity
+            android:screenOrientation="sensorPortrait"
             android:name=".sharedviews.SuggestRestroomLocationActivity"
             android:exported="false" />
         <activity
+            android:screenOrientation="sensorPortrait"
             android:name=".usermode.ReviewReportRestroomActivity"
             android:exported="false" />
         <activity
+            android:screenOrientation="sensorPortrait"
             android:name=".usermode.SuggestRestroomDetailsActivity"
             android:exported="false" />
         <activity
+            android:screenOrientation="sensorPortrait"
             android:name=".usermode.SavedBuildingsActivity"
             android:exported="false" />
         <activity
+            android:screenOrientation="sensorPortrait"
             android:name=".usermode.ViewBuildingActivity"
             android:exported="false" />
         <activity
+            android:screenOrientation="sensorPortrait"
             android:name=".usermode.SearchBuildingActivity"
             android:exported="false" />
         <activity
+            android:screenOrientation="sensorPortrait"
             android:name=".accounts.AccountHomeActivity"
             android:exported="false" />
         <activity
+            android:screenOrientation="sensorPortrait"
             android:name=".mainmenu.ResetPasswordActivity"
             android:exported="false" />
         <activity
+            android:screenOrientation="sensorPortrait"
             android:name=".mainmenu.ForgotPasswordActivity"
             android:exported="false" />
         <activity
+            android:screenOrientation="sensorPortrait"
             android:name=".mainmenu.RegisterActivity"
             android:exported="false" />
         <activity
+            android:screenOrientation="sensorPortrait"
             android:name=".mainmenu.LoginActivity"
             android:exported="false" />
         <activity
+            android:screenOrientation="sensorPortrait"
             android:name=".usermode.MapHomeActivity"
             android:exported="false" />
         <activity
+            android:screenOrientation="sensorPortrait"
             android:name=".mainmenu.MainActivity"
             android:exported="true">
             <intent-filter>

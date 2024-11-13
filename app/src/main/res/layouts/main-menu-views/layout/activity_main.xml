@@ -31,7 +31,6 @@
         android:lineSpacingExtra="-24sp"
         android:text="Flush Finder"
         android:textSize="48sp"
-        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/iv_main_logo"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.04"
