@@ -119,14 +119,13 @@ public class MapHomeActivity extends AppCompatActivity implements SensorEventLis
                 float[] orientation = new float[3];
                 SensorManager.getOrientation(R, orientation);
                 float azimuthInDegrees = (float) Math.toDegrees(orientation[0]); // Azimuth in degrees
-                rotateMap(smoothAzimuth(azimuthInDegrees));
+                rotateMap(azimuthInDegrees);
             }
         }
     }
 
     @Override
     public void onAccuracyChanged(Sensor sensor, int i) {
-
     }
 
     private float lastAzimuth = 0f; // Store the last smoothed azimuth
@@ -138,7 +137,21 @@ public class MapHomeActivity extends AppCompatActivity implements SensorEventLis
     }
 
     private void rotateMap(float azimuth) {
-        map.setMapOrientation(-azimuth); // Rotate map according to azimuth
+        float smoothedAzimuth = smoothAzimuth(azimuth);
+        float currentOrientation = map.getMapOrientation(); // Get current orientation
+        float targetOrientation = -smoothedAzimuth; // OSMdroid uses clockwise rotation
+
+        // Calculate the difference
+        float delta = targetOrientation - currentOrientation;
+
+        // Normalize delta to be within -180 to 180 degrees
+        if (delta > 180) delta -= 360;
+        if (delta < -180) delta += 360;
+
+        // Set a small threshold for rotation to avoid frequent updates
+        if (Math.abs(delta) > 1) { // Only rotate if change is significant
+            map.setMapOrientation(currentOrientation + delta * 0.1f); // Smoothly rotate towards target
+        } // Rotate map according to azimuth
     }
 
     public void recommendedRestroomsButton(View view)
