@@ -21,8 +21,10 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.mobdeve.s18.banyoboyz.flushfinders.R;
+import com.mobdeve.s18.banyoboyz.flushfinders.adminmode.CreateModAccountActivity;
 import com.mobdeve.s18.banyoboyz.flushfinders.helper.ProfilePictureHelper;
 import com.mobdeve.s18.banyoboyz.flushfinders.models.FirestoreReferences;
 
@@ -70,38 +72,51 @@ public class RegisterActivity extends AppCompatActivity {
         //Check if all fields are not null
         if(!areFieldsEmpty(new String[]{account_name, account_email, account_password}))
         {
-            //Go ahead and create a new field in the firestore
-            String hashed_password = BCrypt.hashpw(account_password, BCrypt.gensalt(10));
-            Map<String, Object> data = new HashMap<>();
-
-            Bitmap default_profile_picture = BitmapFactory.decodeResource(this.getResources(), R.drawable.mumei);
-            default_profile_picture = ProfilePictureHelper.scaleBitmap(default_profile_picture);
-
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                data.put(FirestoreReferences.Accounts.NAME, account_name);
-                data.put(FirestoreReferences.Accounts.PASSWORD, hashed_password);
-                data.put(FirestoreReferences.Accounts.IS_ACTIVE, true);
-                data.put(FirestoreReferences.Accounts.TYPE, "USER");
-                data.put(FirestoreReferences.Accounts.PROFILE_PICTURE, ProfilePictureHelper.encodeBitmapToBase64(default_profile_picture));
-                data.put(FirestoreReferences.Accounts.CREATION_TIME, Instant.now().getEpochSecond());
-            }
-
-            accountsDBRef.document(account_email).set(data)
-                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+            accountsDBRef.document(account_email).get()
+                    .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                         @Override
-                        public void onComplete(@NonNull Task<Void> task) {
+                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                             if(task.isSuccessful())
                             {
-                                Log.v("RegisterActivity", "User Account Registration Successful!");
+                                Map<String, Object> user_check_data = task.getResult().getData();
+                                if(user_check_data == null || user_check_data.isEmpty())
+                                {
+                                    //Go ahead and create a new field in the firestore
+                                    String hashed_password = BCrypt.hashpw(account_password, BCrypt.gensalt(10));
 
-                                //Go to the login activity
-                                Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
-                                startActivity(intent);
-                                finish();
-                            }
-                            else
-                            {
-                                Log.e("RegisterActivity", "User Account Registration FAILED");
+                                    Bitmap default_profile_picture = BitmapFactory.decodeResource(RegisterActivity.this.getResources(), R.drawable.mumei);
+                                    default_profile_picture = ProfilePictureHelper.scaleBitmap(default_profile_picture);
+
+                                    //THE USER WITH THIS EMAIL DOES NOT EXIST
+                                    //ID of accounts will be the email (Unique Identifier)
+                                    Map<String, Object> data = new HashMap<>();
+                                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                                        data.put(FirestoreReferences.Accounts.NAME, account_name);
+                                        data.put(FirestoreReferences.Accounts.PASSWORD, hashed_password);
+                                        data.put(FirestoreReferences.Accounts.IS_ACTIVE, true);
+                                        data.put(FirestoreReferences.Accounts.TYPE, "USER");
+                                        data.put(FirestoreReferences.Accounts.PROFILE_PICTURE, ProfilePictureHelper.encodeBitmapToBase64(default_profile_picture));
+                                        data.put(FirestoreReferences.Accounts.CREATION_TIME, Instant.now().getEpochSecond());
+                                    }
+
+                                    accountsDBRef.document(account_email).set(data)
+                                            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<Void> task) {
+                                                    if(task.isSuccessful())
+                                                    {
+                                                        Log.v("RegisterActivity", "User Account Registration Successful!");
+
+                                                        //Go back
+                                                        finish();
+                                                    }
+                                                    else
+                                                    {
+                                                        Log.e("RegisterActivity", "User Account Registration FAILED");
+                                                    }
+                                                }
+                                            });
+                                }
                             }
                         }
                     });

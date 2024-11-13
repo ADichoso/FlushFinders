@@ -21,6 +21,7 @@ import androidx.core.view.WindowInsetsCompat;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.mobdeve.s18.banyoboyz.flushfinders.R;
 import com.mobdeve.s18.banyoboyz.flushfinders.helper.ProfilePictureHelper;
@@ -34,7 +35,6 @@ import java.util.Map;
 
 public class CreateModAccountActivity extends AppCompatActivity {
     private CollectionReference accountsDBRef;
-
 
     EditText et_create_admin_mod_account_name;
     EditText et_create_admin_mod_account_email;
@@ -76,40 +76,56 @@ public class CreateModAccountActivity extends AppCompatActivity {
         //Check if all fields are not null
         if(!areFieldsEmpty(new String[]{account_name, account_email, account_password, account_type}))
         {
-            //Go ahead and create a new field in the firestore
-            String hashed_password = BCrypt.hashpw(account_password, BCrypt.gensalt(10));
-
-            Bitmap default_profile_picture = BitmapFactory.decodeResource(this.getResources(), R.drawable.mumei);
-            default_profile_picture = ProfilePictureHelper.scaleBitmap(default_profile_picture);
-
-            Map<String, Object> data = new HashMap<>();
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                data.put(FirestoreReferences.Accounts.NAME, account_name);
-                data.put(FirestoreReferences.Accounts.PASSWORD, hashed_password);
-                data.put(FirestoreReferences.Accounts.IS_ACTIVE, true);
-                data.put(FirestoreReferences.Accounts.TYPE, account_type);
-                data.put(FirestoreReferences.Accounts.PROFILE_PICTURE, ProfilePictureHelper.encodeBitmapToBase64(default_profile_picture));
-                data.put(FirestoreReferences.Accounts.CREATION_TIME, Instant.now().getEpochSecond());
-            }
-
-            //ID of accounts will be the email (Unique Identifier)
-            accountsDBRef.document(account_email).set(data)
-                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+            accountsDBRef.document(account_email).get()
+                    .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                         @Override
-                        public void onComplete(@NonNull Task<Void> task) {
+                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                             if(task.isSuccessful())
                             {
-                                Log.v("CreateModAccountActivity", "Mod/Admin Account Registration Successful!");
+                                Map<String, Object> user_check_data = task.getResult().getData();
+                                if(user_check_data == null || user_check_data.isEmpty())
+                                {
+                                    //Go ahead and create a new field in the firestore
+                                    String hashed_password = BCrypt.hashpw(account_password, BCrypt.gensalt(10));
 
-                                //Go back
-                                finish();
-                            }
-                            else
-                            {
-                                Log.e("CreateModAccountActivity", "Mod/Admin Account Registration FAILED");
+                                    Bitmap default_profile_picture = BitmapFactory.decodeResource(CreateModAccountActivity.this.getResources(), R.drawable.mumei);
+                                    default_profile_picture = ProfilePictureHelper.scaleBitmap(default_profile_picture);
+
+                                    //THE USER WITH THIS EMAIL DOES NOT EXIST
+                                    //ID of accounts will be the email (Unique Identifier)
+                                    Map<String, Object> data = new HashMap<>();
+                                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                                        data.put(FirestoreReferences.Accounts.NAME, account_name);
+                                        data.put(FirestoreReferences.Accounts.PASSWORD, hashed_password);
+                                        data.put(FirestoreReferences.Accounts.IS_ACTIVE, true);
+                                        data.put(FirestoreReferences.Accounts.TYPE, account_type);
+                                        data.put(FirestoreReferences.Accounts.PROFILE_PICTURE, ProfilePictureHelper.encodeBitmapToBase64(default_profile_picture));
+                                        data.put(FirestoreReferences.Accounts.CREATION_TIME, Instant.now().getEpochSecond());
+                                    }
+
+                                    accountsDBRef.document(account_email).set(data)
+                                            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<Void> task) {
+                                                    if(task.isSuccessful())
+                                                    {
+                                                        Log.v("CreateModAccountActivity", "Mod/Admin Account Registration Successful!");
+
+                                                        //Go back
+                                                        finish();
+                                                    }
+                                                    else
+                                                    {
+                                                        Log.e("CreateModAccountActivity", "Mod/Admin Account Registration FAILED");
+                                                    }
+                                                }
+                                            });
+                                }
                             }
                         }
                     });
+
+
         }
         finish();
     }

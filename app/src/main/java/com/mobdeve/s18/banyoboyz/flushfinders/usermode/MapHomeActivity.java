@@ -1,11 +1,15 @@
 package com.mobdeve.s18.banyoboyz.flushfinders.usermode;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.View;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -14,12 +18,17 @@ import com.mobdeve.s18.banyoboyz.flushfinders.R;
 import com.mobdeve.s18.banyoboyz.flushfinders.accounts.AccountHomeActivity;
 import com.mobdeve.s18.banyoboyz.flushfinders.sharedviews.SuggestRestroomLocationActivity;
 
+import org.osmdroid.config.Configuration;
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.Marker;
+import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay;
 
 public class MapHomeActivity extends AppCompatActivity {
+
+    private MapView map;
+    private MyLocationNewOverlay myLocationOverlay;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,21 +41,52 @@ public class MapHomeActivity extends AppCompatActivity {
             return insets;
         });
 
-        MapView map = findViewById(R.id.map);
+        map = findViewById(R.id.map);
         map.setTileSource(TileSourceFactory.MAPNIK);
 
+        map.setBuiltInZoomControls(true);
         map.setMultiTouchControls(true);
 
-        // Set initial view point
-        GeoPoint startPoint = new GeoPoint(48.8583, 2.2944); // Example coordinates (Eiffel Tower)
-        map.getController().setZoom(9);
-        map.getController().setCenter(startPoint);
+        // Initialize MyLocationNewOverlay
+        myLocationOverlay = new MyLocationNewOverlay(map);
+        myLocationOverlay.enableMyLocation(); // Enable location tracking
+        map.getOverlays().add(myLocationOverlay);
+
+        // Check for permissions
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+            return; // Exit if permissions are not granted
+        }
+
+        // Center the map on the user's location if available
+        myLocationOverlay.enableFollowLocation();
 
         // Add a marker
-        Marker marker = new Marker(map);
-        marker.setPosition(startPoint);
-        marker.setTitle("Eiffel Tower");
-        map.getOverlays().add(marker);
+        /*
+                Marker marker = new Marker(map);
+        marker.setPosition(myLocationOverlay.getMyLocation());
+        marker.setTitle("I found you");
+        map.getOverlays().add(marker);*/
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Configuration.getInstance().load(this, PreferenceManager.getDefaultSharedPreferences(this));
+        map.onResume();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        map.onPause();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        myLocationOverlay.disableMyLocation(); // Disable location tracking when done
     }
 
     public void recommendedRestroomsButton(View view)
