@@ -12,14 +12,9 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import com.mobdeve.s18.banyoboyz.flushfinders.adminmode.AdminHomeActivity;
-import com.mobdeve.s18.banyoboyz.flushfinders.models.AccountData;
 import com.mobdeve.s18.banyoboyz.flushfinders.models.SharedPrefReferences;
-import com.mobdeve.s18.banyoboyz.flushfinders.modmode.ModHomeActivity;
 import com.mobdeve.s18.banyoboyz.flushfinders.usermode.MapHomeActivity;
 import com.mobdeve.s18.banyoboyz.flushfinders.R;
-
-import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
     SharedPreferences sharedpreferences;

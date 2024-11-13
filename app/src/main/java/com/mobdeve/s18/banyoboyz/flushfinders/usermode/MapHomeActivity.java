@@ -119,7 +119,7 @@ public class MapHomeActivity extends AppCompatActivity implements SensorEventLis
                 float[] orientation = new float[3];
                 SensorManager.getOrientation(R, orientation);
                 float azimuthInDegrees = (float) Math.toDegrees(orientation[0]); // Azimuth in degrees
-                rotateMap(azimuthInDegrees);
+                rotateMap(smoothAzimuth(azimuthInDegrees));
             }
         }
     }
@@ -127,6 +127,14 @@ public class MapHomeActivity extends AppCompatActivity implements SensorEventLis
     @Override
     public void onAccuracyChanged(Sensor sensor, int i) {
 
+    }
+
+    private float lastAzimuth = 0f; // Store the last smoothed azimuth
+    private static final float ALPHA = 0.1f; // Smoothing factor (0 < alpha < 1)
+
+    private float smoothAzimuth(float newAzimuth) {
+        lastAzimuth += (newAzimuth - lastAzimuth) * ALPHA;
+        return lastAzimuth;
     }
 
     private void rotateMap(float azimuth) {

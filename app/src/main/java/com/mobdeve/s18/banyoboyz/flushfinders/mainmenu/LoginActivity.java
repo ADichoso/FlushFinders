@@ -10,7 +10,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
-import androidx.activity.OnBackPressedDispatcher;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
@@ -30,14 +29,11 @@ import com.mobdeve.s18.banyoboyz.flushfinders.models.FirestoreReferences;
 import com.mobdeve.s18.banyoboyz.flushfinders.models.SharedPrefReferences;
 import com.mobdeve.s18.banyoboyz.flushfinders.modmode.ModHomeActivity;
 import com.mobdeve.s18.banyoboyz.flushfinders.usermode.MapHomeActivity;
-import com.mobdeve.s18.banyoboyz.flushfinders.usermode.MapsTestActivity;
 
 import org.mindrot.jbcrypt.BCrypt;
 
 import java.util.Map;
 import java.util.Objects;
-
-import androidx.activity.OnBackPressedDispatcherOwner;
 
 public class LoginActivity extends AppCompatActivity {
 
