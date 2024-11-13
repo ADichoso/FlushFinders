@@ -1,8 +1,13 @@
 package com.mobdeve.s18.banyoboyz.flushfinders.usermode;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.View;
@@ -25,10 +30,13 @@ import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.Marker;
 import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay;
 
-public class MapHomeActivity extends AppCompatActivity {
+public class MapHomeActivity extends AppCompatActivity implements SensorEventListener{
 
     private MapView map;
     private MyLocationNewOverlay myLocationOverlay;
+    private SensorManager sensorManager;
+    private float[] gravity;
+    private float[] geomagnetic;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +55,7 @@ public class MapHomeActivity extends AppCompatActivity {
         map.setBuiltInZoomControls(true);
         map.setMultiTouchControls(true);
 
+        map.setZoomLevel(20);
         // Initialize MyLocationNewOverlay
         myLocationOverlay = new MyLocationNewOverlay(map);
         myLocationOverlay.enableMyLocation(); // Enable location tracking
@@ -68,6 +77,8 @@ public class MapHomeActivity extends AppCompatActivity {
         marker.setTitle("I found you");
         map.getOverlays().add(marker);*/
 
+        // Initialize Sensor Manager
+        sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
     }
 
     @Override
@@ -75,18 +86,51 @@ public class MapHomeActivity extends AppCompatActivity {
         super.onResume();
         Configuration.getInstance().load(this, PreferenceManager.getDefaultSharedPreferences(this));
         map.onResume();
+
+        sensorManager.registerListener(this, sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER), SensorManager.SENSOR_DELAY_UI);
+        sensorManager.registerListener(this, sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD), SensorManager.SENSOR_DELAY_UI);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
         map.onPause();
+        sensorManager.unregisterListener(this);
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
         myLocationOverlay.disableMyLocation(); // Disable location tracking when done
+    }
+
+    @Override
+    public void onSensorChanged(SensorEvent event) {
+        if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
+            gravity = event.values;
+        } else if (event.sensor.getType() == Sensor.TYPE_MAGNETIC_FIELD) {
+            geomagnetic = event.values;
+        }
+
+        if (gravity != null && geomagnetic != null) {
+            float[] R = new float[9];
+            float[] I = new float[9];
+            if (SensorManager.getRotationMatrix(R, I, gravity, geomagnetic)) {
+                float[] orientation = new float[3];
+                SensorManager.getOrientation(R, orientation);
+                float azimuthInDegrees = (float) Math.toDegrees(orientation[0]); // Azimuth in degrees
+                rotateMap(azimuthInDegrees);
+            }
+        }
+    }
+
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int i) {
+
+    }
+
+    private void rotateMap(float azimuth) {
+        map.setMapOrientation(-azimuth); // Rotate map according to azimuth
     }
 
     public void recommendedRestroomsButton(View view)
@@ -131,4 +175,6 @@ public class MapHomeActivity extends AppCompatActivity {
 
         startActivity(intent);
     }
+
+
 }
