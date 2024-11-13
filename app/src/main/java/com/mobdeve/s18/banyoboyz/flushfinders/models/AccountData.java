@@ -14,18 +14,18 @@ public class AccountData {
     private String email;
     private String password;
     private boolean isActive;
-    private int profilePictureResource;
+    private String profilePicture;
     private Instant creationTime;
     private AccountType type;
 
     public AccountData(){}
 
-    public AccountData(String email, String name, String password, boolean isActive, int profilePictureResource, Instant creationTime, AccountType type) {
+    public AccountData(String email, String name, String password, boolean isActive, String profilePicture, Instant creationTime, AccountType type) {
         this.name = name;
         this.email = email;
         this.password = password;
         this.isActive = isActive;
-        this.profilePictureResource = profilePictureResource;
+        this.profilePicture = profilePicture;
         this.creationTime = creationTime;
         this.type = type;
     }
@@ -76,12 +76,12 @@ public class AccountData {
         isActive = active;
     }
 
-    public int getProfilePictureResource() {
-        return profilePictureResource;
+    public String getProfilePicture() {
+        return profilePicture;
     }
 
-    public void setProfilePictureResource(int profilePictureResource) {
-        this.profilePictureResource = profilePictureResource;
+    public void setProfilePicture(String profilePicture) {
+        this.profilePicture = profilePicture;
     }
 
     public Instant getCreationTime() {

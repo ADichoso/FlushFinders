@@ -16,6 +16,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.mobdeve.s18.banyoboyz.flushfinders.R;
 import com.mobdeve.s18.banyoboyz.flushfinders.adminmode.AdminHomeActivity;
+import com.mobdeve.s18.banyoboyz.flushfinders.helper.ProfilePictureHelper;
 import com.mobdeve.s18.banyoboyz.flushfinders.mainmenu.LoginActivity;
 import com.mobdeve.s18.banyoboyz.flushfinders.mainmenu.MainActivity;
 import com.mobdeve.s18.banyoboyz.flushfinders.models.AccountData;
@@ -31,7 +32,7 @@ public class AccountHomeActivity extends AppCompatActivity {
     SharedPreferences sharedpreferences;
     String account_name;
     String account_email;
-    int account_pp;
+    String account_pp;
 
     ImageView iv_account_pp;
     TextView tv_account_name;
@@ -51,6 +52,11 @@ public class AccountHomeActivity extends AppCompatActivity {
         iv_account_pp = findViewById(R.id.iv_account_pp);
         tv_account_name = findViewById(R.id.tv_account_name);
         tv_account_email = findViewById(R.id.tv_account_email);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
 
         // getting the data which is stored in shared preferences.
         sharedpreferences = getSharedPreferences(SharedPrefReferences.SHARED_PREFS, Context.MODE_PRIVATE);
@@ -58,18 +64,16 @@ public class AccountHomeActivity extends AppCompatActivity {
         // Check if user is already logged in
         account_name = sharedpreferences.getString(SharedPrefReferences.ACCOUNT_NAME_KEY, "");
         account_email = sharedpreferences.getString(SharedPrefReferences.ACCOUNT_EMAIL_KEY, "");
-        account_pp = sharedpreferences.getInt(SharedPrefReferences.ACCOUNT_PP_KEY, -1);
+        account_pp = sharedpreferences.getString(SharedPrefReferences.ACCOUNT_PP_KEY, "");
 
         // check if the fields are not null then one current user is logged in
-        if (areFieldsNotEmpty(new String[]{account_name, account_email}) && account_pp != -1)
+        if (areFieldsNotEmpty(new String[]{account_name, account_email, account_pp}))
         {
             //Valid items, go ahead and show the user info
             tv_account_name.setText(account_name);
             tv_account_email.setText(account_email);
-            iv_account_pp.setImageResource(account_pp);
+            iv_account_pp.setImageBitmap(ProfilePictureHelper.decodeBase64ToBitmap(account_pp));
         }
-
-
     }
 
     private boolean areFieldsNotEmpty(String[] fields)

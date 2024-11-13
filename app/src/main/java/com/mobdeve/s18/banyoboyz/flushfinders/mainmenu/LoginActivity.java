@@ -29,6 +29,7 @@ import com.mobdeve.s18.banyoboyz.flushfinders.models.FirestoreReferences;
 import com.mobdeve.s18.banyoboyz.flushfinders.models.SharedPrefReferences;
 import com.mobdeve.s18.banyoboyz.flushfinders.modmode.ModHomeActivity;
 import com.mobdeve.s18.banyoboyz.flushfinders.usermode.MapHomeActivity;
+import com.mobdeve.s18.banyoboyz.flushfinders.usermode.MapsTestActivity;
 
 import org.mindrot.jbcrypt.BCrypt;
 
@@ -50,7 +51,7 @@ public class LoginActivity extends AppCompatActivity {
     String account_name;
     String account_email;
     String account_type;
-    int account_pp;
+    String account_pp;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -78,33 +79,11 @@ public class LoginActivity extends AppCompatActivity {
         account_name = sharedpreferences.getString(SharedPrefReferences.ACCOUNT_NAME_KEY, "");
         account_email = sharedpreferences.getString(SharedPrefReferences.ACCOUNT_EMAIL_KEY, "");
         account_type = sharedpreferences.getString(SharedPrefReferences.ACCOUNT_TYPE_KEY, "");
-        account_pp = sharedpreferences.getInt(SharedPrefReferences.ACCOUNT_PP_KEY, -1);
+        account_pp = sharedpreferences.getString(SharedPrefReferences.ACCOUNT_PP_KEY, "");
 
         // check if the fields are not null then one current user is logged in
-        if (areFieldsNotEmpty(new String[]{account_name, account_email, account_type}) && account_pp != -1)
-        {
-            Intent intent = null;
-
-            //Map Home Screen according to Account Type
-            switch(Objects.requireNonNull(AccountData.convertType(account_type)))
-            {
-                case USER:
-                    intent = new Intent(LoginActivity.this, MapHomeActivity.class);
-                    break;
-                case MODERATOR:
-                    intent = new Intent(LoginActivity.this, ModHomeActivity.class);
-                    break;
-                case ADMINISTRATOR:
-                    intent = new Intent(LoginActivity.this, AdminHomeActivity.class);
-                    break;
-                default:
-                    //INVALID ACCOUNT
-                    tv_login_invalid_message.setVisibility(View.VISIBLE);
-                    break;
-            }
-
-            goToHomePage(intent);
-        }
+        if (areFieldsNotEmpty(new String[]{account_name, account_email, account_type, account_pp}))
+            goToHomePage();
 
     }
 
@@ -133,30 +112,10 @@ public class LoginActivity extends AppCompatActivity {
                             //Save account details for shared preferences
                             account_name = data.get(FirestoreReferences.Accounts.NAME).toString();
                             account_type = data.get(FirestoreReferences.Accounts.TYPE).toString();
-                            account_pp = Integer.parseInt(data.get(FirestoreReferences.Accounts.PROFILE_PICTURE_RESOURCE).toString());
-
-
-                            //Map Home Screen Activity according to Account Type
-                            Intent intent = null;
-                            switch(Objects.requireNonNull(AccountData.convertType(account_type)))
-                            {
-                                case USER:
-                                    intent = new Intent(LoginActivity.this, MapHomeActivity.class);
-                                    break;
-                                case MODERATOR:
-                                    intent = new Intent(LoginActivity.this, ModHomeActivity.class);
-                                    break;
-                                case ADMINISTRATOR:
-                                    intent = new Intent(LoginActivity.this, AdminHomeActivity.class);
-                                    break;
-                                default:
-                                    //INVALID ACCOUNT
-                                    tv_login_invalid_message.setVisibility(View.VISIBLE);
-                                    break;
-                            }
+                            account_pp = data.get(FirestoreReferences.Accounts.PROFILE_PICTURE).toString();
 
                             //Go to that home page
-                            if(intent != null) goToHomePage(intent);
+                            goToHomePage();
                         }
                         else
                         {
@@ -174,21 +133,43 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-    private void goToHomePage(Intent intent)
+    private void goToHomePage()
     {
-        tv_login_invalid_message.setVisibility(View.INVISIBLE);
+        Intent intent = null;
+        switch(Objects.requireNonNull(AccountData.convertType(account_type)))
+        {
+            case USER:
+                intent = new Intent(LoginActivity.this, MapsTestActivity.class);
+                break;
+            case MODERATOR:
+                intent = new Intent(LoginActivity.this, ModHomeActivity.class);
+                break;
+            case ADMINISTRATOR:
+                intent = new Intent(LoginActivity.this, AdminHomeActivity.class);
+                break;
+            default:
+                //INVALID ACCOUNT
+                tv_login_invalid_message.setVisibility(View.VISIBLE);
+                break;
+        }
 
-        SharedPreferences.Editor editor = sharedpreferences.edit();
+        if(intent != null)
+        {
+            tv_login_invalid_message.setVisibility(View.INVISIBLE);
 
-        editor.putString(SharedPrefReferences.ACCOUNT_NAME_KEY, account_name);
-        editor.putString(SharedPrefReferences.ACCOUNT_EMAIL_KEY, account_email);
-        editor.putString(SharedPrefReferences.ACCOUNT_TYPE_KEY, account_type);
-        editor.putInt(SharedPrefReferences.ACCOUNT_PP_KEY, account_pp);
-        editor.apply();
+            SharedPreferences.Editor editor = sharedpreferences.edit();
 
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(intent);
-        finish();
+            editor.putString(SharedPrefReferences.ACCOUNT_NAME_KEY, account_name);
+            editor.putString(SharedPrefReferences.ACCOUNT_EMAIL_KEY, account_email);
+            editor.putString(SharedPrefReferences.ACCOUNT_TYPE_KEY, account_type);
+            editor.putString(SharedPrefReferences.ACCOUNT_PP_KEY, account_pp);
+            editor.apply();
+
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+            finish();
+        }
+
     }
     private boolean areFieldsNotEmpty(String[] fields)
     {

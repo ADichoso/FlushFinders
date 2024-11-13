@@ -1,6 +1,8 @@
 package com.mobdeve.s18.banyoboyz.flushfinders.mainmenu;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -21,6 +23,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.mobdeve.s18.banyoboyz.flushfinders.R;
+import com.mobdeve.s18.banyoboyz.flushfinders.helper.ProfilePictureHelper;
 import com.mobdeve.s18.banyoboyz.flushfinders.models.FirestoreReferences;
 
 import com.google.firebase.firestore.CollectionReference;
@@ -71,12 +74,15 @@ public class RegisterActivity extends AppCompatActivity {
             String hashed_password = BCrypt.hashpw(account_password, BCrypt.gensalt(10));
             Map<String, Object> data = new HashMap<>();
 
+            Bitmap default_profile_picture = BitmapFactory.decodeResource(this.getResources(), R.drawable.mumei);
+            default_profile_picture = ProfilePictureHelper.scaleBitmap(default_profile_picture);
+
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 data.put(FirestoreReferences.Accounts.NAME, account_name);
                 data.put(FirestoreReferences.Accounts.PASSWORD, hashed_password);
                 data.put(FirestoreReferences.Accounts.IS_ACTIVE, true);
-                data.put(FirestoreReferences.Accounts.TYPE, "USER");
-                data.put(FirestoreReferences.Accounts.PROFILE_PICTURE_RESOURCE, R.drawable.mumei);
+                data.put(FirestoreReferences.Accounts.TYPE, "ADMINISTRATOR");
+                data.put(FirestoreReferences.Accounts.PROFILE_PICTURE, ProfilePictureHelper.encodeBitmapToBase64(default_profile_picture));
                 data.put(FirestoreReferences.Accounts.CREATION_TIME, Instant.now().getEpochSecond());
             }
 

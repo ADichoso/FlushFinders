@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.mobdeve.s18.banyoboyz.flushfinders.R;
+import com.mobdeve.s18.banyoboyz.flushfinders.helper.ProfilePictureHelper;
 import com.mobdeve.s18.banyoboyz.flushfinders.models.AccountData;
 
 public class AccountAdapter extends RecyclerView.Adapter<AccountAdapter.ModViewHolder> {
@@ -36,8 +37,7 @@ public class AccountAdapter extends RecyclerView.Adapter<AccountAdapter.ModViewH
     @Override
     public void onBindViewHolder(@NonNull ModViewHolder holder, int position) {
         final AccountData accountDataList = accountData[position];
-        if(accountDataList.getProfilePictureResource() != -1)
-            holder.iv_profile_pic.setImageResource(accountDataList.getProfilePictureResource());
+        holder.iv_profile_pic.setImageBitmap(ProfilePictureHelper.decodeBase64ToBitmap(accountDataList.getProfilePicture()));
         holder.tv_name.setText(accountDataList.getName());
         holder.tv_email.setText(accountDataList.getEmail());
         holder.sw_is_active.setChecked(accountDataList.isActive());

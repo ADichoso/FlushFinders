@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
     String account_name;
     String account_email;
     String account_type;
-    int account_pp;
+    String account_pp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,10 +46,10 @@ public class MainActivity extends AppCompatActivity {
         account_name = sharedpreferences.getString(SharedPrefReferences.ACCOUNT_NAME_KEY, "");
         account_email = sharedpreferences.getString(SharedPrefReferences.ACCOUNT_EMAIL_KEY, "");
         account_type = sharedpreferences.getString(SharedPrefReferences.ACCOUNT_TYPE_KEY, "");
-        account_pp = sharedpreferences.getInt(SharedPrefReferences.ACCOUNT_PP_KEY, -1);
+        account_pp = sharedpreferences.getString(SharedPrefReferences.ACCOUNT_PP_KEY, "");
 
         // check if the fields are not null then one current user is logged in
-        if (areFieldsNotEmpty(new String[]{account_name, account_email, account_type}) && account_pp != -1)
+        if (areFieldsNotEmpty(new String[]{account_name, account_email, account_type, account_pp}))
         {
             Intent intent = new Intent(MainActivity.this, LoginActivity.class);
 

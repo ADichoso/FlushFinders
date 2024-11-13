@@ -1,5 +1,7 @@
 package com.mobdeve.s18.banyoboyz.flushfinders.adminmode;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.nfc.Tag;
 import android.os.Build;
 import android.os.Bundle;
@@ -23,6 +25,7 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.mobdeve.s18.banyoboyz.flushfinders.R;
+import com.mobdeve.s18.banyoboyz.flushfinders.models.SharedPrefReferences;
 import com.mobdeve.s18.banyoboyz.flushfinders.models.adapters.AccountAdapter;
 import com.mobdeve.s18.banyoboyz.flushfinders.models.AccountData;
 import com.mobdeve.s18.banyoboyz.flushfinders.models.FirestoreReferences;
@@ -38,6 +41,9 @@ public class ManageModAccountsActivity extends AppCompatActivity {
     private CollectionReference accountsDBRef;
     private AccountAdapter accountAdapter;
 
+
+    SharedPreferences sharedpreferences;
+    String account_email;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,6 +61,19 @@ public class ManageModAccountsActivity extends AppCompatActivity {
 
         // Initialize accounts DB reference
         this.accountsDBRef = FirebaseFirestore.getInstance().collection(FirestoreReferences.Accounts.COLLECTION);
+    }
+
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        // getting the data which is stored in shared preferences.
+        sharedpreferences = getSharedPreferences(SharedPrefReferences.SHARED_PREFS, Context.MODE_PRIVATE);
+
+        // Check if user is already logged in
+        account_email = sharedpreferences.getString(SharedPrefReferences.ACCOUNT_EMAIL_KEY, "");
+
 
         //Query the accounts from the database
         Query query = accountsDBRef.orderBy(FirestoreReferences.Accounts.NAME);
@@ -73,21 +92,26 @@ public class ManageModAccountsActivity extends AppCompatActivity {
                     {
                         Map<String, Object> data = document.getData();
 
+                        //SKIP YOURSELF
+                        if(document.getId().equals(account_email))
+                        {
+                            //TODO: When showing yourself, DO NOT ALLOW for you to edit your own data.
+                        }
+
+
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                             accountData[i++] = new AccountData(
                                     document.getId(),
                                     data.get(FirestoreReferences.Accounts.NAME).toString(),
                                     data.get(FirestoreReferences.Accounts.PASSWORD).toString(),
                                     Boolean.parseBoolean(data.get(FirestoreReferences.Accounts.IS_ACTIVE).toString()),
-                                    Integer.parseInt(data.get(FirestoreReferences.Accounts.PROFILE_PICTURE_RESOURCE).toString()),
+                                    data.get(FirestoreReferences.Accounts.PROFILE_PICTURE).toString(),
                                     Instant.ofEpochSecond(Long.parseLong(data.get(FirestoreReferences.Accounts.CREATION_TIME).toString())),
                                     AccountData.convertType(data.get(FirestoreReferences.Accounts.TYPE).toString()
                                     )
                             );
                         }
                     }
-
-                    Log.d("ManageModAccountsActivity", "ACCOUNTS FROM DATABASE:" + accountData[0].getName());
 
                     accountAdapter = new AccountAdapter(accountData, ManageModAccountsActivity.this);
                     rv_mod_accounts.setAdapter(accountAdapter);
@@ -98,7 +122,5 @@ public class ManageModAccountsActivity extends AppCompatActivity {
                 }
             }
         });
-
-
     }
 }

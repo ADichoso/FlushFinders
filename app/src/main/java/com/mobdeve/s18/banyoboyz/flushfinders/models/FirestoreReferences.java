@@ -8,7 +8,7 @@ public class FirestoreReferences {
         public final static String NAME = "name";
         public final static String PASSWORD = "password";
         public final static String IS_ACTIVE = "isActive";
-        public final static String PROFILE_PICTURE_RESOURCE = "profilePictureResource";
+        public final static String PROFILE_PICTURE = "profilePicture";
         public final static String CREATION_TIME = "creationTime";
         public final static String TYPE = "type";
     }
