@@ -7,30 +7,48 @@
     android:layout_height="match_parent"
     tools:context=".mainmenu.RegisterActivity">
 
-    <TextView
-        android:id="@+id/tv_register_acc"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:id="@+id/register_title_group"
+        android:layout_width="250dp"
         android:layout_height="wrap_content"
-        android:text="Register for a new Account"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginTop="100dp"
+        android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.148" />
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/registerIcon"
+            android:layout_width="50dp"
+            android:layout_height="match_parent"
+            android:scaleType="fitCenter"
+            app:srcCompat="@drawable/baseline_app_registration_24" />
+
+        <TextView
+            android:id="@+id/tv_register_acc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/mitr_medium"
+            android:letterSpacing="0.02"
+            android:lineSpacingExtra="-10sp"
+            android:paddingLeft="10dp"
+            android:text="Register for a new Account"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/ll_register_form"
         android:layout_width="250dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
         android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_register_acc"
-        app:layout_constraintVertical_bias="0.100000024">><LinearLayout
+        app:layout_constraintTop_toBottomOf="@+id/register_title_group">>
+
+        <LinearLayout
             android:id="@+id/ll_register_group_name"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -40,15 +58,14 @@
                 android:id="@+id/tv_register_label_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="TextView" />
+                android:text="Username" />
 
             <EditText
                 android:id="@+id/et_register_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:inputType="text"
-                android:text="Name" />
+                android:inputType="text" />
 
         </LinearLayout>
 
@@ -56,6 +73,7 @@
             android:id="@+id/ll_register_group_email"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginTop="10dp"
             android:orientation="vertical">
 
             <TextView
@@ -76,6 +94,7 @@
             android:id="@+id/ll_register_group_password"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginTop="10dp"
             android:orientation="vertical">
 
             <TextView
@@ -96,13 +115,34 @@
 
     <Button
         android:id="@+id/btn_register_acc"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:backgroundTint="#825CBD"
+        android:layout_marginBottom="120dp"
+        android:fontFamily="@font/mitr_regular"
         android:onClick="registerButton"
-        android:text="Submit"
+        android:padding="10dp"
+        android:paddingStart="40dp"
+        android:paddingEnd="40dp"
+        android:text="Sign up"
+        android:textSize="24sp"
+        app:cornerRadius="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ll_register_form"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <TextView
+        android:id="@+id/tos_disclaimer"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:fontFamily="@font/mitr_extralight"
+        android:lineSpacingExtra="-5dp"
+        android:text="By registering for an account, you agree to comply with our Terms \u0026 Conditions."
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/ll_register_form" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
