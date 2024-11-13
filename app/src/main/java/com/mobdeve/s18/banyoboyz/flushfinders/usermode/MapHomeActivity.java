@@ -14,6 +14,11 @@ import com.mobdeve.s18.banyoboyz.flushfinders.R;
 import com.mobdeve.s18.banyoboyz.flushfinders.accounts.AccountHomeActivity;
 import com.mobdeve.s18.banyoboyz.flushfinders.sharedviews.SuggestRestroomLocationActivity;
 
+import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
+import org.osmdroid.util.GeoPoint;
+import org.osmdroid.views.MapView;
+import org.osmdroid.views.overlay.Marker;
+
 public class MapHomeActivity extends AppCompatActivity {
 
     @Override
@@ -26,6 +31,22 @@ public class MapHomeActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+        MapView map = findViewById(R.id.map);
+        map.setTileSource(TileSourceFactory.MAPNIK);
+
+        map.setMultiTouchControls(true);
+
+        // Set initial view point
+        GeoPoint startPoint = new GeoPoint(48.8583, 2.2944); // Example coordinates (Eiffel Tower)
+        map.getController().setZoom(9);
+        map.getController().setCenter(startPoint);
+
+        // Add a marker
+        Marker marker = new Marker(map);
+        marker.setPosition(startPoint);
+        marker.setTitle("Eiffel Tower");
+        map.getOverlays().add(marker);
     }
 
     public void recommendedRestroomsButton(View view)

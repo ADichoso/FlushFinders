@@ -10,6 +10,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
+import androidx.activity.OnBackPressedDispatcher;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
@@ -35,6 +36,8 @@ import org.mindrot.jbcrypt.BCrypt;
 
 import java.util.Map;
 import java.util.Objects;
+
+import androidx.activity.OnBackPressedDispatcherOwner;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -84,10 +87,17 @@ public class LoginActivity extends AppCompatActivity {
         // check if the fields are not null then one current user is logged in
         if (areFieldsNotEmpty(new String[]{account_name, account_email, account_type, account_pp}))
             goToHomePage();
-
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
 
+        //Start main activity intent
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+        finish();
+    }
 
     public void loginButton(View view)
     {

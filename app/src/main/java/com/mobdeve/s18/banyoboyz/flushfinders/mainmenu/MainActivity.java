@@ -50,8 +50,7 @@ public class MainActivity extends AppCompatActivity {
         else
         {
             //Still logged in
-            Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-            startActivity(intent);
+            login();
         }
     }
 
@@ -73,9 +72,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void loginButton(View view)
     {
-        Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-
-        startActivity(intent);
+        login();
     }
 
     public void registerButton(View view)
@@ -83,5 +80,13 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(MainActivity.this, RegisterActivity.class);
 
         startActivity(intent);
+    }
+
+    private void login()
+    {
+        //Still logged in
+        Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+        startActivity(intent);
+        finish();
     }
 }

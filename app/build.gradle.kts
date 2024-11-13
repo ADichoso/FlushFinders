@@ -3,7 +3,6 @@ plugins {
     id("com.google.gms.google-services")
     alias(libs.plugins.google.android.libraries.mapsplatform.secrets.gradle.plugin)
 }
-
 android {
     namespace = "com.mobdeve.s18.banyoboyz.flushfinders"
     compileSdk = 34
@@ -46,14 +45,13 @@ android {
         }
     }
 }
-
 dependencies {
     // Firebase Realtime Database
     implementation(platform("com.google.firebase:firebase-bom:33.5.1"))
     implementation("com.google.firebase:firebase-firestore")
     implementation("com.firebaseui:firebase-ui-firestore:8.0.2")
     implementation("org.mindrot:jbcrypt:0.4")
-
+    implementation("org.osmdroid:osmdroid-android:6.1.20")
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation(libs.activity)
