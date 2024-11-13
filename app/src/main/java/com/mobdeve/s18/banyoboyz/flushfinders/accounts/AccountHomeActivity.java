@@ -163,9 +163,7 @@ public class AccountHomeActivity extends AppCompatActivity {
     public void signoutButton(View view)
     {
         //Clear shared preferences
-        SharedPreferences.Editor editor = sharedpreferences.edit();
-        editor.clear();
-        editor.apply();
+        SharedPrefReferences.clearSharedPreferences(this);
 
         Intent intent = new Intent(AccountHomeActivity.this, MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);

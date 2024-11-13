@@ -23,10 +23,7 @@ import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
     SharedPreferences sharedpreferences;
-    String account_name;
-    String account_email;
-    String account_type;
-    String account_pp;
+    Long account_login_time;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,16 +40,17 @@ public class MainActivity extends AppCompatActivity {
         sharedpreferences = getSharedPreferences(SharedPrefReferences.SHARED_PREFS, Context.MODE_PRIVATE);
 
         // Check if user is already logged in
-        account_name = sharedpreferences.getString(SharedPrefReferences.ACCOUNT_NAME_KEY, "");
-        account_email = sharedpreferences.getString(SharedPrefReferences.ACCOUNT_EMAIL_KEY, "");
-        account_type = sharedpreferences.getString(SharedPrefReferences.ACCOUNT_TYPE_KEY, "");
-        account_pp = sharedpreferences.getString(SharedPrefReferences.ACCOUNT_PP_KEY, "");
+        account_login_time = sharedpreferences.getLong(SharedPrefReferences.ACCOUNT_LOGIN_TIME_KEY, -1);
 
-        // check if the fields are not null then one current user is logged in
-        if (areFieldsNotEmpty(new String[]{account_name, account_email, account_type, account_pp}))
+        if(account_login_time == -1 || (account_login_time > 0 && SharedPrefReferences.isLoginExpired(account_login_time)) )
         {
+            //Login has expired, clear sharedPreferences
+            SharedPrefReferences.clearSharedPreferences(this);
+        }
+        else
+        {
+            //Still logged in
             Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-
             startActivity(intent);
         }
     }

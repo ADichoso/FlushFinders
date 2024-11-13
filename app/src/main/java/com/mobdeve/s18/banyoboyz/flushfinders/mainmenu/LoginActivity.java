@@ -173,6 +173,7 @@ public class LoginActivity extends AppCompatActivity {
             editor.putString(SharedPrefReferences.ACCOUNT_EMAIL_KEY, account_email);
             editor.putString(SharedPrefReferences.ACCOUNT_TYPE_KEY, account_type);
             editor.putString(SharedPrefReferences.ACCOUNT_PP_KEY, account_pp);
+            editor.putLong(SharedPrefReferences.ACCOUNT_LOGIN_TIME_KEY, SharedPrefReferences.daysLoginTime);
             editor.apply();
 
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);

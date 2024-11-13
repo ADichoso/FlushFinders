@@ -57,9 +57,7 @@ public class AccountDeleteActivity extends AppCompatActivity {
                         if(task.isSuccessful())
                         {
                             //Clear shared preferences
-                            SharedPreferences.Editor editor = sharedpreferences.edit();
-                            editor.clear();
-                            editor.apply();
+                            SharedPrefReferences.clearSharedPreferences(AccountDeleteActivity.this);
 
                             //Go back to main menu
                             Intent intent = new Intent(AccountDeleteActivity.this, MainActivity.class);
