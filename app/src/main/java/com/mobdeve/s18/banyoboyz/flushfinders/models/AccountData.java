@@ -17,10 +17,11 @@ public class AccountData {
     private String profilePicture;
     private Instant creationTime;
     private AccountType type;
+    private boolean isMe;
 
     public AccountData(){}
 
-    public AccountData(String email, String name, String password, boolean isActive, String profilePicture, Instant creationTime, AccountType type) {
+    public AccountData(String email, String name, String password, boolean isActive, String profilePicture, Instant creationTime, AccountType type, boolean isMe) {
         this.name = name;
         this.email = email;
         this.password = password;
@@ -28,6 +29,7 @@ public class AccountData {
         this.profilePicture = profilePicture;
         this.creationTime = creationTime;
         this.type = type;
+        this.isMe = isMe;
     }
 
     public static AccountType convertType(String type)
@@ -100,4 +102,11 @@ public class AccountData {
         this.type = type;
     }
 
+    public boolean isMe() {
+        return isMe;
+    }
+
+    public void setMe(boolean me) {
+        isMe = me;
+    }
 }

@@ -1,5 +1,6 @@
 package com.mobdeve.s18.banyoboyz.flushfinders.accounts;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -46,10 +47,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class AccountEditActivity extends AppCompatActivity {
+    public static final String UPDATE_NAME = "UPDATE_NAME";
+    public static final String UPDATE_PP = "UPDATE_PP";
     private CollectionReference accountsDBRef;
 
     EditText et_edit_account_name;
-    EditText et_edit_account_password;
 
     SharedPreferences sharedpreferences;
     String account_name;
@@ -118,11 +120,13 @@ public class AccountEditActivity extends AppCompatActivity {
         // Initialize accounts DB reference
         this.accountsDBRef = FirebaseFirestore.getInstance().collection(FirestoreReferences.Accounts.COLLECTION);
 
-
         et_edit_account_name = findViewById(R.id.et_edit_account_name);
-        et_edit_account_password = findViewById(R.id.et_edit_account_password);
         iv_pp_preview = findViewById(R.id.iv_pp_preview);
 
+        Intent result_intent = getIntent();
+
+        account_name = result_intent.getStringExtra(AccountHomeActivity.HOME_NAME);
+        account_pp = result_intent.getStringExtra(AccountHomeActivity.HOME_PP);
     }
 
     @Override
@@ -132,14 +136,9 @@ public class AccountEditActivity extends AppCompatActivity {
         //Shared Preferences
         sharedpreferences = getSharedPreferences(SharedPrefReferences.SHARED_PREFS, Context.MODE_PRIVATE);
 
-        account_name = sharedpreferences.getString(SharedPrefReferences.ACCOUNT_NAME_KEY, "");
         account_email = sharedpreferences.getString(SharedPrefReferences.ACCOUNT_EMAIL_KEY, "");
-        account_pp = sharedpreferences.getString(SharedPrefReferences.ACCOUNT_PP_KEY, "");
 
         et_edit_account_name.setText(account_name);
-
-        //
-        //TODO: Get PP preview iv_pp_preview.setImageResource()
 
 
         if(!account_name.isEmpty())
@@ -162,7 +161,6 @@ public class AccountEditActivity extends AppCompatActivity {
         Log.d("AccountEditActivity", "GETTING PHOTOS");
         activityResultLauncher.launch(pickPhoto);
     }
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -171,15 +169,13 @@ public class AccountEditActivity extends AppCompatActivity {
     public void editAccountButton(View view)
     {
         account_name = et_edit_account_name.getText().toString();
-        String account_password = et_edit_account_password.getText().toString();
 
-        if(areFieldsNotEmpty(new String[]{account_name, account_email, account_password}))
+        if(areFieldsNotEmpty(new String[]{account_name, account_email}))
         {
             //Update Firestore database entry for account
             Map<String, Object> data  = new HashMap<>();
 
             data.put(FirestoreReferences.Accounts.NAME, account_name);
-            data.put(FirestoreReferences.Accounts.PASSWORD, BCrypt.hashpw(account_password, BCrypt.gensalt(10)));
 
             //1. Get the ID of the person's account.
             //2. Update new fields
@@ -209,6 +205,14 @@ public class AccountEditActivity extends AppCompatActivity {
         }
 
         if(!account_pp.isEmpty()) ProfilePictureHelper.uploadProfileImageToFirestore(account_pp, account_email);
+
+
+        //Send an intent to the Account Home regarding the new user information
+        Intent return_intent = new Intent();
+        return_intent.putExtra(UPDATE_NAME, account_name);
+        return_intent.putExtra(UPDATE_PP, account_pp);
+
+        setResult(RESULT_OK, return_intent);
 
         finish();
     }

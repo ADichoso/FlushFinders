@@ -81,7 +81,7 @@ public class RegisterActivity extends AppCompatActivity {
                 data.put(FirestoreReferences.Accounts.NAME, account_name);
                 data.put(FirestoreReferences.Accounts.PASSWORD, hashed_password);
                 data.put(FirestoreReferences.Accounts.IS_ACTIVE, true);
-                data.put(FirestoreReferences.Accounts.TYPE, "ADMINISTRATOR");
+                data.put(FirestoreReferences.Accounts.TYPE, "USER");
                 data.put(FirestoreReferences.Accounts.PROFILE_PICTURE, ProfilePictureHelper.encodeBitmapToBase64(default_profile_picture));
                 data.put(FirestoreReferences.Accounts.CREATION_TIME, Instant.now().getEpochSecond());
             }

@@ -1,6 +1,7 @@
 package com.mobdeve.s18.banyoboyz.flushfinders.mainmenu;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
@@ -24,6 +25,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.mobdeve.s18.banyoboyz.flushfinders.R;
 import com.mobdeve.s18.banyoboyz.flushfinders.models.FirestoreReferences;
+import com.mobdeve.s18.banyoboyz.flushfinders.models.SharedPrefReferences;
 
 import org.mindrot.jbcrypt.BCrypt;
 
@@ -79,6 +81,9 @@ public class ResetPasswordActivity extends AppCompatActivity {
                         public void onComplete(@NonNull Task<Void> task) {
                             if(task.isSuccessful())
                             {
+                                //CLEAR SHARED PREFERENCES
+                                SharedPrefReferences.clearSharedPreferences(ResetPasswordActivity.this);
+
                                 //Go to Login Page
                                 Intent intent = new Intent(ResetPasswordActivity.this, LoginActivity.class);
                                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);

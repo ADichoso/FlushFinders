@@ -115,7 +115,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="120dp"
         android:fontFamily="@font/mitr_regular"
-        android:onClick="registerButton"
+        android:onClick="loginButton"
         android:padding="10dp"
         android:paddingStart="40dp"
         android:paddingEnd="40dp"

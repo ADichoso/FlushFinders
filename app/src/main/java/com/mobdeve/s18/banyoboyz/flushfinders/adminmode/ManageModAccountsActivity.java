@@ -31,6 +31,7 @@ import com.mobdeve.s18.banyoboyz.flushfinders.models.AccountData;
 import com.mobdeve.s18.banyoboyz.flushfinders.models.FirestoreReferences;
 
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.Map;
 
 public class ManageModAccountsActivity extends AppCompatActivity {
@@ -86,34 +87,28 @@ public class ManageModAccountsActivity extends AppCompatActivity {
                     Log.d("ManageModAccountsActivity", "Account Results:" + task.getResult().toString());
                     Log.d("ManageModAccountsActivity", "Account Results Length:" + task.getResult().size());
 
-                    AccountData[] accountData = new AccountData[task.getResult().size()];
+                    ArrayList<AccountData> accountData = new ArrayList<AccountData>();
                     int i = 0;
                     for(QueryDocumentSnapshot document : task.getResult())
                     {
                         Map<String, Object> data = document.getData();
 
-                        //SKIP YOURSELF
-                        if(document.getId().equals(account_email))
-                        {
-                            //TODO: When showing yourself, DO NOT ALLOW for you to edit your own data.
-                        }
-
-
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                            accountData[i++] = new AccountData(
+                            accountData.add(new AccountData(
                                     document.getId(),
                                     data.get(FirestoreReferences.Accounts.NAME).toString(),
                                     data.get(FirestoreReferences.Accounts.PASSWORD).toString(),
                                     Boolean.parseBoolean(data.get(FirestoreReferences.Accounts.IS_ACTIVE).toString()),
                                     data.get(FirestoreReferences.Accounts.PROFILE_PICTURE).toString(),
                                     Instant.ofEpochSecond(Long.parseLong(data.get(FirestoreReferences.Accounts.CREATION_TIME).toString())),
-                                    AccountData.convertType(data.get(FirestoreReferences.Accounts.TYPE).toString()
+                                    AccountData.convertType(data.get(FirestoreReferences.Accounts.TYPE).toString()),
+                                    document.getId().equals(account_email)
                                     )
                             );
                         }
                     }
 
-                    accountAdapter = new AccountAdapter(accountData, ManageModAccountsActivity.this);
+                    accountAdapter = new AccountAdapter(accountData, ManageModAccountsActivity.this, accountsDBRef);
                     rv_mod_accounts.setAdapter(accountAdapter);
                 }
                 else

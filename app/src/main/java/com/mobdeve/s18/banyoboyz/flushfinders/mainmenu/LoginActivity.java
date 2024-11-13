@@ -106,21 +106,31 @@ public class LoginActivity extends AppCompatActivity {
                     {
                         Map<String, Object> data = task.getResult().getData();
 
-                        //Compare Passwords
-                        if(BCrypt.checkpw(account_password, data.get(FirestoreReferences.Accounts.PASSWORD).toString()))
-                        {
-                            //Save account details for shared preferences
-                            account_name = data.get(FirestoreReferences.Accounts.NAME).toString();
-                            account_type = data.get(FirestoreReferences.Accounts.TYPE).toString();
-                            account_pp = data.get(FirestoreReferences.Accounts.PROFILE_PICTURE).toString();
-
-                            //Go to that home page
-                            goToHomePage();
-                        }
-                        else
+                        if(data == null || data.isEmpty())
                         {
                             tv_login_invalid_message.setVisibility(View.VISIBLE);
                         }
+                        else
+                        {
+                            //Compare Passwords
+                            Log.d("LoginActivity", data.get(FirestoreReferences.Accounts.PASSWORD).toString());
+
+                            if(BCrypt.checkpw(account_password, data.get(FirestoreReferences.Accounts.PASSWORD).toString()))
+                            {
+                                //Save account details for shared preferences
+                                account_name = data.get(FirestoreReferences.Accounts.NAME).toString();
+                                account_type = data.get(FirestoreReferences.Accounts.TYPE).toString();
+                                account_pp = data.get(FirestoreReferences.Accounts.PROFILE_PICTURE).toString();
+
+                                //Go to that home page
+                                goToHomePage();
+                            }
+                            else
+                            {
+                                tv_login_invalid_message.setVisibility(View.VISIBLE);
+                            }
+                        }
+
 
                     }
                     else
@@ -139,7 +149,7 @@ public class LoginActivity extends AppCompatActivity {
         switch(Objects.requireNonNull(AccountData.convertType(account_type)))
         {
             case USER:
-                intent = new Intent(LoginActivity.this, MapsTestActivity.class);
+                intent = new Intent(LoginActivity.this, MapHomeActivity.class);
                 break;
             case MODERATOR:
                 intent = new Intent(LoginActivity.this, ModHomeActivity.class);
