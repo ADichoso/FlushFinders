@@ -34,18 +34,20 @@
 
     <Button
         android:id="@+id/resetTrackerButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
         android:layout_marginEnd="20dp"
-        android:layout_marginBottom="100dp"
+        android:layout_marginBottom="240dp"
         android:onClick="resetNav"
-        android:text="Reset Nav"
-        app:icon="@drawable/baseline_navigation_24"
+        android:padding="8dp"
+        android:text="Reset Navigation"
+        android:textSize="0sp"
+        app:icon="@drawable/baseline_my_location_24"
         app:iconGravity="textTop"
+        app:iconPadding="0dp"
         app:iconSize="32dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cv_map_menu_bar"
@@ -108,7 +110,7 @@
         android:layout_height="150dp"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
-        android:visibility="invisible"
+        android:visibility="visible"
         app:cardBackgroundColor="#B2FFFFFF"
         app:cardCornerRadius="12dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -125,24 +127,27 @@
 
             <ImageButton
                 android:id="@+id/btn_account_details"
-                android:layout_width="120dp"
+                android:layout_width="wrap_content"
                 android:layout_height="64dp"
+                android:layout_weight="1"
                 android:onClick="accountHomeButton"
                 android:scaleType="fitCenter"
                 app:srcCompat="@drawable/icon_account" />
 
             <ImageButton
                 android:id="@+id/btn_recommended_restrooms"
-                android:layout_width="120dp"
+                android:layout_width="wrap_content"
                 android:layout_height="64dp"
+                android:layout_weight="1"
                 android:onClick="recommendedRestroomsButton"
                 android:scaleType="fitCenter"
                 app:srcCompat="@drawable/icon_star" />
 
             <ImageButton
                 android:id="@+id/btn_restroom_suggest"
-                android:layout_width="120dp"
+                android:layout_width="wrap_content"
                 android:layout_height="64dp"
+                android:layout_weight="1"
                 android:onClick="suggestRestroomButton"
                 android:scaleType="fitCenter"
                 app:srcCompat="@drawable/icon_like" />
