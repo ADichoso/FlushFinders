@@ -24,10 +24,14 @@ import com.mobdeve.s18.banyoboyz.flushfinders.accounts.AccountHomeActivity;
 import com.mobdeve.s18.banyoboyz.flushfinders.sharedviews.SuggestRestroomLocationActivity;
 
 import org.osmdroid.config.Configuration;
+import org.osmdroid.events.MapListener;
+import org.osmdroid.events.ScrollEvent;
+import org.osmdroid.events.ZoomEvent;
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.Marker;
+import org.osmdroid.views.overlay.gestures.RotationGestureOverlay;
 import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay;
 
 public class MapHomeActivity extends AppCompatActivity implements SensorEventListener{
@@ -37,6 +41,9 @@ public class MapHomeActivity extends AppCompatActivity implements SensorEventLis
     private SensorManager sensorManager;
     private float[] gravity;
     private float[] geomagnetic;
+
+    private boolean live_tracking = true;
+    public RotationGestureOverlay mRotationGestureOverlay;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,10 +59,30 @@ public class MapHomeActivity extends AppCompatActivity implements SensorEventLis
         map = findViewById(R.id.map);
         map.setTileSource(TileSourceFactory.MAPNIK);
 
-        map.setBuiltInZoomControls(true);
+        mRotationGestureOverlay = new RotationGestureOverlay(map);
+        mRotationGestureOverlay.setEnabled(true);
+
+        map.getOverlays().add(mRotationGestureOverlay);
+
+        map.setBuiltInZoomControls(false);
         map.setMultiTouchControls(true);
 
         map.setZoomLevel(20);
+
+        map.setMapListener(new MapListener() {
+            public boolean onZoom(ZoomEvent arg0) {
+                return false;
+            }
+
+            public boolean onScroll(ScrollEvent arg0) {
+                //onExtentChange();
+                live_tracking = false;
+                mRotationGestureOverlay.setEnabled(true);
+                return false;
+            }
+        } );;
+
+
         // Initialize MyLocationNewOverlay
         myLocationOverlay = new MyLocationNewOverlay(map);
         myLocationOverlay.enableMyLocation(); // Enable location tracking
@@ -66,9 +93,6 @@ public class MapHomeActivity extends AppCompatActivity implements SensorEventLis
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
             return; // Exit if permissions are not granted
         }
-
-        // Center the map on the user's location if available
-        myLocationOverlay.enableFollowLocation();
 
         // Add a marker
         /*
@@ -119,7 +143,15 @@ public class MapHomeActivity extends AppCompatActivity implements SensorEventLis
                 float[] orientation = new float[3];
                 SensorManager.getOrientation(R, orientation);
                 float azimuthInDegrees = (float) Math.toDegrees(orientation[0]); // Azimuth in degrees
-                rotateMap(azimuthInDegrees);
+
+                if (live_tracking){
+                    myLocationOverlay.enableFollowLocation();
+                    map.setZoomLevel(21);
+                    rotateMap(azimuthInDegrees);
+
+                    live_tracking = true;
+                    mRotationGestureOverlay.setEnabled(false);
+                }
             }
         }
     }
@@ -196,6 +228,11 @@ public class MapHomeActivity extends AppCompatActivity implements SensorEventLis
 
         startActivity(intent);
     }
+
+    public void resetNav(View view){
+        live_tracking = true;
+        mRotationGestureOverlay.setEnabled(false);
+   }
 
 
 }
