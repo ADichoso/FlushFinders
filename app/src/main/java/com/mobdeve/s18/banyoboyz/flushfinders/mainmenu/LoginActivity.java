@@ -25,6 +25,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.mobdeve.s18.banyoboyz.flushfinders.R;
 import com.mobdeve.s18.banyoboyz.flushfinders.adminmode.AdminHomeActivity;
 import com.mobdeve.s18.banyoboyz.flushfinders.models.AccountData;
+import com.mobdeve.s18.banyoboyz.flushfinders.models.FirestoreHelper;
 import com.mobdeve.s18.banyoboyz.flushfinders.models.FirestoreReferences;
 import com.mobdeve.s18.banyoboyz.flushfinders.models.SharedPrefReferences;
 import com.mobdeve.s18.banyoboyz.flushfinders.modmode.ModHomeActivity;
@@ -36,10 +37,6 @@ import java.util.Map;
 import java.util.Objects;
 
 public class LoginActivity extends AppCompatActivity {
-
-
-
-    private CollectionReference accountsDBRef;
 
     EditText et_login_email;
     EditText et_login_password;
@@ -61,9 +58,6 @@ public class LoginActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-
-        // Initialize accounts DB reference
-        this.accountsDBRef = FirebaseFirestore.getInstance().collection(FirestoreReferences.Accounts.COLLECTION);
 
         et_login_email = findViewById(R.id.et_login_email);
         et_login_password = findViewById(R.id.et_login_password);
@@ -104,46 +98,41 @@ public class LoginActivity extends AppCompatActivity {
         if(areFieldsNotEmpty(new String[]{account_email, account_password}))
         {
             //Check the database and see if there is an account with the given email & password is correct
-            accountsDBRef.document(account_email).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                @Override
-                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                    //Found the correct account
-                    if(task.isSuccessful())
+            FirestoreHelper.getInstance().readAccount(account_email, task -> {
+                if(task.isSuccessful())
+                {
+                    Map<String, Object> data = task.getResult().getData();
+
+                    if(data == null || data.isEmpty())
                     {
-                        Map<String, Object> data = task.getResult().getData();
-
-                        if(data == null || data.isEmpty())
-                        {
-                            tv_login_invalid_message.setVisibility(View.VISIBLE);
-                        }
-                        else
-                        {
-                            //Compare Passwords
-                            Log.d("LoginActivity", data.get(FirestoreReferences.Accounts.PASSWORD).toString());
-
-                            if(BCrypt.checkpw(account_password, data.get(FirestoreReferences.Accounts.PASSWORD).toString()))
-                            {
-                                //Save account details for shared preferences
-                                account_name = data.get(FirestoreReferences.Accounts.NAME).toString();
-                                account_type = data.get(FirestoreReferences.Accounts.TYPE).toString();
-                                account_pp = data.get(FirestoreReferences.Accounts.PROFILE_PICTURE).toString();
-
-                                //Go to that home page
-                                goToHomePage();
-                            }
-                            else
-                            {
-                                tv_login_invalid_message.setVisibility(View.VISIBLE);
-                            }
-                        }
-
-
+                        tv_login_invalid_message.setVisibility(View.VISIBLE);
                     }
                     else
                     {
-                        tv_login_invalid_message.setVisibility(View.VISIBLE);
-                        Log.w("ManageModAccountsActivity", "TASK NOT SUCCESSFUL", task.getException());
+                        //Compare Passwords
+                        Log.d("LoginActivity", data.get(FirestoreReferences.Accounts.PASSWORD).toString());
+
+                        //Successful Login
+                        if(BCrypt.checkpw(account_password, data.get(FirestoreReferences.Accounts.PASSWORD).toString()))
+                        {
+                            //Save account details for shared preferences
+                            account_name = data.get(FirestoreReferences.Accounts.NAME).toString();
+                            account_type = data.get(FirestoreReferences.Accounts.TYPE).toString();
+                            account_pp = data.get(FirestoreReferences.Accounts.PROFILE_PICTURE).toString();
+
+                            //Go to that home page
+                            goToHomePage();
+                        }
+                        else
+                        {
+                            tv_login_invalid_message.setVisibility(View.VISIBLE);
+                        }
                     }
+                }
+                else
+                {
+                    tv_login_invalid_message.setVisibility(View.VISIBLE);
+                    Log.w("ManageModAccountsActivity", "TASK NOT SUCCESSFUL", task.getException());
                 }
             });
         }
@@ -188,6 +177,7 @@ public class LoginActivity extends AppCompatActivity {
         }
 
     }
+
     private boolean areFieldsNotEmpty(String[] fields)
     {
         for(String field : fields)

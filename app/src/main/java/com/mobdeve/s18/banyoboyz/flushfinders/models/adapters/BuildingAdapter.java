@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.mobdeve.s18.banyoboyz.flushfinders.R;
+import com.mobdeve.s18.banyoboyz.flushfinders.helper.PictureHelper;
 import com.mobdeve.s18.banyoboyz.flushfinders.models.BuildingData;
 import com.mobdeve.s18.banyoboyz.flushfinders.usermode.ViewBuildingActivity;
 
@@ -37,10 +38,9 @@ public class BuildingAdapter extends RecyclerView.Adapter<BuildingAdapter.Buildi
     @Override
     public void onBindViewHolder(@NonNull BuildingHolder holder, int position) {
         final BuildingData buildingDataList = buildingData[position];
-        holder.iv_building.setImageResource(buildingDataList.getBuildingPictureResource());
+        holder.iv_building.setImageBitmap(PictureHelper.decodeBase64ToBitmap(buildingDataList.getBuildingPicture()));
         holder.tv_restroom_building_name.setText(buildingDataList.getName());
         holder.tv_restroom_building_address.setText(buildingDataList.getAddress());
-        holder.tv_restroom_building_walk_time.setText(buildingDataList.getEstimatedWalkingTime());
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override

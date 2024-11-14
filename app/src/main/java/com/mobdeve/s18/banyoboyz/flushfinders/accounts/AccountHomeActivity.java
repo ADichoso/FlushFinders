@@ -20,7 +20,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.mobdeve.s18.banyoboyz.flushfinders.R;
-import com.mobdeve.s18.banyoboyz.flushfinders.helper.ProfilePictureHelper;
+import com.mobdeve.s18.banyoboyz.flushfinders.helper.PictureHelper;
 import com.mobdeve.s18.banyoboyz.flushfinders.mainmenu.ForgotPasswordActivity;
 import com.mobdeve.s18.banyoboyz.flushfinders.mainmenu.MainActivity;
 import com.mobdeve.s18.banyoboyz.flushfinders.mainmenu.ResetPasswordActivity;
@@ -96,7 +96,7 @@ public class AccountHomeActivity extends AppCompatActivity {
             Log.d("AccountHomeActivity", "UPDATING UI NOW!" + account_name);
             tv_account_name.setText(account_name);
             tv_account_email.setText(account_email);
-            iv_account_pp.setImageBitmap(ProfilePictureHelper.decodeBase64ToBitmap(account_pp));
+            iv_account_pp.setImageBitmap(PictureHelper.decodeBase64ToBitmap(account_pp));
         }
     }
 

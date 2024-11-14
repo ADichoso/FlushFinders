@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.mobdeve.s18.banyoboyz.flushfinders.R;
 import com.mobdeve.s18.banyoboyz.flushfinders.adminmode.DeleteRestroomActivity;
+import com.mobdeve.s18.banyoboyz.flushfinders.helper.PictureHelper;
 import com.mobdeve.s18.banyoboyz.flushfinders.models.RestroomData;
 import com.mobdeve.s18.banyoboyz.flushfinders.modmode.CreateEditRestroomActivity;
 import com.mobdeve.s18.banyoboyz.flushfinders.modmode.EditRestroomActivity;
@@ -62,11 +63,11 @@ public class BuildingRestroomAdapter extends RecyclerView.Adapter<BuildingRestro
 
         if(context instanceof ViewBuildingActivity)
         {
-            holder.iv_building_pic.setImageResource(restroomDataList.getBuildingImageResource());
+            holder.iv_building_pic.setImageBitmap(PictureHelper.decodeBase64ToBitmap(restroomDataList.getBuildingPicture()));
             holder.tv_name.setText(restroomDataList.getName());
-            holder.pb_cleanliness.setProgress(restroomDataList.getMetrics().getCleanliness());
-            holder.pb_maintenance.setProgress(restroomDataList.getMetrics().getMaintenance());
-            holder.pb_vacancy.setProgress(restroomDataList.getMetrics().getVacancy());
+            holder.pb_cleanliness.setProgress(restroomDataList.getCleanliness());
+            holder.pb_maintenance.setProgress(restroomDataList.getMaintenance());
+            holder.pb_vacancy.setProgress(restroomDataList.getVacancy());
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -91,23 +92,26 @@ public class BuildingRestroomAdapter extends RecyclerView.Adapter<BuildingRestro
 
         if(context instanceof DeleteRestroomActivity || context instanceof EditRestroomActivity)
         {
-            holder.iv_building_pic.setImageResource(restroomDataList.getBuildingImageResource());
+            holder.iv_building_pic.setImageBitmap(PictureHelper.decodeBase64ToBitmap(restroomDataList.getBuildingPicture()));
         }
 
         if(context instanceof DeleteRestroomActivity || context instanceof EditRestroomActivity || context instanceof ViewUserSuggestionsActivity)
         {
             holder.tv_name.setText(restroomDataList.getBuildingName());
             holder.tv_floor.setText(restroomDataList.getName());
-            holder.pb_cleanliness.setProgress(restroomDataList.getMetrics().getCleanliness());
-            holder.pb_maintenance.setProgress(restroomDataList.getMetrics().getMaintenance());
-            holder.pb_vacancy.setProgress(restroomDataList.getMetrics().getVacancy());
+            holder.pb_cleanliness.setProgress(restroomDataList.getCleanliness());
+            holder.pb_maintenance.setProgress(restroomDataList.getMaintenance());
+            holder.pb_vacancy.setProgress(restroomDataList.getVacancy());
         }
 
-        if(context instanceof ViewUserSuggestionsActivity)
+
+        /*
+         if(context instanceof ViewUserSuggestionsActivity)
         {
             AmenitiesAdapter amenitiesAdapter = new AmenitiesAdapter(restroomDataList.getAmenities(), context);
             holder.rv_amenities.setAdapter(amenitiesAdapter);
         }
+        * */
     }
 
     @Override

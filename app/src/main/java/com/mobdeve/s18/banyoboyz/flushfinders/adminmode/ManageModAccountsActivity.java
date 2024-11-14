@@ -23,6 +23,7 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.mobdeve.s18.banyoboyz.flushfinders.R;
+import com.mobdeve.s18.banyoboyz.flushfinders.models.FirestoreHelper;
 import com.mobdeve.s18.banyoboyz.flushfinders.models.SharedPrefReferences;
 import com.mobdeve.s18.banyoboyz.flushfinders.models.adapters.AccountAdapter;
 import com.mobdeve.s18.banyoboyz.flushfinders.models.AccountData;
@@ -36,8 +37,6 @@ public class ManageModAccountsActivity extends AppCompatActivity {
 
     RecyclerView rv_mod_accounts;
 
-    // DB reference
-    private CollectionReference accountsDBRef;
     private AccountAdapter accountAdapter;
 
 
@@ -57,9 +56,6 @@ public class ManageModAccountsActivity extends AppCompatActivity {
         rv_mod_accounts = findViewById(R.id.rv_mod_accounts);
         rv_mod_accounts.setHasFixedSize(true);
         rv_mod_accounts.setLayoutManager(new LinearLayoutManager(this));
-
-        // Initialize accounts DB reference
-        this.accountsDBRef = FirebaseFirestore.getInstance().collection(FirestoreReferences.Accounts.COLLECTION);
     }
 
 
@@ -72,10 +68,8 @@ public class ManageModAccountsActivity extends AppCompatActivity {
 
         // Check if user is already logged in
         account_email = sharedpreferences.getString(SharedPrefReferences.ACCOUNT_EMAIL_KEY, "");
-
-
         //Query the accounts from the database
-        Query query = accountsDBRef.orderBy(FirestoreReferences.Accounts.NAME);
+        Query query = FirestoreHelper.getInstance().getAccountsDBRef().orderBy(FirestoreReferences.Accounts.NAME);
 
         query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
@@ -91,8 +85,9 @@ public class ManageModAccountsActivity extends AppCompatActivity {
                     {
                         Map<String, Object> data = document.getData();
 
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                            accountData.add(new AccountData(
+                        accountData.add(
+                                new AccountData
+                                (
                                     document.getId(),
                                     data.get(FirestoreReferences.Accounts.NAME).toString(),
                                     data.get(FirestoreReferences.Accounts.PASSWORD).toString(),
@@ -101,12 +96,11 @@ public class ManageModAccountsActivity extends AppCompatActivity {
                                     Instant.ofEpochSecond(Long.parseLong(data.get(FirestoreReferences.Accounts.CREATION_TIME).toString())),
                                     AccountData.convertType(data.get(FirestoreReferences.Accounts.TYPE).toString()),
                                     document.getId().equals(account_email)
-                                    )
-                            );
-                        }
+                                )
+                        );
                     }
 
-                    accountAdapter = new AccountAdapter(accountData, ManageModAccountsActivity.this, accountsDBRef);
+                    accountAdapter = new AccountAdapter(accountData, ManageModAccountsActivity.this);
                     rv_mod_accounts.setAdapter(accountAdapter);
                 }
                 else

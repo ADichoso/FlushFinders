@@ -6,7 +6,7 @@ public class RestroomReviewReportData {
     private String reviewReport;
     private String buildingName;
     private String name;
-    private RestroomMetrics metrics;
+    //private RestroomMetrics metrics;
 
     public RestroomReviewReportData(int buildingImageResource, float rating, String reviewReport, String buildingName, String name, int cleanliness, int maintenance, int vacancy) {
         this.buildingImageResource = buildingImageResource;
@@ -14,7 +14,7 @@ public class RestroomReviewReportData {
         this.reviewReport = reviewReport;
         this.buildingName = buildingName;
         this.name = name;
-        this.metrics = new RestroomMetrics(cleanliness, maintenance, vacancy);
+        //this.metrics = new RestroomMetrics(cleanliness, maintenance, vacancy);
     }
 
     public int getBuildingImageResource() {
@@ -57,11 +57,11 @@ public class RestroomReviewReportData {
         this.name = name;
     }
 
-    public RestroomMetrics getMetrics() {
-        return metrics;
-    }
+    //public RestroomMetrics getMetrics() {
+    //    return metrics;
+    //}
 
-    public void setMetrics(RestroomMetrics metrics) {
-        this.metrics = metrics;
-    }
+    //public void setMetrics(RestroomMetrics metrics) {
+    //    this.metrics = metrics;
+    ///}
 }

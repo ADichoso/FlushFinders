@@ -55,6 +55,13 @@ public class AdminHomeActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    public void manageAmenitiesButton(View view)
+    {
+        Intent intent = new Intent(AdminHomeActivity.this, ManageAmenitiesActivity.class);
+
+        startActivity(intent);
+    }
+
     public void reviewRestroomsButton(View view)
     {
         Intent intent = new Intent(AdminHomeActivity.this, ReviewUserReportsActivity.class);

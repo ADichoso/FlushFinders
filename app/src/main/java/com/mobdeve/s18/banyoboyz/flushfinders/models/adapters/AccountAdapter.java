@@ -5,7 +5,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -13,12 +12,10 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.CollectionReference;
 import com.mobdeve.s18.banyoboyz.flushfinders.R;
-import com.mobdeve.s18.banyoboyz.flushfinders.helper.ProfilePictureHelper;
+import com.mobdeve.s18.banyoboyz.flushfinders.helper.PictureHelper;
 import com.mobdeve.s18.banyoboyz.flushfinders.models.AccountData;
+import com.mobdeve.s18.banyoboyz.flushfinders.models.FirestoreHelper;
 import com.mobdeve.s18.banyoboyz.flushfinders.models.FirestoreReferences;
 
 import java.util.ArrayList;
@@ -26,14 +23,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class AccountAdapter extends RecyclerView.Adapter<AccountAdapter.ModViewHolder> {
-    private CollectionReference accountsDBRef;
     ArrayList<AccountData> accountData;
     Context context;
 
-    public AccountAdapter(ArrayList<AccountData> accountData, Context context, CollectionReference accountsDBRef) {
+    public AccountAdapter(ArrayList<AccountData> accountData, Context context) {
         this.accountData = accountData;
         this.context = context;
-        this.accountsDBRef = accountsDBRef;
     }
 
     @NonNull
@@ -48,7 +43,7 @@ public class AccountAdapter extends RecyclerView.Adapter<AccountAdapter.ModViewH
     @Override
     public void onBindViewHolder(@NonNull ModViewHolder holder, int position) {
         final AccountData accountDataList = accountData.get(position);
-        holder.iv_profile_pic.setImageBitmap(ProfilePictureHelper.decodeBase64ToBitmap(accountDataList.getProfilePicture()));
+        holder.iv_profile_pic.setImageBitmap(PictureHelper.decodeBase64ToBitmap(accountDataList.getProfilePicture()));
         holder.tv_name.setText(accountDataList.getName());
         holder.tv_email.setText(accountDataList.getEmail());
 
@@ -62,38 +57,27 @@ public class AccountAdapter extends RecyclerView.Adapter<AccountAdapter.ModViewH
         else
         {
             holder.sw_is_active.setChecked(accountDataList.isActive());
-            holder.sw_is_active.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                    //Update account info here
-                    Map<String, Object> data  = new HashMap<>();
+            holder.sw_is_active.setOnCheckedChangeListener((compoundButton, b) -> {
+                //Update account info here
+                Map<String, Object> data  = new HashMap<>();
 
-                    data.put(FirestoreReferences.Accounts.IS_ACTIVE, b);
+                data.put(FirestoreReferences.Accounts.IS_ACTIVE, b);
 
-                    accountsDBRef.document(accountDataList.getEmail()).update(data);
-                }
+                FirestoreHelper.getInstance().updateAccount(accountDataList.getEmail(), data, null);
             });
 
-            holder.btn_delete_mod_account.setOnClickListener(new View.OnClickListener()
-            {
-                @Override
-                public void onClick(View view)
-                {
-                    //Delete the account in Firestore first
-                    accountsDBRef.document(accountDataList.getEmail()).delete()
-                            .addOnCompleteListener(new OnCompleteListener<Void>()
-                            {
-                                @Override
-                                public void onComplete(@NonNull Task<Void> task)
-                                {
-                                    //Delete the account and update the recycler view accordingly
-                                    int old_position = holder.getAbsoluteAdapterPosition();
-                                    accountData.remove(old_position);
-                                    notifyItemRemoved(old_position);
-                                    notifyItemRangeChanged(old_position, accountData.size());
-                                }
-                            });
-                }
+            holder.btn_delete_mod_account.setOnClickListener(view -> {
+                //Delete the account in Firestore first
+                FirestoreHelper.getInstance().deleteAccount(accountDataList.getEmail(), task -> {
+                    if(task.isSuccessful())
+                    {
+                        //Delete the account and update the recycler view accordingly
+                        int old_position = holder.getAbsoluteAdapterPosition();
+                        accountData.remove(old_position);
+                        notifyItemRemoved(old_position);
+                        notifyItemRangeChanged(old_position, accountData.size());
+                    }
+                });
             });
         }
     }

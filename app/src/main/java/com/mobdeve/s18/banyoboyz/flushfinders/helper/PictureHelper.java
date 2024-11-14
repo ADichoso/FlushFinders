@@ -17,7 +17,7 @@ import java.util.HashMap;
 import java.util.Map;
 import android.graphics.BitmapFactory;
 
-public class ProfilePictureHelper {
+public class PictureHelper {
     public static String encodeBitmapToBase64(Bitmap bitmap) {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream); // Compress as JPEG or PNG

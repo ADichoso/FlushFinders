@@ -18,14 +18,16 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.mobdeve.s18.banyoboyz.flushfinders.R;
+import com.mobdeve.s18.banyoboyz.flushfinders.models.FirestoreHelper;
 import com.mobdeve.s18.banyoboyz.flushfinders.models.FirestoreReferences;
 import com.mobdeve.s18.banyoboyz.flushfinders.models.SharedPrefReferences;
 
 import org.mindrot.jbcrypt.BCrypt;
 
-public class ResetPasswordActivity extends AppCompatActivity {
+import java.util.HashMap;
+import java.util.Map;
 
-    private CollectionReference accountsDBRef;
+public class ResetPasswordActivity extends AppCompatActivity {
     private String account_email;
     TextView tv_reset_password_email;
     EditText et_reset_password_new_password;
@@ -42,9 +44,6 @@ public class ResetPasswordActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-
-        // Initialize accounts DB reference
-        this.accountsDBRef = FirebaseFirestore.getInstance().collection(FirestoreReferences.Accounts.COLLECTION);
 
         tv_reset_password_email = findViewById(R.id.tv_reset_password_email);
         et_reset_password_new_password = findViewById(R.id.et_reset_password_new_password);
@@ -69,26 +68,26 @@ public class ResetPasswordActivity extends AppCompatActivity {
 
             //1. Get the ID of the person's account.
             //2. Update the password
-            accountsDBRef.document(account_email).update(FirestoreReferences.Accounts.PASSWORD, BCrypt.hashpw(account_password, BCrypt.gensalt(10)))
-                    .addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            if(task.isSuccessful())
-                            {
-                                //CLEAR SHARED PREFERENCES
-                                SharedPrefReferences.clearSharedPreferences(ResetPasswordActivity.this);
+            Map<String, Object> updateMap = new HashMap<>();
 
-                                //Go to Login Page
-                                Intent intent = new Intent(ResetPasswordActivity.this, LoginActivity.class);
-                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-                                startActivity(intent);
-                            }
-                            else
-                            {
-                                tv_reset_pass_invalid_message.setVisibility(View.VISIBLE);
-                            }
-                        }
-                    });
+            updateMap.put(FirestoreReferences.Accounts.PASSWORD, BCrypt.hashpw(account_password, BCrypt.gensalt(10)));
+
+            FirestoreHelper.getInstance().updateAccount(account_email, updateMap, task -> {
+                if(task.isSuccessful())
+                {
+                    //CLEAR SHARED PREFERENCES
+                    SharedPrefReferences.clearSharedPreferences(ResetPasswordActivity.this);
+
+                    //Go to Login Page
+                    Intent intent = new Intent(ResetPasswordActivity.this, LoginActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
+                }
+                else
+                {
+                    tv_reset_pass_invalid_message.setVisibility(View.VISIBLE);
+                }
+            });
         }
         else
         {

@@ -1,25 +1,14 @@
 package com.mobdeve.s18.banyoboyz.flushfinders.models;
 
 public class AmenityData {
-    private long id;
     private String name;
-    private int amenityPictureResource;
+    private String amenity_picture;
 
     public AmenityData(){}
 
-
-    public AmenityData(long id, String name, int amenityPictureResource) {
-        this.id = id;
+    public AmenityData(String name, String amenity_picture) {
         this.name = name;
-        this.amenityPictureResource = amenityPictureResource;
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
+        this.amenity_picture = amenity_picture;
     }
 
     public String getName() {
@@ -30,11 +19,11 @@ public class AmenityData {
         this.name = name;
     }
 
-    public int getAmenityPictureResource() {
-        return amenityPictureResource;
+    public String getAmenityPicture() {
+        return amenity_picture;
     }
 
-    public void setAmenityPictureResource(int amenityPictureResource) {
-        this.amenityPictureResource = amenityPictureResource;
+    public void setAmenityPicture(String amenity_picture) {
+        this.amenity_picture = amenity_picture;
     }
 }

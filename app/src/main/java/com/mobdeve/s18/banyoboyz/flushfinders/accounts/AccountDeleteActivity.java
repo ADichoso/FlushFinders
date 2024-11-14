@@ -20,12 +20,11 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.mobdeve.s18.banyoboyz.flushfinders.R;
 import com.mobdeve.s18.banyoboyz.flushfinders.mainmenu.MainActivity;
+import com.mobdeve.s18.banyoboyz.flushfinders.models.FirestoreHelper;
 import com.mobdeve.s18.banyoboyz.flushfinders.models.FirestoreReferences;
 import com.mobdeve.s18.banyoboyz.flushfinders.models.SharedPrefReferences;
 
 public class AccountDeleteActivity extends AppCompatActivity {
-    private CollectionReference accountsDBRef;
-
     SharedPreferences sharedpreferences;
     String account_email;
     @Override
@@ -43,37 +42,28 @@ public class AccountDeleteActivity extends AppCompatActivity {
         sharedpreferences = getSharedPreferences(SharedPrefReferences.SHARED_PREFS, Context.MODE_PRIVATE);
 
         account_email = sharedpreferences.getString(SharedPrefReferences.ACCOUNT_EMAIL_KEY, "");
-
-        this.accountsDBRef = FirebaseFirestore.getInstance().collection(FirestoreReferences.Accounts.COLLECTION);
     }
 
     public void deleteAccountButton(View view)
     {
         //Delete the account
-        accountsDBRef.document(account_email).delete()
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if(task.isSuccessful())
-                        {
-                            //Clear shared preferences
-                            SharedPrefReferences.clearSharedPreferences(AccountDeleteActivity.this);
+        FirestoreHelper.getInstance().deleteAccount(account_email, task -> {
+            if(task.isSuccessful())
+            {
+                //Clear shared preferences
+                SharedPrefReferences.clearSharedPreferences(AccountDeleteActivity.this);
 
-                            //Go back to main menu
-                            Intent intent = new Intent(AccountDeleteActivity.this, MainActivity.class);
-                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-                            startActivity(intent);
-                            finish();
-                        }
-                        else
-                        {
-                            Log.e("AccountDeleteActivity", "Account Deletion Failed For Some Reason? ");
-                        }
-                    }
-                });
-
-
-
+                //Go back to main menu
+                Intent intent = new Intent(AccountDeleteActivity.this, MainActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+                finish();
+            }
+            else
+            {
+                Log.e("AccountDeleteActivity", "Account Deletion Failed For Some Reason? ");
+            }
+        });
     }
 
     public void backButton(View view)

@@ -44,9 +44,9 @@ public class RestroomReviewReportAdapter extends RecyclerView.Adapter<RestroomRe
         holder.tv_report.setText(restroomReviewReportDataList.getReviewReport());
 
 
-        holder.pb_cleanliness.setProgress(restroomReviewReportDataList.getMetrics().getCleanliness());
-        holder.pb_maintenance.setProgress(restroomReviewReportDataList.getMetrics().getMaintenance());
-        holder.pb_vacancy.setProgress(restroomReviewReportDataList.getMetrics().getVacancy());
+        //holder.pb_cleanliness.setProgress(restroomReviewReportDataList.getMetrics().getCleanliness());
+        //holder.pb_maintenance.setProgress(restroomReviewReportDataList.getMetrics().getMaintenance());
+        //holder.pb_vacancy.setProgress(restroomReviewReportDataList.getMetrics().getVacancy());
     }
 
     @Override

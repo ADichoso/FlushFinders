@@ -18,21 +18,17 @@ import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.FirebaseFirestore;
 import com.mobdeve.s18.banyoboyz.flushfinders.R;
+import com.mobdeve.s18.banyoboyz.flushfinders.models.FirestoreHelper;
 import com.mobdeve.s18.banyoboyz.flushfinders.models.FirestoreReferences;
 import com.mobdeve.s18.banyoboyz.flushfinders.models.SharedPrefReferences;
-import com.mobdeve.s18.banyoboyz.flushfinders.helper.ProfilePictureHelper;
+import com.mobdeve.s18.banyoboyz.flushfinders.helper.PictureHelper;
 import android.provider.MediaStore;
 
 import java.io.IOException;
@@ -42,7 +38,6 @@ import java.util.Map;
 public class AccountEditActivity extends AppCompatActivity {
     public static final String UPDATE_NAME = "UPDATE_NAME";
     public static final String UPDATE_PP = "UPDATE_PP";
-    private CollectionReference accountsDBRef;
 
     EditText et_edit_account_name;
 
@@ -83,10 +78,10 @@ public class AccountEditActivity extends AppCompatActivity {
                         {
                             Log.d("AccountEditActivity", "UPLOADED NEW IMAGE FOR USE");
                             // Crop the center 512 x 512 region of the Bitmap
-                            Bitmap scaledBitmap = ProfilePictureHelper.scaleBitmap(originalBitmap);
+                            Bitmap scaledBitmap = PictureHelper.scaleBitmap(originalBitmap);
 
                             //Encode the cropped Bitmap into a string to upload later
-                            account_pp = ProfilePictureHelper.encodeBitmapToBase64(scaledBitmap);
+                            account_pp = PictureHelper.encodeBitmapToBase64(scaledBitmap);
 
                             iv_pp_preview.setImageBitmap(scaledBitmap);
                         } else
@@ -109,9 +104,6 @@ public class AccountEditActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-
-        // Initialize accounts DB reference
-        this.accountsDBRef = FirebaseFirestore.getInstance().collection(FirestoreReferences.Accounts.COLLECTION);
 
         et_edit_account_name = findViewById(R.id.et_edit_account_name);
         iv_pp_preview = findViewById(R.id.iv_pp_preview);
@@ -138,7 +130,7 @@ public class AccountEditActivity extends AppCompatActivity {
             et_edit_account_name.setText(account_name);
         if(!account_pp.isEmpty())
         {
-            iv_pp_preview.setImageBitmap(ProfilePictureHelper.decodeBase64ToBitmap(account_pp));
+            iv_pp_preview.setImageBitmap(PictureHelper.decodeBase64ToBitmap(account_pp));
         }
     }
 
@@ -172,32 +164,32 @@ public class AccountEditActivity extends AppCompatActivity {
 
             //1. Get the ID of the person's account.
             //2. Update new fields
-            accountsDBRef.document(account_email).update(data)
-                    .addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            if(task.isSuccessful())
-                            {
-                                //Go to Login Page
-                                SharedPreferences.Editor editor = sharedpreferences.edit();
+            FirestoreHelper.getInstance().updateAccount(
+                    account_email,
+                    data,
+                    task -> {
+                        if(task.isSuccessful())
+                        {
+                            //Go to Login Page
+                            SharedPreferences.Editor editor = sharedpreferences.edit();
 
-                                editor.putString(SharedPrefReferences.ACCOUNT_NAME_KEY, account_name);
-                                editor.putString(SharedPrefReferences.ACCOUNT_PP_KEY, account_pp);
-                                editor.apply();
-                            }
-                            else
-                            {
-                                //tv_reset_pass_invalid_message.setVisibility(View.VISIBLE);
-                            }
+                            editor.putString(SharedPrefReferences.ACCOUNT_NAME_KEY, account_name);
+                            editor.putString(SharedPrefReferences.ACCOUNT_PP_KEY, account_pp);
+                            editor.apply();
                         }
-                    });
+                        else
+                        {
+                            //tv_reset_pass_invalid_message.setVisibility(View.VISIBLE);
+                        }
+                    }
+            );
         }
         else
         {
             //tv_reset_pass_invalid_message.setVisibility(View.VISIBLE);
         }
 
-        if(!account_pp.isEmpty()) ProfilePictureHelper.uploadProfileImageToFirestore(account_pp, account_email);
+        if(!account_pp.isEmpty()) PictureHelper.uploadProfileImageToFirestore(account_pp, account_email);
 
 
         //Send an intent to the Account Home regarding the new user information

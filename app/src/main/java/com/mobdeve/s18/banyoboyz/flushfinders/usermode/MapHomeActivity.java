@@ -35,7 +35,6 @@ import org.osmdroid.views.overlay.gestures.RotationGestureOverlay;
 import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay;
 
 public class MapHomeActivity extends AppCompatActivity implements SensorEventListener{
-
     private MapView map;
     private MyLocationNewOverlay myLocationOverlay;
     private SensorManager sensorManager;
@@ -161,7 +160,7 @@ public class MapHomeActivity extends AppCompatActivity implements SensorEventLis
     }
 
     private float lastAzimuth = 0f; // Store the last smoothed azimuth
-    private static final float ALPHA = 0.1f; // Smoothing factor (0 < alpha < 1)
+    private static final float ALPHA = 0.05f; // Smoothing factor (0 < alpha < 1)
 
     private float smoothAzimuth(float newAzimuth) {
         lastAzimuth += (newAzimuth - lastAzimuth) * ALPHA;

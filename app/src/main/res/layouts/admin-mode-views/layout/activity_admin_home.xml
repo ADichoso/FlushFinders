@@ -82,6 +82,13 @@
                 android:onClick="deleteRestroomButton"
                 android:text="Delete a Restroom" />
 
+            <Button
+                android:id="@+id/btn_manage_amenities"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:onClick="manageAmenitiesButton"
+                android:text="Manage Amenities" />
+
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 

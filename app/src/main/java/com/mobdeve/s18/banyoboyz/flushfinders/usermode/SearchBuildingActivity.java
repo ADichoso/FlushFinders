@@ -33,11 +33,7 @@ public class SearchBuildingActivity extends AppCompatActivity {
         rv_buildings.setHasFixedSize(true);
         rv_buildings.setLayoutManager(new LinearLayoutManager(this));
 
-        BuildingData[] buildingData = new BuildingData[]{
-                new BuildingData(0, "Gokongwei Hall", "De La Salle University - Taft Avenue", "12 Minutes", R.drawable.goks, new RestroomData[]{}),
-                new BuildingData(1, "Gokongwei Hall2", "De La Salle University - Taft Avenue", "12 Minutes", R.drawable.goks, new RestroomData[]{}),
-                new BuildingData(2, "Gokongwei Hall3", "De La Salle University - Taft Avenue", "12 Minutes", R.drawable.goks, new RestroomData[]{})
-        };
+        BuildingData[] buildingData = new BuildingData[]{};
 
         BuildingAdapter buildingAdapter = new BuildingAdapter(buildingData, SearchBuildingActivity.this);
         rv_buildings.setAdapter(buildingAdapter);

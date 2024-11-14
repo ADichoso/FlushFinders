@@ -1,33 +1,39 @@
 package com.mobdeve.s18.banyoboyz.flushfinders.models;
 
 public class BuildingData {
-    private long id;
+    private double latitude;
+    private double longitude;
     private String name;
     private String address;
-    private String estimatedWalkingTime;
-    private int buildingPictureResource;
+    private String buildingPicture;
     private RestroomData[] restroomData;
 
     public BuildingData(){}
 
-    public BuildingData(long id, String name, String address, String estimatedWalkingTime, int buildingPictureResource, RestroomData[] restroomData) {
-        this.id = id;
+    public BuildingData(double latitude, double longitude, String name, String address, String buildingPicture, RestroomData[] restroomData) {
+        this.latitude = latitude;
+        this.longitude = longitude;
         this.name = name;
         this.address = address;
-        this.estimatedWalkingTime = estimatedWalkingTime;
-        this.buildingPictureResource = buildingPictureResource;
+        this.buildingPicture = buildingPicture;
         this.restroomData = restroomData;
     }
 
-    public long getId() {
-        return id;
+    public double getLatitude() {
+        return latitude;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
     }
 
+    public double getLongitude() {
+        return longitude;
+    }
 
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
+    }
 
     public String getName() {
         return name;
@@ -45,20 +51,12 @@ public class BuildingData {
         this.address = address;
     }
 
-    public String getEstimatedWalkingTime() {
-        return estimatedWalkingTime;
+    public String getBuildingPicture() {
+        return buildingPicture;
     }
 
-    public void setEstimatedWalkingTime(String estimatedWalkingTime) {
-        this.estimatedWalkingTime = estimatedWalkingTime;
-    }
-
-    public int getBuildingPictureResource() {
-        return buildingPictureResource;
-    }
-
-    public void setBuildingPictureResource(int buildingPictureResource) {
-        this.buildingPictureResource = buildingPictureResource;
+    public void setBuildingPicture(String buildingPicture) {
+        this.buildingPicture = buildingPicture;
     }
 
     public RestroomData[] getRestroomData() {

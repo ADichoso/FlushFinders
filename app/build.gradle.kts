@@ -9,7 +9,7 @@ android {
 
     defaultConfig {
         applicationId = "com.mobdeve.s18.banyoboyz.flushfinders"
-        minSdk = 24
+        minSdk = 26
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
@@ -40,7 +40,8 @@ android {
                     "src\\main\\res\\layouts\\main-menu-views",
                     "src\\main\\res\\layouts\\user-mode-views",
                     "src\\main\\res\\layouts\\mod-mode-views",
-                    "src\\main\\res\\layouts\\admin-mode-views")
+                    "src\\main\\res\\layouts\\admin-mode-views",
+                    "src\\main\\res\\layouts\\map-operation-views")
             }
         }
     }
@@ -52,6 +53,7 @@ dependencies {
     implementation("com.firebaseui:firebase-ui-firestore:8.0.2")
     implementation("org.mindrot:jbcrypt:0.4")
     implementation("org.osmdroid:osmdroid-android:6.1.20")
+    implementation("com.github.MKergall:osmbonuspack:6.9.0")
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation(libs.activity)
