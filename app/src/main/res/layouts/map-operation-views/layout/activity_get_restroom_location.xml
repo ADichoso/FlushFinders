@@ -33,8 +33,8 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/tv_restroom_name"
-                android:layout_width="wrap_content"
+                android:id="@+id/tv_restroom_name_label"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Input Restroom Location!" />
 
@@ -48,25 +48,41 @@
                     android:id="@+id/et_restroom_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:ems="10"
+                    android:ems="6"
                     android:inputType="text"
                     android:text="Name" />
 
                 <Button
-                    android:id="@+id/button"
+                    android:id="@+id/btn_view_location"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:onClick="checkAddress"
+                    android:onClick="checkAddressButton"
                     android:text="View Location" />
+
+                <Button
+                    android:id="@+id/btn_toggle_tracking"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:onClick="toggleTrackingButton"
+                    android:text="Disable Tracking" />
+
             </LinearLayout>
 
+            <TextView
+                android:id="@+id/tv_building_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Input Restroom Location!"
+                android:textAlignment="center"
+                android:textSize="20sp" />
         </LinearLayout>
 
     </androidx.cardview.widget.CardView>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/cl_restroom_map"
+        android:id="@+id/cl_building_map"
         android:layout_width="match_parent"
         android:layout_height="545dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -93,7 +109,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cl_restroom_map"
+        app:layout_constraintTop_toBottomOf="@+id/cl_building_map"
         app:layout_constraintVertical_bias="0.0">
 
         <LinearLayout
@@ -106,7 +122,7 @@
                 android:id="@+id/btn_submit_restroom_location"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:onClick="submitRestroomLocation"
+                android:onClick="submitRestroomLocationButton"
                 android:text="Submit Location" />
 
             <Button

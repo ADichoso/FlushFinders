@@ -11,6 +11,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
+import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.mobdeve.s18.banyoboyz.flushfinders.R;
 import com.mobdeve.s18.banyoboyz.flushfinders.helper.PictureHelper;
 import com.mobdeve.s18.banyoboyz.flushfinders.models.AmenityData;
@@ -19,9 +21,8 @@ import com.mobdeve.s18.banyoboyz.flushfinders.models.FirestoreHelper;
 import java.util.ArrayList;
 
 public class ManageAmenitiesAdapter extends RecyclerView.Adapter<ManageAmenitiesAdapter.ManageAmenitiesHolder> {
-    ArrayList<AmenityData> amenityData;
-    Context context;
-
+    private ArrayList<AmenityData> amenityData;
+    private Context context;
     public ManageAmenitiesAdapter(ArrayList<AmenityData> amenityData, Context context) {
         this.amenityData = amenityData;
         this.context = context;
@@ -37,14 +38,13 @@ public class ManageAmenitiesAdapter extends RecyclerView.Adapter<ManageAmenities
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ManageAmenitiesAdapter.ManageAmenitiesHolder holder, int position) {
-        final AmenityData amenityDataList = amenityData.get(position);
-
-        holder.iv_amenity_icon.setImageBitmap(PictureHelper.decodeBase64ToBitmap(amenityDataList.getAmenityPicture()));
-        holder.tv_amenity_description.setText(amenityDataList.getName());
+    public void onBindViewHolder(@NonNull ManageAmenitiesHolder holder, int position) {
+        AmenityData data = amenityData.get(position);
+        holder.iv_amenity_icon.setImageBitmap(PictureHelper.decodeBase64ToBitmap(data.getAmenityPicture()));
+        holder.tv_amenity_description.setText(data.getName());
         holder.btn_delete_amenity.setOnClickListener(view ->
         {
-            FirestoreHelper.getInstance().deleteAmenity(amenityDataList.getName(), task ->
+            FirestoreHelper.getInstance().deleteAmenity(data.getName(), task ->
             {
                 //Delete the account and update the recycler view accordingly
                 int old_position = holder.getAbsoluteAdapterPosition();
@@ -53,7 +53,6 @@ public class ManageAmenitiesAdapter extends RecyclerView.Adapter<ManageAmenities
                 notifyItemRangeChanged(old_position, amenityData.size());
             });
         });
-
     }
 
     @Override

@@ -20,6 +20,7 @@ public class FirestoreReferences {
         public final static String ADDRESS = "address";
         public final static String BUILDING_PICTURE = "buildingPicture";
         public final static String RESTROOMS = "restrooms";
+        public final static String SUGGESTION = "suggestion";
     }
 
     public static class Restrooms

@@ -105,6 +105,8 @@ public class CreateEditRestroomActivity extends AppCompatActivity {
             }
     );
 
+
+    private boolean building_exists;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -125,10 +127,6 @@ public class CreateEditRestroomActivity extends AppCompatActivity {
         rv_restroom_amenities.setHasFixedSize(true);
         rv_restroom_amenities.setLayoutManager(new LinearLayoutManager(this));
 
-        Intent result_intent = getIntent();
-        building_latitude = result_intent.getDoubleExtra(SuggestRestroomLocationActivity.LATITUDE, Double.NaN);
-        building_longitude = result_intent.getDoubleExtra(SuggestRestroomLocationActivity.LONGITUDE, Double.NaN);
-
         btn_submit_restroom_info = findViewById(R.id.btn_submit_restroom_info);
         btn_submit_restroom_info.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -137,15 +135,57 @@ public class CreateEditRestroomActivity extends AppCompatActivity {
             }
         });
 
-        //Open the gallery and get a photo from there
+        Intent result_intent = getIntent();
+        building_latitude = result_intent.getDoubleExtra(SuggestRestroomLocationActivity.LATITUDE, Double.NaN);
+        building_longitude = result_intent.getDoubleExtra(SuggestRestroomLocationActivity.LONGITUDE, Double.NaN);
+
+        checkBuilding();
+    }
+
+    private void checkBuilding()
+    {
+        building_exists = false;
+        //1. Check if the chosen building's location already exists
+        FirestoreHelper.getInstance().readBuilding(building_latitude, building_longitude, task ->
+        {
+            if(task.isSuccessful())
+            {
+                Map<String, Object> old_building_data = task.getResult().getData();
+
+                building_exists = old_building_data != null && !old_building_data.isEmpty();
+
+                if(building_exists)
+                {
+                    //Save that information onto the restroom's building name
+                    building_name = old_building_data.get(FirestoreReferences.Buildings.NAME).toString();
+
+                    et_restroom_name.setText(building_name);
+                    et_restroom_name.setFocusable(false);
+                    et_restroom_name.setFocusableInTouchMode(false);
+                    et_restroom_name.setCursorVisible(false); // Hide the cursor
+                    et_restroom_name.setKeyListener(null);
+
+                    Log.d("CreateEditRestroomActivity", "Building Exists");
+                }
+                else
+                    takeBuildingPicture();
+            }
+            else
+                takeBuildingPicture();
+        });
+    }
+
+    private void takeBuildingPicture()
+    {
+        Log.d("CreateEditRestroomActivity", "Building NOT Exists");
+
+        //Take a picture of the building
         Intent pickPhoto = new Intent(Intent.ACTION_PICK,
                 android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
 
         setResult(RESULT_OK, pickPhoto);
         activityResultLauncher.launch(pickPhoto);
     }
-
-
     @Override
     protected void onStart() {
         super.onStart();
@@ -168,73 +208,49 @@ public class CreateEditRestroomActivity extends AppCompatActivity {
                                 data.get(FirestoreReferences.Amenities.PICTURE).toString()
                         )
                     );
-                    Log.d("ManageAmenitiesActivity", document.getId());
+                    Log.d("CreateEditRestroomActivity", document.getId());
                 }
                 AmenitiesAdapter amenitiesAdapter = new AmenitiesAdapter(amenityData, CreateEditRestroomActivity.this);
                 rv_restroom_amenities.setAdapter(amenitiesAdapter);
             }
             else
             {
-                Log.w("ManageAmenitiesActivity", "TASK NOT SUCCESSFUL", task.getException());
+                Log.w("CreateEditRestroomActivity", "TASK NOT SUCCESSFUL", task.getException());
             }
         });
     }
 
     public void createBuildingButton()
     {
-        //1. Check if the chosen building's location already exists
-        FirestoreHelper.getInstance().readBuilding(building_latitude, building_longitude, task ->
+        if(building_exists)
         {
-            if(task.isSuccessful())
+            createNewRestroom();
+        }
+        else
+        {
+            //The building DOES NOT EXIST, You need to insert a building entry first
+            getAddressFromGeoPoint(address ->
             {
-                Map<String, Object> old_building_data = task.getResult().getData();
+                building_name = et_restroom_name.getText().toString();
 
-                if(old_building_data == null || old_building_data.isEmpty())
+                Map<String, Object> new_building_data = FirestoreHelper.getInstance().createBuildingData
+                        (
+                                building_name,
+                                address,
+                                PictureHelper.decodeBase64ToBitmap(building_picture),
+                                false
+                        );
+
+                FirestoreHelper.getInstance().insertBuilding(building_latitude, building_longitude, new_building_data, task1 ->
                 {
-                    //The building DOES NOT EXIST, You need to insert a building entry first
-
-                    getAddressFromGeoPoint(address ->
+                    if(task1.isSuccessful())
                     {
-                        building_name = et_restroom_name.getText().toString();
-
-                        Map<String, Object> new_building_data = FirestoreHelper.getInstance().createBuildingData
-                                (
-                                        building_name,
-                                        address,
-                                        PictureHelper.decodeBase64ToBitmap(building_picture)
-                                );
-
-                        FirestoreHelper.getInstance().insertBuilding(building_latitude, building_longitude, new_building_data, task1 ->
-                        {
-                            if(task1.isSuccessful())
-                            {
-                                //Building has been inserted
-                                createNewRestroom();
-                            }
-                        });
-                    });
-
-                }
-                else
-                {
-                    //Set the building name in the edit text already, and disable all changes for that
-                    building_name = old_building_data.get(FirestoreReferences.Buildings.NAME).toString();
-
-                    et_restroom_name.setText(building_name);
-                    et_restroom_name.setFocusable(false);
-                    et_restroom_name.setFocusableInTouchMode(false);
-                    et_restroom_name.setCursorVisible(false); // Hide the cursor
-                    et_restroom_name.setKeyListener(null);
-                }
-            }
-            else
-            {
-                //Create the restroom
-                createNewRestroom();
-            }
-        });
-
-
+                        //Building has been inserted
+                        createNewRestroom();
+                    }
+                });
+            });
+        }
     }
 
     public void createNewRestroom()

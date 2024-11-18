@@ -7,16 +7,17 @@ public class BuildingData {
     private String address;
     private String buildingPicture;
     private RestroomData[] restroomData;
-
+    private boolean suggestion;
     public BuildingData(){}
 
-    public BuildingData(double latitude, double longitude, String name, String address, String buildingPicture, RestroomData[] restroomData) {
+    public BuildingData(double latitude, double longitude, String name, String address, String buildingPicture, RestroomData[] restroomData, boolean suggestion) {
         this.latitude = latitude;
         this.longitude = longitude;
         this.name = name;
         this.address = address;
         this.buildingPicture = buildingPicture;
         this.restroomData = restroomData;
+        this.suggestion = suggestion;
     }
 
     public double getLatitude() {
@@ -65,5 +66,13 @@ public class BuildingData {
 
     public void setRestroomData(RestroomData[] restroomData) {
         this.restroomData = restroomData;
+    }
+
+    public boolean isSuggestion() {
+        return suggestion;
+    }
+
+    public void setSuggestion(boolean suggestion) {
+        this.suggestion = suggestion;
     }
 }

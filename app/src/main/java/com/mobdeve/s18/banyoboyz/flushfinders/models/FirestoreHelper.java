@@ -12,6 +12,7 @@ import com.google.firebase.firestore.Query;
 import com.mobdeve.s18.banyoboyz.flushfinders.helper.PictureHelper;
 
 import org.mindrot.jbcrypt.BCrypt;
+import org.osmdroid.util.GeoPoint;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -35,6 +36,26 @@ public class FirestoreHelper {
 
     }
 
+    public CollectionReference getAccountsDBRef()
+    {
+        return FirebaseFirestore.getInstance().collection(FirestoreReferences.Accounts.COLLECTION);
+    }
+
+    public CollectionReference getBuildingsDBRef()
+    {
+        return FirebaseFirestore.getInstance().collection(FirestoreReferences.Buildings.COLLECTION);
+    }
+
+    public CollectionReference getRestroomsDBRef()
+    {
+        return FirebaseFirestore.getInstance().collection(FirestoreReferences.Restrooms.COLLECTION);
+    }
+
+    public CollectionReference getAmenitiesDBRef()
+    {
+        return FirebaseFirestore.getInstance().collection(FirestoreReferences.Amenities.COLLECTION);
+    }
+
     public Map<String, Object> createAccountData(String name, String password, boolean isActive, String type, Bitmap profile_picture, Long creation_time_epoch_seconds)
     {
         Map<String, Object> data = new HashMap<>();
@@ -51,7 +72,7 @@ public class FirestoreHelper {
         return data;
     }
 
-    public Map<String, Object> createBuildingData(String name, String address, Bitmap building_picture)
+    public Map<String, Object> createBuildingData(String name, String address, Bitmap building_picture, boolean suggestion)
     {
         Map<String, Object> data = new HashMap<>();
 
@@ -59,7 +80,7 @@ public class FirestoreHelper {
         data.put(FirestoreReferences.Buildings.ADDRESS, address);
         data.put(FirestoreReferences.Buildings.BUILDING_PICTURE, PictureHelper.encodeBitmapToBase64(building_picture));
         data.put(FirestoreReferences.Buildings.RESTROOMS, new ArrayList<String>());
-
+        data.put(FirestoreReferences.Buildings.SUGGESTION, suggestion);
         return data;
     }
 
@@ -78,9 +99,24 @@ public class FirestoreHelper {
 
     public String generateBuildingID(Double building_latitude, Double building_longitude)
     {
-        return Double.toString(building_latitude) + "," + Double.toString(building_longitude);
+        return Double.toString(building_latitude) + "!" + Double.toString(building_longitude);
     }
 
+    public GeoPoint decodeBuildingLocation(String building_id)
+    {
+        double latitude = 0;
+        double longitude = 0;
+
+        String[] coords = building_id.split("!");
+
+        try {
+            latitude = Double.parseDouble(coords[0]);
+            longitude = Double.parseDouble(coords[1]);
+        }
+        catch (Exception e){}
+
+        return new GeoPoint(latitude, longitude);
+    }
     public void insertBuilding(Double building_latitude, Double building_longitude, Map<String, Object> building_data,  OnCompleteListener<Void> onCompleteListener)
     {
         insertData(FirestoreReferences.Buildings.COLLECTION, generateBuildingID(building_latitude, building_longitude), building_data, onCompleteListener);
@@ -166,15 +202,7 @@ public class FirestoreHelper {
         deleteData(FirestoreReferences.Accounts.COLLECTION, account_email, onCompleteListener);
     }
 
-    public CollectionReference getAccountsDBRef()
-    {
-        return FirebaseFirestore.getInstance().collection(FirestoreReferences.Accounts.COLLECTION);
-    }
 
-    public CollectionReference getAmenitiesDBRef()
-    {
-        return FirebaseFirestore.getInstance().collection(FirestoreReferences.Amenities.COLLECTION);
-    }
 
     private void updateData(String collection, String document_id, Map<String, Object> data,  OnCompleteListener<Void> onCompleteListener)
     {

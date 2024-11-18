@@ -164,6 +164,10 @@ public class LoginActivity extends AppCompatActivity {
 
             SharedPreferences.Editor editor = sharedpreferences.edit();
 
+            editor.clear();
+            editor.apply();
+
+
             editor.putString(SharedPrefReferences.ACCOUNT_NAME_KEY, account_name);
             editor.putString(SharedPrefReferences.ACCOUNT_EMAIL_KEY, account_email);
             editor.putString(SharedPrefReferences.ACCOUNT_TYPE_KEY, account_type);

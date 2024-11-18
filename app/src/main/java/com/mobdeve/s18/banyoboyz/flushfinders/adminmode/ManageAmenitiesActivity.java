@@ -15,6 +15,7 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.mobdeve.s18.banyoboyz.flushfinders.R;
@@ -102,5 +103,11 @@ public class ManageAmenitiesActivity extends AppCompatActivity {
                 Log.w("ManageAmenitiesActivity", "TASK NOT SUCCESSFUL", task.getException());
             }
         });
+
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
     }
 }
