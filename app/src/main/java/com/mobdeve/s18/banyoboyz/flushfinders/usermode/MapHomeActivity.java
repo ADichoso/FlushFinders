@@ -1,5 +1,7 @@
 package com.mobdeve.s18.banyoboyz.flushfinders.usermode;
 
+import static android.view.View.VISIBLE;
+
 import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
@@ -21,15 +23,11 @@ import android.widget.TextView;
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.core.app.ActivityCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
-
-import com.google.android.gms.location.LocationRequest;
-import com.google.android.gms.location.LocationResult;
-import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.location.LocationCallback;
 
 import com.mobdeve.s18.banyoboyz.flushfinders.R;
 import com.mobdeve.s18.banyoboyz.flushfinders.accounts.AccountHomeActivity;
@@ -37,11 +35,11 @@ import com.mobdeve.s18.banyoboyz.flushfinders.helper.MapHelper;
 import com.mobdeve.s18.banyoboyz.flushfinders.models.FirestoreHelper;
 import com.mobdeve.s18.banyoboyz.flushfinders.models.FirestoreReferences;
 import com.mobdeve.s18.banyoboyz.flushfinders.sharedviews.SuggestRestroomLocationActivity;
-import com.google.android.gms.location.FusedLocationProviderClient;
 
 import org.osmdroid.bonuspack.routing.OSRMRoadManager;
 import org.osmdroid.bonuspack.routing.Road;
 import org.osmdroid.bonuspack.routing.RoadManager;
+import org.osmdroid.bonuspack.routing.RoadNode;
 import org.osmdroid.config.Configuration;
 import org.osmdroid.events.MapAdapter;
 import org.osmdroid.events.ScrollEvent;
@@ -70,6 +68,10 @@ public class MapHomeActivity extends AppCompatActivity implements SensorEventLis
     private float[] gravity;
     private float[] geomagnetic;
 
+    private CardView cv_building_info;
+    private CardView cv_route_tracking;
+    private TextView tv_route_directions;
+    private TextView tv_route_info;
     private TextView tv_chosen_building_name;
     private TextView tv_chosen_building_address;
     private EditText et_search_restroom_name;
@@ -84,6 +86,10 @@ public class MapHomeActivity extends AppCompatActivity implements SensorEventLis
 
     private MyLocationNewOverlay location_overlay;
     private boolean live_tracking;
+
+    private GeoPoint destination_location;
+    private boolean direction_mode;
+    private String building_id;
 
     private RotationGestureOverlay rotation_gesture_overlay;
 
@@ -106,6 +112,10 @@ public class MapHomeActivity extends AppCompatActivity implements SensorEventLis
         last_azimuth = 0f;
 
         //Initialize map
+        cv_building_info = findViewById(R.id.cv_building_info);
+        cv_route_tracking = findViewById(R.id.cv_route_tracking);
+        tv_route_directions = findViewById(R.id.tv_route_directions);
+        tv_route_info = findViewById(R.id.tv_route_info);
         tv_chosen_building_name = findViewById(R.id.tv_chosen_building_name);
         tv_chosen_building_address = findViewById(R.id.tv_chosen_building_address);
         et_search_restroom_name = findViewById(R.id.et_search_restroom_name);
@@ -140,16 +150,12 @@ public class MapHomeActivity extends AppCompatActivity implements SensorEventLis
         //Initialize map variables to use for tracking
         chosen_marker = null;
         existing_locations = new HashMap<GeoPoint, Marker>();
-        onMarkerClickListener = new Marker.OnMarkerClickListener() {
-            @Override
-            public boolean onMarkerClick(Marker marker, MapView mapView) {
-                updateChosenLocation(marker);
-                toggleTracking(false);
-                mapView.getController().animateTo(marker.getPosition());
-                return false;
-            }
+        onMarkerClickListener = (marker, mapView) -> {
+            updateChosenLocation(marker);
+            toggleTracking(false);
+            mapView.getController().animateTo(marker.getPosition());
+            return false;
         };
-        toggleTracking(true);
 
         //Initialize rotation overlay to enable map rotation for the user
         rotation_gesture_overlay = new RotationGestureOverlay(map);
@@ -165,6 +171,13 @@ public class MapHomeActivity extends AppCompatActivity implements SensorEventLis
         });
 
         map.getOverlays().add(location_overlay);
+
+        Intent intent = getIntent();
+        building_id = intent.getStringExtra(ViewRestroomActivity.BUILDING_ID);
+
+        toggleTracking(true);
+
+        toggleDirectionMode(!(building_id == null || building_id.isEmpty()));
 
 
         // Check for permissions
@@ -228,6 +241,11 @@ public class MapHomeActivity extends AppCompatActivity implements SensorEventLis
                     rotateMap(new_azimuth, 1f, 0.1f);
                     rotation_gesture_overlay.setEnabled(false);
                 }
+
+                if(direction_mode)
+                {
+                    generateUserRoute(destination_location);
+                }
             }
         }
     }
@@ -244,7 +262,7 @@ public class MapHomeActivity extends AppCompatActivity implements SensorEventLis
 
     public void viewChosenBuildingInfoButton(View view)
     {
-        if(chosen_location.isEmpty())
+        if(chosen_location == null || chosen_location.isEmpty() || chosen_marker == null)
             return;
 
         //Go the a new activity to show the restrooms available in that building
@@ -286,6 +304,30 @@ public class MapHomeActivity extends AppCompatActivity implements SensorEventLis
             location_overlay.enableFollowLocation();
         else
             location_overlay.disableFollowLocation();
+    }
+
+    private void toggleDirectionMode(boolean new_direction_mode)
+    {
+        direction_mode = new_direction_mode;
+
+        if(direction_mode)
+        {
+            cv_route_tracking.setVisibility(View.VISIBLE);
+            cv_route_tracking.setActivated(true);
+
+            cv_building_info.setVisibility(View.INVISIBLE);
+            cv_building_info.setActivated(false);
+
+            destination_location = MapHelper.getInstance().decodeBuildingLocation(building_id);
+        }
+        else
+        {
+            cv_building_info.setVisibility(View.VISIBLE);
+            cv_building_info.setActivated(true);
+
+            cv_route_tracking.setVisibility(View.INVISIBLE);
+            cv_route_tracking.setActivated(false);
+        }
     }
 
     public void recommendedRestroomsButton(View view)
@@ -423,28 +465,71 @@ public class MapHomeActivity extends AppCompatActivity implements SensorEventLis
                     }
                 });
 
-        chosen_location = MapHelper.getInstance().generateBuildingAddress(chosen_marker.getPosition());
+        chosen_location = MapHelper.getInstance().encodeBuildingID(chosen_marker.getPosition());
         chosen_marker.setIcon(getDrawable(R.drawable.marker_chosen));
 
-        generateUserRoute();
+        if(!direction_mode) generateUserRoute(chosen_marker.getPosition());
         map.invalidate();
     }
 
-    private void generateUserRoute()
+    private void generateUserRoute(GeoPoint point)
     {
         network_executor.execute(() ->
         {
             ArrayList<GeoPoint> waypoints = new ArrayList<GeoPoint>();
 
+            if(curr_location == null || point == null)
+                return;
+
             waypoints.add(curr_location);
-            waypoints.add(chosen_marker.getPosition());
+            waypoints.add(point);
 
             Road current_road = road_manager.getRoad(waypoints);
+
 
             if(current_road.mStatus == Road.STATUS_OK)
             {
                 if(user_route != null)
                     map.getOverlays().remove(user_route);
+
+                if(direction_mode)
+                {
+                    waypoints = new ArrayList<GeoPoint>();
+                    for(RoadNode node : current_road.mNodes)
+                        waypoints.add(node.mLocation);
+
+                    Road refined_road = road_manager.getRoad(waypoints);
+
+                    //Overall distance found at legs
+                    current_road.buildLegs(waypoints);
+
+                    //Instructions found at the CLOSEST NODE
+                    double min_distance = -1.0;
+                    int min_index = -1;
+                    for(RoadNode node: current_road.mNodes)
+                    {
+                        if(node.mInstructions == null || node.mInstructions.isEmpty() || node.mInstructions.contains("waypoint"))
+                            continue;
+
+                        double curr_distance = curr_location.distanceToAsDouble(node.mLocation);
+                        if(min_index == -1 || curr_distance < min_distance)
+                        {
+                            min_index = current_road.mNodes.indexOf(node);
+                            min_distance = curr_distance;
+                        }
+                    }
+
+                    //Found Closest Node
+                    int finalMin_index = min_index;
+                    runOnUiThread(()->
+                    {
+                        Double distance = refined_road.mLegs.get(0).mLength;
+                        String direction_info = distance.toString() + "m";
+
+                        tv_route_info.setText("TOTAL: " + current_road.getLengthDurationText(this, -1));
+                        tv_route_directions.setText("( " +  direction_info + ") | " + current_road.mNodes.get(finalMin_index).mInstructions);
+                    });
+                }
 
                 user_route = RoadManager.buildRoadOverlay(current_road);
                 user_route.setWidth(10.0f);

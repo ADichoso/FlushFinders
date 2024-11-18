@@ -295,7 +295,7 @@ public class CreateEditRestroomActivity extends AppCompatActivity {
                 FirestoreHelper.getInstance().appendStringToStringArray
                         (
                                 FirestoreReferences.Buildings.COLLECTION,
-                                FirestoreHelper.getInstance().generateBuildingID(building_latitude, building_longitude),
+                                MapHelper.getInstance().encodeBuildingID(building_latitude, building_longitude),
                                 FirestoreReferences.Buildings.RESTROOMS,
                                 restroom_id
                         );

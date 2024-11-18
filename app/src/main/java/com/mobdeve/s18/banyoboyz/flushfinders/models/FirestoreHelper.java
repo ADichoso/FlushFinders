@@ -9,6 +9,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
+import com.mobdeve.s18.banyoboyz.flushfinders.helper.MapHelper;
 import com.mobdeve.s18.banyoboyz.flushfinders.helper.PictureHelper;
 
 import org.mindrot.jbcrypt.BCrypt;
@@ -97,44 +98,24 @@ public class FirestoreHelper {
         return data;
     }
 
-    public String generateBuildingID(Double building_latitude, Double building_longitude)
-    {
-        return Double.toString(building_latitude) + "!" + Double.toString(building_longitude);
-    }
-
-    public GeoPoint decodeBuildingLocation(String building_id)
-    {
-        double latitude = 0;
-        double longitude = 0;
-
-        String[] coords = building_id.split("!");
-
-        try {
-            latitude = Double.parseDouble(coords[0]);
-            longitude = Double.parseDouble(coords[1]);
-        }
-        catch (Exception e){}
-
-        return new GeoPoint(latitude, longitude);
-    }
     public void insertBuilding(Double building_latitude, Double building_longitude, Map<String, Object> building_data,  OnCompleteListener<Void> onCompleteListener)
     {
-        insertData(FirestoreReferences.Buildings.COLLECTION, generateBuildingID(building_latitude, building_longitude), building_data, onCompleteListener);
+        insertData(FirestoreReferences.Buildings.COLLECTION, MapHelper.getInstance().encodeBuildingID(building_latitude, building_longitude), building_data, onCompleteListener);
     }
 
     public void updateBuilding(Double building_latitude, Double building_longitude, Map<String, Object> building_data,  OnCompleteListener<Void> onCompleteListener)
     {
-        updateData(FirestoreReferences.Buildings.COLLECTION, generateBuildingID(building_latitude, building_longitude), building_data, onCompleteListener);
+        updateData(FirestoreReferences.Buildings.COLLECTION, MapHelper.getInstance().encodeBuildingID(building_latitude, building_longitude), building_data, onCompleteListener);
     }
 
     public void readBuilding(Double building_latitude, Double building_longitude, OnCompleteListener<DocumentSnapshot> onCompleteListener)
     {
-        readData(FirestoreReferences.Buildings.COLLECTION, generateBuildingID(building_latitude, building_longitude), onCompleteListener);
+        readData(FirestoreReferences.Buildings.COLLECTION, MapHelper.getInstance().encodeBuildingID(building_latitude, building_longitude), onCompleteListener);
     }
 
     public void deleteBuilding(Double building_latitude, Double building_longitude, OnCompleteListener<Void> onCompleteListener)
     {
-        deleteData(FirestoreReferences.Buildings.COLLECTION, generateBuildingID(building_latitude, building_longitude), onCompleteListener);
+        deleteData(FirestoreReferences.Buildings.COLLECTION, MapHelper.getInstance().encodeBuildingID(building_latitude, building_longitude), onCompleteListener);
     }
 
     public void insertRestroom(String id, Map<String, Object> restroom_data,  OnCompleteListener<Void> onCompleteListener)

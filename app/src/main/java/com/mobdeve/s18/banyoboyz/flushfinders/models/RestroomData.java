@@ -1,5 +1,7 @@
 package com.mobdeve.s18.banyoboyz.flushfinders.models;
 
+import java.util.ArrayList;
+
 public class RestroomData {
     private String id;
     private String building_picture;
@@ -9,11 +11,9 @@ public class RestroomData {
     private int cleanliness;
     private int maintenance;
     private int vacancy;
-    private AmenityData[] amenities;
+    private ArrayList<AmenityData> amenities;
 
-    public RestroomData(){}
-
-    public RestroomData(String id, String building_picture, String building_name, String building_address, String name, int cleanliness, int maintenance, int vacancy, AmenityData[] amenities) {
+    public RestroomData(String id, String building_picture, String building_name, String building_address, String name, int cleanliness, int maintenance, int vacancy, ArrayList<AmenityData> amenities) {
         this.id = id;
         this.building_picture = building_picture;
         this.building_name = building_name;
@@ -89,11 +89,11 @@ public class RestroomData {
         this.vacancy = vacancy;
     }
 
-    public AmenityData[] getAmenities() {
+    public ArrayList<AmenityData> getAmenities() {
         return amenities;
     }
 
-    public void setAmenities(AmenityData[] amenities) {
+    public void setAmenities(ArrayList<AmenityData> amenities) {
         this.amenities = amenities;
     }
 }

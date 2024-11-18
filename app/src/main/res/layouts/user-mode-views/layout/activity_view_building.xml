@@ -68,10 +68,16 @@
 
             </LinearLayout>
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rv_building_restrooms"
+            <ScrollView
+                android:id="@+id/sv_building_restrooms"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_building_restrooms"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </ScrollView>
 
         </LinearLayout>
     </androidx.cardview.widget.CardView>

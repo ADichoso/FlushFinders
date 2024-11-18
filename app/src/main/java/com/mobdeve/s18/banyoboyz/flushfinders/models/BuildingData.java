@@ -1,16 +1,18 @@
 package com.mobdeve.s18.banyoboyz.flushfinders.models;
 
+import java.util.ArrayList;
+
 public class BuildingData {
     private double latitude;
     private double longitude;
     private String name;
     private String address;
     private String buildingPicture;
-    private RestroomData[] restroomData;
+    private ArrayList<RestroomData> restroomData;
     private boolean suggestion;
     public BuildingData(){}
 
-    public BuildingData(double latitude, double longitude, String name, String address, String buildingPicture, RestroomData[] restroomData, boolean suggestion) {
+    public BuildingData(double latitude, double longitude, String name, String address, String buildingPicture, ArrayList<RestroomData> restroomData, boolean suggestion) {
         this.latitude = latitude;
         this.longitude = longitude;
         this.name = name;
@@ -60,11 +62,11 @@ public class BuildingData {
         this.buildingPicture = buildingPicture;
     }
 
-    public RestroomData[] getRestroomData() {
+    public ArrayList<RestroomData> getRestroomData() {
         return restroomData;
     }
 
-    public void setRestroomData(RestroomData[] restroomData) {
+    public void setRestroomData(ArrayList<RestroomData> restroomData) {
         this.restroomData = restroomData;
     }
 

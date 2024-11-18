@@ -34,9 +34,9 @@ public class ViewUserSuggestionsActivity extends AppCompatActivity {
         rv_restroom_user_reports.setLayoutManager(new LinearLayoutManager(this));
 
         AmenityData[] amenityData = new AmenityData[]{};
-        RestroomData[] restroomData = new RestroomData[]{};
+        //RestroomData[] restroomData = new RestroomData[]{};
 
-        BuildingRestroomAdapter buildingRestroomAdapter = new BuildingRestroomAdapter(restroomData, ViewUserSuggestionsActivity.this);
-        rv_restroom_user_reports.setAdapter(buildingRestroomAdapter);
+        //BuildingRestroomAdapter buildingRestroomAdapter = new BuildingRestroomAdapter(restroomData, ViewUserSuggestionsActivity.this);
+        //rv_restroom_user_reports.setAdapter(buildingRestroomAdapter);
     }
 }

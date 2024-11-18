@@ -4,8 +4,6 @@ public class AmenityData {
     private String name;
     private String amenity_picture;
 
-    public AmenityData(){}
-
     public AmenityData(String name, String amenity_picture) {
         this.name = name;
         this.amenity_picture = amenity_picture;

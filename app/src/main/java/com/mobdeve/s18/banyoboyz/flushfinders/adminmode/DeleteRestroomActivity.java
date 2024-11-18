@@ -37,8 +37,8 @@ public class DeleteRestroomActivity extends AppCompatActivity {
         AmenityData[] amenityData = new AmenityData[]{};
         RestroomData[] restroomData = new RestroomData[]{};
 
-        BuildingRestroomAdapter buildingRestroomAdapter = new BuildingRestroomAdapter(restroomData, DeleteRestroomActivity.this);
-        rv_restrooms.setAdapter(buildingRestroomAdapter);
+        //BuildingRestroomAdapter buildingRestroomAdapter = new BuildingRestroomAdapter(restroomData, DeleteRestroomActivity.this);
+        //rv_restrooms.setAdapter(buildingRestroomAdapter);
     }
 
     public void deleteRestroomButton(View view)

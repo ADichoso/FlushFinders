@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -22,12 +23,18 @@ import com.mobdeve.s18.banyoboyz.flushfinders.modmode.ViewUserSuggestionsActivit
 import com.mobdeve.s18.banyoboyz.flushfinders.usermode.ViewBuildingActivity;
 import com.mobdeve.s18.banyoboyz.flushfinders.usermode.ViewRestroomActivity;
 
-public class BuildingRestroomAdapter extends RecyclerView.Adapter<BuildingRestroomAdapter.BuildingRestroomHolder> {
+import java.util.ArrayList;
 
-    RestroomData[] restroomData;
+public class BuildingRestroomAdapter extends RecyclerView.Adapter<BuildingRestroomAdapter.BuildingRestroomHolder> {
+    public static final String BUILDING_ID = "BUILDING_ID";
+    public static final String RESTROOM_ID = "RESTROOM_ID";
+
+    String building_id;
+    ArrayList<RestroomData> restroomData;
     Context context;
 
-    public BuildingRestroomAdapter(RestroomData[] restroomData, Context context) {
+    public BuildingRestroomAdapter(String building_id, ArrayList<RestroomData> restroomData, Context context) {
+        this.building_id = building_id;
         this.restroomData = restroomData;
         this.context = context;
     }
@@ -59,22 +66,19 @@ public class BuildingRestroomAdapter extends RecyclerView.Adapter<BuildingRestro
 
     @Override
     public void onBindViewHolder(@NonNull BuildingRestroomHolder holder, int position) {
-        final RestroomData restroomDataList = restroomData[position];
+        final RestroomData restroomDataList = restroomData.get(position);
 
         if(context instanceof ViewBuildingActivity)
         {
-            holder.iv_building_pic.setImageBitmap(PictureHelper.decodeBase64ToBitmap(restroomDataList.getBuildingPicture()));
             holder.tv_name.setText(restroomDataList.getName());
             holder.pb_cleanliness.setProgress(restroomDataList.getCleanliness());
             holder.pb_maintenance.setProgress(restroomDataList.getMaintenance());
             holder.pb_vacancy.setProgress(restroomDataList.getVacancy());
-            holder.itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent i = new Intent(context, ViewRestroomActivity.class);
-
-                    context.startActivity(i);
-                }
+            holder.btn_view_restroom.setOnClickListener(v -> {
+                Intent intent = new Intent(context, ViewRestroomActivity.class);
+                intent.putExtra(BUILDING_ID, building_id);
+                intent.putExtra(RESTROOM_ID, restroomDataList.getId());
+                context.startActivity(intent);
             });
         }
 
@@ -116,11 +120,12 @@ public class BuildingRestroomAdapter extends RecyclerView.Adapter<BuildingRestro
 
     @Override
     public int getItemCount() {
-        return restroomData.length;
+        return restroomData.size();
     }
 
 
     public class BuildingRestroomHolder extends RecyclerView.ViewHolder{
+        Button btn_view_restroom;
         ImageView iv_building_pic;
         TextView tv_name;
         TextView tv_address;
@@ -140,11 +145,17 @@ public class BuildingRestroomAdapter extends RecyclerView.Adapter<BuildingRestro
             {
                 rv_amenities = itemView.findViewById(R.id.rv_restroom_amenities);
                 tv_address = itemView.findViewById(R.id.tv_restroom_address);
+                iv_building_pic = itemView.findViewById(R.id.iv_building);
             }
 
+            if(context instanceof ViewBuildingActivity)
+                btn_view_restroom = itemView.findViewById(R.id.btn_view_restroom);
 
             if(context instanceof DeleteRestroomActivity || context instanceof EditRestroomActivity || context instanceof ViewUserSuggestionsActivity)
+            {
+                iv_building_pic = itemView.findViewById(R.id.iv_building);
                 tv_floor = itemView.findViewById(R.id.tv_restroom_floor);
+            }
 
             pb_cleanliness = itemView.findViewById(R.id.pb_cleanliness);
             pb_maintenance = itemView.findViewById(R.id.pb_maintenance);

@@ -34,9 +34,9 @@ public class EditRestroomActivity extends AppCompatActivity {
         rv_restrooms.setLayoutManager(new LinearLayoutManager(this));
 
         AmenityData[] amenityData = new AmenityData[]{};
-        RestroomData[] restroomData = new RestroomData[]{};
+        //RestroomData[] restroomData = new RestroomData[]{};
 
-        BuildingRestroomAdapter buildingRestroomAdapter = new BuildingRestroomAdapter(restroomData, EditRestroomActivity.this);
-        rv_restrooms.setAdapter(buildingRestroomAdapter);
+        //BuildingRestroomAdapter buildingRestroomAdapter = new BuildingRestroomAdapter(restroomData, EditRestroomActivity.this);
+        //rv_restrooms.setAdapter(buildingRestroomAdapter);
     }
 }

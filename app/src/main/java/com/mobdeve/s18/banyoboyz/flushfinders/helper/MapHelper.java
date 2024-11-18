@@ -4,6 +4,7 @@ import android.content.Context;
 import android.location.Address;
 import android.util.Log;
 
+import com.google.firebase.firestore.Filter;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.mobdeve.s18.banyoboyz.flushfinders.R;
 import com.mobdeve.s18.banyoboyz.flushfinders.models.FirestoreHelper;
@@ -69,17 +70,44 @@ public class MapHelper {
         }
     }
 
+    public String encodeBuildingID(GeoPoint point)
+    {
+        return encodeBuildingID(point.getLatitude(), point.getLongitude());
+    }
+
+    public String encodeBuildingID(Double building_latitude, Double building_longitude)
+    {
+        return Double.toString(building_latitude) + "!" + Double.toString(building_longitude);
+    }
+
+    public GeoPoint decodeBuildingLocation(String building_id)
+    {
+        double latitude = 0;
+        double longitude = 0;
+
+        String[] coords = building_id.split("!");
+
+        try {
+            latitude = Double.parseDouble(coords[0]);
+            longitude = Double.parseDouble(coords[1]);
+        }
+        catch (Exception e){}
+
+        return new GeoPoint(latitude, longitude);
+    }
+
     public void loadVisibleMarkers(Context context, MapView map, Marker.OnMarkerClickListener onMarkerClickListener, Map<GeoPoint, Marker> existingLocations) {
         // Get the current bounding box of the map view
         BoundingBox boundingBox = map.getBoundingBox();
 
         // Query Firestore for locations within the bounding box
-        FirestoreHelper.getInstance().getBuildingsDBRef() // Replace with your collection name
+        FirestoreHelper.getInstance().getBuildingsDBRef()
+                .whereEqualTo(FirestoreReferences.Buildings.SUGGESTION, false)// Replace with your collection name
                 .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         for (QueryDocumentSnapshot document : task.getResult()) {
-                            GeoPoint point = FirestoreHelper.getInstance().decodeBuildingLocation(document.getId());
+                            GeoPoint point = decodeBuildingLocation(document.getId());
 
                             if(existingLocations.containsKey(point) && !boundingBox.contains(point))
                             {
