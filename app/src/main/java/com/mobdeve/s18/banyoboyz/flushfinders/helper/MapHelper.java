@@ -6,6 +6,7 @@ import android.util.Log;
 
 import com.google.firebase.firestore.Filter;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.mobdeve.s18.banyoboyz.flushfinders.R;
 import com.mobdeve.s18.banyoboyz.flushfinders.models.FirestoreHelper;
 import com.mobdeve.s18.banyoboyz.flushfinders.models.FirestoreReferences;
@@ -16,6 +17,9 @@ import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.Marker;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -97,35 +101,61 @@ public class MapHelper {
     }
 
     public void loadVisibleMarkers(Context context, MapView map, Marker.OnMarkerClickListener onMarkerClickListener, Map<GeoPoint, Marker> existingLocations) {
+
         // Get the current bounding box of the map view
-        BoundingBox boundingBox = map.getBoundingBox();
+        BoundingBox bounding_box = map.getBoundingBox();
+
 
         // Query Firestore for locations within the bounding box
         FirestoreHelper.getInstance().getBuildingsDBRef()
-                .whereEqualTo(FirestoreReferences.Buildings.SUGGESTION, false)// Replace with your collection name
-                .get()
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        for (QueryDocumentSnapshot document : task.getResult()) {
-                            GeoPoint point = decodeBuildingLocation(document.getId());
+            .whereEqualTo(FirestoreReferences.Buildings.SUGGESTION, false) // Filter non-suggested buildings
+            .get()
+            .addOnCompleteListener(task ->
+            {
+                if (task.isSuccessful()) {
+                    QuerySnapshot current_building_documents = task.getResult();
 
-                            if(existingLocations.containsKey(point) && !boundingBox.contains(point))
-                            {
-                                //Already exists, but outside of the viewable space. Remove this point.
-                                map.getOverlays().remove(existingLocations.get(point));
-                                existingLocations.remove(point);
-                            }
-                            else if (!existingLocations.containsKey(point) && boundingBox.contains(point)) {
-                                //Point is not currently on display, but should be seen in the map space. Display this point.
-                                Marker marker = createNewMarker(context, map, point, onMarkerClickListener);
-                                marker.setTitle(document.getString(FirestoreReferences.Buildings.NAME));
-                                existingLocations.put(point, marker);
-                            }
-                        }
+                    Map<GeoPoint, String> current_locations = new HashMap<GeoPoint, String>();
 
-                        map.invalidate();
+                    //1. Get the current locations that should be visible in the map
+                    for (QueryDocumentSnapshot document : current_building_documents)
+                    {
+                        GeoPoint point = decodeBuildingLocation(document.getId());
+
+                        if(bounding_box.contains(point))
+                            current_locations.put(point, document.getString(FirestoreReferences.Buildings.NAME));
                     }
-                });
+
+                    if(current_locations.keySet().equals(existingLocations.keySet()))
+                        return;
+
+                    //2. Go through the current points in the map and remove ones not found in the current locations
+                    Iterator<GeoPoint> iterator = existingLocations.keySet().iterator();
+                    while (iterator.hasNext()) {
+                        GeoPoint existing_point = iterator.next();
+                        if (!current_locations.containsKey(existing_point)) {
+                            map.getOverlays().remove(existingLocations.get(existing_point));
+                            iterator.remove(); // Safely remove the element using the iterator
+                        }
+                    }
+
+                    //3. Update the map to show the newly found points
+                    for(GeoPoint current_point: current_locations.keySet())
+                    {
+                        if(!existingLocations.containsKey(current_point))
+                        {
+                            //Point is not currently on display, but should be seen in the map space. Display this point.
+                            Marker marker = createNewMarker(context, map, current_point, onMarkerClickListener);
+                            marker.setTitle(current_locations.get(current_point));
+                            existingLocations.put(current_point, marker);
+                        }
+                    }
+
+                    map.invalidate();
+                }
+            });
+
+
     }
 
     public Marker createNewMarker(Context context, MapView map, GeoPoint point, Marker.OnMarkerClickListener onMarkerClickListener)

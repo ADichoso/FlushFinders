@@ -1,6 +1,7 @@
 package com.mobdeve.s18.banyoboyz.flushfinders.models;
 
 import java.time.Instant;
+import java.util.ArrayList;
 
 public class AccountData {
     public enum AccountType
@@ -18,10 +19,11 @@ public class AccountData {
     private Instant creationTime;
     private AccountType type;
     private boolean isMe;
+    private ArrayList<RestroomData> favorite_restrooms;
 
     public AccountData(){}
 
-    public AccountData(String email, String name, String password, boolean isActive, String profilePicture, Instant creationTime, AccountType type, boolean isMe) {
+    public AccountData(String email, String name, String password, boolean isActive, String profilePicture, Instant creationTime, AccountType type, boolean isMe, ArrayList<RestroomData> favorite_restrooms) {
         this.name = name;
         this.email = email;
         this.password = password;
@@ -30,6 +32,7 @@ public class AccountData {
         this.creationTime = creationTime;
         this.type = type;
         this.isMe = isMe;
+        this.favorite_restrooms = favorite_restrooms;
     }
 
     public static AccountType convertType(String type)
@@ -108,5 +111,13 @@ public class AccountData {
 
     public void setMe(boolean me) {
         isMe = me;
+    }
+
+    public ArrayList<RestroomData> getFavorite_restrooms() {
+        return favorite_restrooms;
+    }
+
+    public void setFavorite_restrooms(ArrayList<RestroomData> favorite_restrooms) {
+        this.favorite_restrooms = favorite_restrooms;
     }
 }

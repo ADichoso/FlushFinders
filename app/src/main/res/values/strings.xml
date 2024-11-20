@@ -14,5 +14,10 @@
         <item>Moderator</item>
         <item>Administrator</item>
     </string-array>
+    <string-array name="restroom_filters_array">
+        <item>Saved Restrooms</item>
+        <item>Top Restrooms Near You</item>
+        <item>Similar Restrooms Near You</item>
+    </string-array>
     <string name="title_activity_maps_test">MapsTestActivity</string>
 </resources>

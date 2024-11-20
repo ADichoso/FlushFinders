@@ -42,11 +42,6 @@ public class RestroomReviewReportAdapter extends RecyclerView.Adapter<RestroomRe
 
         holder.rb_rating.setRating(restroomReviewReportDataList.getRating());
         holder.tv_report.setText(restroomReviewReportDataList.getReviewReport());
-
-
-        //holder.pb_cleanliness.setProgress(restroomReviewReportDataList.getMetrics().getCleanliness());
-        //holder.pb_maintenance.setProgress(restroomReviewReportDataList.getMetrics().getMaintenance());
-        //holder.pb_vacancy.setProgress(restroomReviewReportDataList.getMetrics().getVacancy());
     }
 
     @Override
@@ -67,7 +62,7 @@ public class RestroomReviewReportAdapter extends RecyclerView.Adapter<RestroomRe
 
         public RestroomReviewReportHolder(@NonNull View itemView) {
             super(itemView);
-            iv_building_pic = itemView.findViewById(R.id.iv_building);
+            iv_building_pic = itemView.findViewById(R.id.iv_building_pic);
 
             rb_rating = itemView.findViewById(R.id.rb_restroom_rating);
             tv_report = itemView.findViewById(R.id.tv_user_review_report);

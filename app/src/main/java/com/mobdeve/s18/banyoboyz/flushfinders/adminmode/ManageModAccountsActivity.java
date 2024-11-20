@@ -24,6 +24,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.mobdeve.s18.banyoboyz.flushfinders.R;
 import com.mobdeve.s18.banyoboyz.flushfinders.models.FirestoreHelper;
+import com.mobdeve.s18.banyoboyz.flushfinders.models.RestroomData;
 import com.mobdeve.s18.banyoboyz.flushfinders.models.SharedPrefReferences;
 import com.mobdeve.s18.banyoboyz.flushfinders.models.adapters.AccountAdapter;
 import com.mobdeve.s18.banyoboyz.flushfinders.models.AccountData;
@@ -95,7 +96,8 @@ public class ManageModAccountsActivity extends AppCompatActivity {
                                     data.get(FirestoreReferences.Accounts.PROFILE_PICTURE).toString(),
                                     Instant.ofEpochSecond(Long.parseLong(data.get(FirestoreReferences.Accounts.CREATION_TIME).toString())),
                                     AccountData.convertType(data.get(FirestoreReferences.Accounts.TYPE).toString()),
-                                    document.getId().equals(account_email)
+                                    document.getId().equals(account_email),
+                                    new ArrayList<RestroomData>()
                                 )
                         );
                     }

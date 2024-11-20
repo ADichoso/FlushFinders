@@ -69,14 +69,17 @@ public class FirestoreHelper {
         data.put(FirestoreReferences.Accounts.TYPE, type);
         data.put(FirestoreReferences.Accounts.PROFILE_PICTURE, PictureHelper.encodeBitmapToBase64(profile_picture));
         data.put(FirestoreReferences.Accounts.CREATION_TIME, creation_time_epoch_seconds);
+        data.put(FirestoreReferences.Accounts.FAVORITE_RESTROOMS, new ArrayList<String>());
 
         return data;
     }
 
-    public Map<String, Object> createBuildingData(String name, String address, Bitmap building_picture, boolean suggestion)
+    public Map<String, Object> createBuildingData(double latitude, double longitude, String name, String address, Bitmap building_picture, boolean suggestion)
     {
         Map<String, Object> data = new HashMap<>();
 
+        data.put(FirestoreReferences.Buildings.LATITUDE, latitude);
+        data.put(FirestoreReferences.Buildings.LONGITUDE, longitude);
         data.put(FirestoreReferences.Buildings.NAME, name);
         data.put(FirestoreReferences.Buildings.ADDRESS, address);
         data.put(FirestoreReferences.Buildings.BUILDING_PICTURE, PictureHelper.encodeBitmapToBase64(building_picture));

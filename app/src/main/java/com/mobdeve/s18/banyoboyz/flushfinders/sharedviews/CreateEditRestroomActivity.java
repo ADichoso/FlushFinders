@@ -1,4 +1,4 @@
-package com.mobdeve.s18.banyoboyz.flushfinders.modmode;
+package com.mobdeve.s18.banyoboyz.flushfinders.sharedviews;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -17,7 +17,6 @@ import android.widget.SeekBar;
 import androidx.activity.EdgeToEdge;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -25,27 +24,20 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.mobdeve.s18.banyoboyz.flushfinders.R;
-import com.mobdeve.s18.banyoboyz.flushfinders.adminmode.ManageAmenitiesActivity;
 import com.mobdeve.s18.banyoboyz.flushfinders.helper.MapHelper;
 import com.mobdeve.s18.banyoboyz.flushfinders.helper.PictureHelper;
 import com.mobdeve.s18.banyoboyz.flushfinders.models.AmenityData;
 import com.mobdeve.s18.banyoboyz.flushfinders.models.FirestoreHelper;
 import com.mobdeve.s18.banyoboyz.flushfinders.models.FirestoreReferences;
 import com.mobdeve.s18.banyoboyz.flushfinders.models.adapters.AmenitiesAdapter;
-import com.mobdeve.s18.banyoboyz.flushfinders.models.adapters.ManageAmenitiesAdapter;
-import com.mobdeve.s18.banyoboyz.flushfinders.sharedviews.SuggestRestroomLocationActivity;
+import com.mobdeve.s18.banyoboyz.flushfinders.modmode.ModHomeActivity;
 
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -60,6 +52,7 @@ public class CreateEditRestroomActivity extends AppCompatActivity {
     SeekBar sb_vacancy;
     Button btn_submit_restroom_info;
 
+    private boolean suggestion;
     private double building_latitude;
     private double building_longitude;
     private String building_name;
@@ -136,6 +129,7 @@ public class CreateEditRestroomActivity extends AppCompatActivity {
         });
 
         Intent result_intent = getIntent();
+        suggestion = result_intent.getStringExtra(SuggestRestroomLocationActivity.CALLER).equals("USER");
         building_latitude = result_intent.getDoubleExtra(SuggestRestroomLocationActivity.LATITUDE, Double.NaN);
         building_longitude = result_intent.getDoubleExtra(SuggestRestroomLocationActivity.LONGITUDE, Double.NaN);
 
@@ -235,12 +229,13 @@ public class CreateEditRestroomActivity extends AppCompatActivity {
 
                 Map<String, Object> new_building_data = FirestoreHelper.getInstance().createBuildingData
                         (
+                                building_latitude,
+                                building_longitude,
                                 building_name,
                                 address,
                                 PictureHelper.decodeBase64ToBitmap(building_picture),
-                                false
+                                suggestion
                         );
-
                 FirestoreHelper.getInstance().insertBuilding(building_latitude, building_longitude, new_building_data, task1 ->
                 {
                     if(task1.isSuccessful())

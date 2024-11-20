@@ -1,7 +1,5 @@
 package com.mobdeve.s18.banyoboyz.flushfinders.usermode;
 
-import static android.view.View.VISIBLE;
-
 import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
@@ -44,7 +42,10 @@ import org.osmdroid.config.Configuration;
 import org.osmdroid.events.MapAdapter;
 import org.osmdroid.events.ScrollEvent;
 import org.osmdroid.events.ZoomEvent;
+import org.osmdroid.tileprovider.MapTileProviderBasic;
+import org.osmdroid.tileprovider.modules.TileWriter;
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
+import org.osmdroid.util.BoundingBox;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.Marker;
@@ -61,6 +62,8 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class MapHomeActivity extends AppCompatActivity implements SensorEventListener, LocationListener {
+    public static final String LATITUDE = "LATITUDE";
+    public static final String LONGITUDE = "LONGITUDE";
     public static final String BUILDING_ID = "BUILDING_ID";
     private static final float ALPHA = 0.05f; // Smoothing factor (0 < alpha < 1)
     private float last_azimuth; // Store the last smoothed azimuth
@@ -107,6 +110,15 @@ public class MapHomeActivity extends AppCompatActivity implements SensorEventLis
             return insets;
         });
 
+        //Map Config
+        Configuration.getInstance().setCacheMapTileCount((short) 12); // Adjust based on memory constraints
+        Configuration.getInstance().setCacheMapTileOvershoot((short) 0);
+        Configuration.getInstance().setTileFileSystemCacheMaxBytes(50L * 1024 * 1024); // 50 MB
+        Configuration.getInstance().setTileDownloadThreads((short) 2); // Limit concurrent downloads
+        Configuration.getInstance().setTileDownloadMaxQueueSize((short) 20); // Adjust to prevent overwhelming the memory
+
+
+
         // Initialize Sensor Manager
         sensor_manager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         last_azimuth = 0f;
@@ -124,10 +136,16 @@ public class MapHomeActivity extends AppCompatActivity implements SensorEventLis
         btn_reset_tracking.bringToFront();
 
         map = findViewById(R.id.map);
-        map.setTileSource(TileSourceFactory.MAPNIK);
+        MapTileProviderBasic tileProvider = new MapTileProviderBasic(this);
+        TileSourceFactory.addTileSource(TileSourceFactory.MAPNIK);
+        tileProvider.createTileCache();
+        map.setTileProvider(tileProvider);
 
         map.setBuiltInZoomControls(false);
         map.setMultiTouchControls(true);
+
+        map.setMinZoomLevel(10.0);
+        map.setMaxZoomLevel(25.0);
 
         map.setZoomLevel(20);
 
@@ -173,7 +191,7 @@ public class MapHomeActivity extends AppCompatActivity implements SensorEventLis
         map.getOverlays().add(location_overlay);
 
         Intent intent = getIntent();
-        building_id = intent.getStringExtra(ViewRestroomActivity.BUILDING_ID);
+        building_id = intent.getStringExtra(ViewBuildingActivity.BUILDING_ID);
 
         toggleTracking(true);
 
@@ -332,7 +350,10 @@ public class MapHomeActivity extends AppCompatActivity implements SensorEventLis
 
     public void recommendedRestroomsButton(View view)
     {
-        Intent intent = new Intent(MapHomeActivity.this, SavedBuildingsActivity.class);
+        Intent intent = new Intent(MapHomeActivity.this, SavedRestroomsActivity.class);
+
+        intent.putExtra(LATITUDE, curr_location.getLatitude());
+        intent.putExtra(LONGITUDE, curr_location.getLongitude());
 
         startActivity(intent);
     }
@@ -355,7 +376,7 @@ public class MapHomeActivity extends AppCompatActivity implements SensorEventLis
     {
         Intent intent = new Intent(MapHomeActivity.this, SuggestRestroomLocationActivity.class);
 
-        intent.putExtra("CALLER", "USER");
+        intent.putExtra(SuggestRestroomLocationActivity.CALLER, "USER");
         startActivity(intent);
     }
 
@@ -535,6 +556,7 @@ public class MapHomeActivity extends AppCompatActivity implements SensorEventLis
                 user_route.setWidth(10.0f);
                 map.getOverlays().add(user_route);
             }
+            map.invalidate();
         });
 
     }

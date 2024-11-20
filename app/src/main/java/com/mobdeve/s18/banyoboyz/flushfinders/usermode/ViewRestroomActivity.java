@@ -1,9 +1,15 @@
 package com.mobdeve.s18.banyoboyz.flushfinders.usermode;
 
+import static com.mobdeve.s18.banyoboyz.flushfinders.usermode.ViewBuildingActivity.BUILDING_ID;
+
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -20,6 +26,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldPath;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.mobdeve.s18.banyoboyz.flushfinders.R;
 import com.mobdeve.s18.banyoboyz.flushfinders.helper.MapHelper;
@@ -28,6 +35,7 @@ import com.mobdeve.s18.banyoboyz.flushfinders.models.AmenityData;
 import com.mobdeve.s18.banyoboyz.flushfinders.models.FirestoreHelper;
 import com.mobdeve.s18.banyoboyz.flushfinders.models.FirestoreReferences;
 import com.mobdeve.s18.banyoboyz.flushfinders.models.RestroomData;
+import com.mobdeve.s18.banyoboyz.flushfinders.models.SharedPrefReferences;
 import com.mobdeve.s18.banyoboyz.flushfinders.models.adapters.AmenitiesAdapter;
 import com.mobdeve.s18.banyoboyz.flushfinders.models.adapters.BuildingRestroomAdapter;
 
@@ -36,8 +44,12 @@ import org.osmdroid.util.GeoPoint;
 import java.util.ArrayList;
 
 public class ViewRestroomActivity extends AppCompatActivity {
-    public static final String BUILDING_ID = "BUILDING_ID";
 
+
+    SharedPreferences sharedpreferences;
+    String account_email;
+
+    ImageButton btn_toggle_favorite;
     TextView tv_restroom_building;
     TextView tv_restroom_floor;
     ProgressBar pb_cleanliness;
@@ -58,6 +70,7 @@ public class ViewRestroomActivity extends AppCompatActivity {
             return insets;
         });
 
+        btn_toggle_favorite = findViewById(R.id.btn_toggle_favorite);
         tv_restroom_building = findViewById(R.id.tv_restroom_building);
         tv_restroom_floor = findViewById(R.id.tv_restroom_floor);
         pb_cleanliness = findViewById(R.id.pb_cleanliness);
@@ -72,12 +85,34 @@ public class ViewRestroomActivity extends AppCompatActivity {
         building_id = intent.getStringExtra(BuildingRestroomAdapter.BUILDING_ID);
         restroom_id = intent.getStringExtra(BuildingRestroomAdapter.RESTROOM_ID);
     }
-
     @Override
     protected void onStart() {
         super.onStart();
 
-        if(restroom_id.isEmpty() || building_id.isEmpty())
+        //SHARED PREFERENCES
+        sharedpreferences = getSharedPreferences(SharedPrefReferences.SHARED_PREFS, Context.MODE_PRIVATE);
+        account_email = sharedpreferences.getString(SharedPrefReferences.ACCOUNT_EMAIL_KEY, "");
+
+        //Toggle the image button at the start according to if the restroom is already favorited by the user.
+        FirestoreHelper.getInstance().readAccount(account_email, task ->
+        {
+            if(task.isSuccessful())
+            {
+                DocumentSnapshot account_document = task.getResult();
+
+                if(account_document != null && account_document.exists())
+                {
+                    //2. User exists. Get their favorite restrooms
+                    ArrayList<String> restrooms_ids = (ArrayList<String>) account_document.get(FirestoreReferences.Accounts.FAVORITE_RESTROOMS);
+
+                    toggleFavoriteButton(restrooms_ids != null && !restrooms_ids.isEmpty() && restrooms_ids.contains(restroom_id));
+                }
+            }
+        });
+
+
+        //GETTING RESTROOM DATA HERE
+        if(restroom_id.isEmpty() || building_id.isEmpty() || account_email.isEmpty())
             return;
 
         GeoPoint building_location = MapHelper.getInstance().decodeBuildingLocation(building_id);
@@ -146,5 +181,63 @@ public class ViewRestroomActivity extends AppCompatActivity {
         intent.putExtra(BUILDING_ID, building_id);
         startActivity(intent);
         finish();
+    }
+
+    public void toggleRestroomAsFavoriteButton(View view)
+    {
+        //Toggle the restroom as the user's favorite, then toggle the image displayed accordingly
+
+        //1. Get the user first
+
+        FirestoreHelper.getInstance().readAccount(account_email, task ->
+        {
+            if(task.isSuccessful())
+            {
+                DocumentSnapshot account_document = task.getResult();
+
+                if(account_document != null && account_document.exists())
+                {
+                    //2. User exists. Get their favorite restrooms
+                    ArrayList<String> restrooms_ids = (ArrayList<String>) account_document.get(FirestoreReferences.Accounts.FAVORITE_RESTROOMS);
+
+                    if(restrooms_ids != null && !restrooms_ids.isEmpty() && restrooms_ids.contains(restroom_id))
+                    {
+                        //3. The user currently has this restroom as a favorite. Remove it from the array
+                        FirestoreHelper.getInstance().getAccountsDBRef().document(account_email)
+                            .update(FirestoreReferences.Accounts.FAVORITE_RESTROOMS, FieldValue.arrayRemove(restroom_id))
+                            .addOnCompleteListener(task1 ->
+                            {
+                                if(task1.isSuccessful())
+                                {
+                                    //4. Update the button design
+                                    toggleFavoriteButton(false);
+                                }
+                            });
+                    }
+                    else
+                    {
+                        //5. User currently does not have the restroom favorited. Add it to the array.
+                        FirestoreHelper.getInstance().getAccountsDBRef().document(account_email)
+                            .update(FirestoreReferences.Accounts.FAVORITE_RESTROOMS, FieldValue.arrayUnion(restroom_id))
+                            .addOnCompleteListener(task1 ->
+                            {
+                                if(task1.isSuccessful())
+                                {
+                                    //4. Update the button design
+                                    toggleFavoriteButton(true);
+                                }
+                            });
+                    }
+                }
+            }
+        });
+    }
+
+    private void toggleFavoriteButton(boolean is_favorite)
+    {
+        if(is_favorite)
+            btn_toggle_favorite.setImageResource(R.drawable.icon_star_glow);
+        else
+            btn_toggle_favorite.setImageResource(R.drawable.icon_star);
     }
 }

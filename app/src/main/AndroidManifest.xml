@@ -68,7 +68,7 @@
             android:exported="false"
             android:screenOrientation="sensorPortrait" />
         <activity
-            android:name=".modmode.CreateEditRestroomActivity"
+            android:name=".sharedviews.CreateEditRestroomActivity"
             android:exported="false"
             android:screenOrientation="sensorPortrait" />
         <activity
@@ -108,7 +108,7 @@
             android:exported="false"
             android:screenOrientation="sensorPortrait" />
         <activity
-            android:name=".usermode.SavedBuildingsActivity"
+            android:name=".usermode.SavedRestroomsActivity"
             android:exported="false"
             android:screenOrientation="sensorPortrait" />
         <activity

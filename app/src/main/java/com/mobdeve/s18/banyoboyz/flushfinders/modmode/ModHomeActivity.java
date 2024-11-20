@@ -47,7 +47,7 @@ public class ModHomeActivity extends AppCompatActivity {
     {
         Intent intent = new Intent(ModHomeActivity.this, SuggestRestroomLocationActivity.class);
 
-        intent.putExtra("CALLER", "MOD_ADMIN");
+        intent.putExtra(SuggestRestroomLocationActivity.CALLER, "MOD_ADMIN");
         startActivity(intent);
     }
 

@@ -66,13 +66,12 @@
                     </LinearLayout>
 
                     <ImageButton
-                        android:id="@+id/btn_start_building_directions"
-                        android:layout_width="54dp"
-                        android:layout_height="match_parent"
+                        android:id="@+id/btn_toggle_favorite"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:onClick="getRestroomDirectionsButton"
-                        android:scaleType="centerInside"
-                        app:srcCompat="@drawable/icon_navigate" />
+                        android:onClick="toggleRestroomAsFavoriteButton"
+                        app:srcCompat="@drawable/icon_star" />
 
                 </LinearLayout>
 
@@ -205,6 +204,15 @@
                     android:layout_height="match_parent" />
             </LinearLayout>
         </ScrollView>
+
+            <ImageButton
+                android:id="@+id/btn_start_building_directions"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:onClick="getRestroomDirectionsButton"
+                android:scaleType="centerInside"
+                app:srcCompat="@drawable/icon_navigate" />
 
         </LinearLayout>
     </androidx.cardview.widget.CardView>

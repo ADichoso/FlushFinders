@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -20,7 +19,6 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.mobdeve.s18.banyoboyz.flushfinders.R;
 import com.mobdeve.s18.banyoboyz.flushfinders.helper.MapHelper;
-import com.mobdeve.s18.banyoboyz.flushfinders.modmode.CreateEditRestroomActivity;
 import com.mobdeve.s18.banyoboyz.flushfinders.usermode.SuggestRestroomDetailsActivity;
 
 import org.osmdroid.events.MapAdapter;
@@ -34,13 +32,13 @@ import org.osmdroid.views.overlay.MapEventsOverlay;
 import org.osmdroid.views.overlay.Marker;
 import org.osmdroid.views.overlay.mylocation.GpsMyLocationProvider;
 import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay;
-import org.osmdroid.bonuspack.location.GeocoderNominatim;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class SuggestRestroomLocationActivity extends AppCompatActivity{
+    public static final String CALLER = "CALLER";
     public static final String LATITUDE = "LATITUDE";
     public static final String LONGITUDE = "LONGITUDE";
 
@@ -204,13 +202,9 @@ public class SuggestRestroomLocationActivity extends AppCompatActivity{
     {
         if(chosen_marker != null)
         {
-            Intent intent = new Intent(SuggestRestroomLocationActivity.this, SuggestRestroomDetailsActivity.class);
+            Intent intent = new Intent(SuggestRestroomLocationActivity.this, CreateEditRestroomActivity.class);
 
-            if(caller != null && caller.equals("MOD_ADMIN"))
-            {
-                intent = new Intent(SuggestRestroomLocationActivity.this, CreateEditRestroomActivity.class);
-            }
-
+            intent.putExtra(CALLER, caller);
             intent.putExtra(LATITUDE, chosen_latitude);
             intent.putExtra(LONGITUDE, chosen_longitude);
 

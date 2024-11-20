@@ -11,9 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.mobdeve.s18.banyoboyz.flushfinders.R;
-import com.mobdeve.s18.banyoboyz.flushfinders.models.adapters.BuildingAdapter;
 import com.mobdeve.s18.banyoboyz.flushfinders.models.BuildingData;
-import com.mobdeve.s18.banyoboyz.flushfinders.models.RestroomData;
 
 public class SearchBuildingActivity extends AppCompatActivity {
 
@@ -29,13 +27,13 @@ public class SearchBuildingActivity extends AppCompatActivity {
             return insets;
         });
 
-        rv_buildings = findViewById(R.id.rv_buildings);
+        rv_buildings = findViewById(R.id.rv_recommended_restrooms);
         rv_buildings.setHasFixedSize(true);
         rv_buildings.setLayoutManager(new LinearLayoutManager(this));
 
         BuildingData[] buildingData = new BuildingData[]{};
 
-        BuildingAdapter buildingAdapter = new BuildingAdapter(buildingData, SearchBuildingActivity.this);
-        rv_buildings.setAdapter(buildingAdapter);
+        //BuildingAdapter buildingAdapter = new BuildingAdapter(buildingData, SearchBuildingActivity.this);
+        //rv_buildings.setAdapter(buildingAdapter);
     }
 }

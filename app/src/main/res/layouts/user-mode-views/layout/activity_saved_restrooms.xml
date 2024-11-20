@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".usermode.SavedBuildingsActivity">
+    tools:context=".usermode.SavedRestroomsActivity">
 
 
     <androidx.cardview.widget.CardView
@@ -26,51 +26,28 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0">
 
-        <LinearLayout
+        <Spinner
+            android:id="@+id/sp_restroom_filters"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal">
-
-            <ToggleButton
-                android:id="@+id/tbtn_saved_restrooms"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textOff="Saved"
-                android:textOn="Saved"
-                android:textSize="12sp" />
-
-            <ToggleButton
-                android:id="@+id/tbtn_top_restrooms"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textOff="Top Restrooms Near You"
-                android:textOn="Top Restrooms Near You"
-                android:textSize="12sp" />
-
-            <ToggleButton
-                android:id="@+id/tbtn_similar_restrooms"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textOff="Similar Restrooms"
-                android:textOn="Similar Restrooms"
-                android:textSize="12sp" />
-        </LinearLayout>
+            android:layout_height="wrap_content" />
 
     </androidx.cardview.widget.CardView>
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/cv_search_buildings"
+    <ScrollView
+        android:id="@+id/sv_restrooms"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cv_restroom_filters"
         app:layout_constraintVertical_bias="0.0">
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_buildings"
+            android:id="@+id/rv_recommended_restrooms"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-    </androidx.cardview.widget.CardView>
+            android:layout_height="wrap_content" />
+    </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

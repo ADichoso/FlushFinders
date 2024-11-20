@@ -12,9 +12,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.mobdeve.s18.banyoboyz.flushfinders.R;
 import com.mobdeve.s18.banyoboyz.flushfinders.accounts.AccountHomeActivity;
-import com.mobdeve.s18.banyoboyz.flushfinders.modmode.CreateEditRestroomActivity;
 import com.mobdeve.s18.banyoboyz.flushfinders.modmode.EditRestroomActivity;
-import com.mobdeve.s18.banyoboyz.flushfinders.modmode.ModHomeActivity;
 import com.mobdeve.s18.banyoboyz.flushfinders.modmode.ReviewUserReportsActivity;
 import com.mobdeve.s18.banyoboyz.flushfinders.modmode.ViewUserSuggestionsActivity;
 import com.mobdeve.s18.banyoboyz.flushfinders.sharedviews.SuggestRestroomLocationActivity;

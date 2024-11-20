@@ -120,7 +120,6 @@ public class AccountEditActivity extends AppCompatActivity {
 
         //Shared Preferences
         sharedpreferences = getSharedPreferences(SharedPrefReferences.SHARED_PREFS, Context.MODE_PRIVATE);
-
         account_email = sharedpreferences.getString(SharedPrefReferences.ACCOUNT_EMAIL_KEY, "");
 
         et_edit_account_name.setText(account_name);

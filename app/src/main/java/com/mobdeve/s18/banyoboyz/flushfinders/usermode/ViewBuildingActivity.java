@@ -8,7 +8,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -16,12 +15,9 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldPath;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 import com.mobdeve.s18.banyoboyz.flushfinders.R;
 import com.mobdeve.s18.banyoboyz.flushfinders.helper.MapHelper;
 import com.mobdeve.s18.banyoboyz.flushfinders.helper.PictureHelper;
@@ -34,10 +30,11 @@ import com.mobdeve.s18.banyoboyz.flushfinders.models.RestroomData;
 import org.osmdroid.util.GeoPoint;
 
 import java.util.ArrayList;
-import java.util.Map;
 
 public class ViewBuildingActivity extends AppCompatActivity {
+    public static final String BUILDING_ID = "BUILDING_ID";
 
+    String building_id;
     GeoPoint building_location;
     ImageView iv_building;
     TextView tv_building_name;
@@ -54,7 +51,7 @@ public class ViewBuildingActivity extends AppCompatActivity {
             return insets;
         });
 
-        iv_building = findViewById(R.id.iv_building);
+        iv_building = findViewById(R.id.iv_building_pic);
         tv_building_name = findViewById(R.id.tv_building_name);
 
         rv_building_restrooms = findViewById(R.id.rv_building_restrooms);
@@ -62,8 +59,9 @@ public class ViewBuildingActivity extends AppCompatActivity {
         rv_building_restrooms.setLayoutManager(new LinearLayoutManager(this));
 
         Intent intent = getIntent();
+        building_id = intent.getStringExtra(MapHomeActivity.BUILDING_ID);
 
-        building_location = MapHelper.getInstance().decodeBuildingLocation(intent.getStringExtra(MapHomeActivity.BUILDING_ID));
+        building_location = MapHelper.getInstance().decodeBuildingLocation(building_id);
     }
 
     @Override
@@ -102,6 +100,7 @@ public class ViewBuildingActivity extends AppCompatActivity {
                         {
                             restroomData.add(new RestroomData(
                                     restroom_document.getId(),
+                                    building_id,
                                     building_document.getString(FirestoreReferences.Buildings.BUILDING_PICTURE),
                                     building_document.getString(FirestoreReferences.Buildings.NAME),
                                     building_document.getString(FirestoreReferences.Buildings.ADDRESS),
@@ -113,10 +112,7 @@ public class ViewBuildingActivity extends AppCompatActivity {
                             ));
                         }
 
-                        BuildingRestroomAdapter buildingRestroomAdapter = new BuildingRestroomAdapter(
-                            MapHelper.getInstance().encodeBuildingID(building_location),
-                            restroomData,
-                    ViewBuildingActivity.this);
+                        BuildingRestroomAdapter buildingRestroomAdapter = new BuildingRestroomAdapter(restroomData, ViewBuildingActivity.this);
 
                         rv_building_restrooms.setAdapter(buildingRestroomAdapter);
                     }
@@ -129,6 +125,7 @@ public class ViewBuildingActivity extends AppCompatActivity {
     {
         Intent intent = new Intent(ViewBuildingActivity.this, MapHomeActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.putExtra(BUILDING_ID, building_id);
         startActivity(intent);
         finish();
     }

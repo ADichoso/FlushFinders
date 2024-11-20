@@ -11,11 +11,14 @@ public class FirestoreReferences {
         public final static String PROFILE_PICTURE = "profilePicture";
         public final static String CREATION_TIME = "creationTime";
         public final static String TYPE = "type";
+        public final static String FAVORITE_RESTROOMS = "favoriteRestrooms";
     }
 
     public static class Buildings
     {
         public final static String COLLECTION = "BUILDING";
+        public final static String LATITUDE = "latitude";
+        public final static String LONGITUDE = "longitude";
         public final static String NAME = "name";
         public final static String ADDRESS = "address";
         public final static String BUILDING_PICTURE = "buildingPicture";
