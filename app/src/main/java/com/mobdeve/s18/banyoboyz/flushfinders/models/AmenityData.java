@@ -1,6 +1,7 @@
 package com.mobdeve.s18.banyoboyz.flushfinders.models;
 
-public class AmenityData {
+public class AmenityData
+{
     private String name;
     private String amenity_picture;
 

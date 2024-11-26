@@ -2,8 +2,6 @@ package com.mobdeve.s18.banyoboyz.flushfinders.usermode;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -31,7 +29,8 @@ import org.osmdroid.util.GeoPoint;
 
 import java.util.ArrayList;
 
-public class ViewBuildingActivity extends AppCompatActivity {
+public class ViewBuildingActivity extends AppCompatActivity
+{
 
     String building_id;
     GeoPoint building_location;
@@ -40,11 +39,13 @@ public class ViewBuildingActivity extends AppCompatActivity {
     RecyclerView rv_building_restrooms;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_view_building);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) ->
+        {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
@@ -64,7 +65,8 @@ public class ViewBuildingActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onStart() {
+    protected void onStart()
+    {
         super.onStart();
 
         if(building_location == null)
@@ -76,47 +78,45 @@ public class ViewBuildingActivity extends AppCompatActivity {
 
         FirestoreHelper.getInstance().readBuilding(building_location.getLatitude(), building_location.getLongitude(), task ->
         {
-            if(task.isSuccessful())
+            if(!task.isSuccessful())
+                return;
+
+            //Found the building, get the restrooms
+            DocumentSnapshot building_document = task.getResult();
+
+            iv_building.setImageBitmap(PictureHelper.decodeBase64ToBitmap(building_document.getString(FirestoreReferences.Buildings.BUILDING_PICTURE)));
+            tv_building_name.setText(building_document.getString(FirestoreReferences.Buildings.NAME));
+
+            ArrayList<String> restroom_ids = (ArrayList<String>) building_document.get(FirestoreReferences.Buildings.RESTROOMS);
+
+            FirestoreHelper.getInstance().getRestroomsDBRef().whereIn(FieldPath.documentId(), restroom_ids)
+            .get()
+            .addOnCompleteListener(task1 ->
             {
-                //Found the building, get the restrooms
-                DocumentSnapshot building_document = task.getResult();
+                if(!task1.isSuccessful())
+                    return;
 
-                iv_building.setImageBitmap(PictureHelper.decodeBase64ToBitmap(building_document.getString(FirestoreReferences.Buildings.BUILDING_PICTURE)));
-                tv_building_name.setText(building_document.getString(FirestoreReferences.Buildings.NAME));
-
-                ArrayList<String> restroom_ids = (ArrayList<String>) building_document.get(FirestoreReferences.Buildings.RESTROOMS);
-
-                FirestoreHelper.getInstance().getRestroomsDBRef().whereIn(FieldPath.documentId(), restroom_ids)
-                .get()
-                .addOnCompleteListener(task1 ->
+                //Got the restrooms, add its info onto the Restroom Data
+                for(QueryDocumentSnapshot restroom_document : task1.getResult())
                 {
-                    if(task1.isSuccessful())
-                    {
+                    restroomData.add(new RestroomData(
+                            restroom_document.getId(),
+                            building_id,
+                            building_document.getString(FirestoreReferences.Buildings.BUILDING_PICTURE),
+                            building_document.getString(FirestoreReferences.Buildings.NAME),
+                            building_document.getString(FirestoreReferences.Buildings.ADDRESS),
+                            restroom_document.getString(FirestoreReferences.Restrooms.NAME),
+                            restroom_document.get(FirestoreReferences.Restrooms.CLEANLINESS, Integer.class),
+                            restroom_document.get(FirestoreReferences.Restrooms.MAINTENANCE, Integer.class),
+                            restroom_document.get(FirestoreReferences.Restrooms.VACANCY, Integer.class),
+                            new ArrayList<AmenityData>()
+                    ));
+                }
 
-                        Log.d("ViewBuildingActivity", String.valueOf(task1.getResult().size()));
-                        //Got the restrooms, add its info onto the Restroom Data
-                        for(QueryDocumentSnapshot restroom_document : task1.getResult())
-                        {
-                            restroomData.add(new RestroomData(
-                                    restroom_document.getId(),
-                                    building_id,
-                                    building_document.getString(FirestoreReferences.Buildings.BUILDING_PICTURE),
-                                    building_document.getString(FirestoreReferences.Buildings.NAME),
-                                    building_document.getString(FirestoreReferences.Buildings.ADDRESS),
-                                    restroom_document.getString(FirestoreReferences.Restrooms.NAME),
-                                    restroom_document.get(FirestoreReferences.Restrooms.CLEANLINESS, Integer.class),
-                                    restroom_document.get(FirestoreReferences.Restrooms.MAINTENANCE, Integer.class),
-                                    restroom_document.get(FirestoreReferences.Restrooms.VACANCY, Integer.class),
-                                    new ArrayList<AmenityData>()
-                            ));
-                        }
+                BuildingRestroomAdapter buildingRestroomAdapter = new BuildingRestroomAdapter(restroomData, ViewBuildingActivity.this);
 
-                        BuildingRestroomAdapter buildingRestroomAdapter = new BuildingRestroomAdapter(restroomData, ViewBuildingActivity.this);
-
-                        rv_building_restrooms.setAdapter(buildingRestroomAdapter);
-                    }
-                });
-            }
+                rv_building_restrooms.setAdapter(buildingRestroomAdapter);
+            });
         });
     }
 }

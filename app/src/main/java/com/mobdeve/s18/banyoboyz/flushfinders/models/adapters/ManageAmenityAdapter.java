@@ -18,52 +18,58 @@ import com.mobdeve.s18.banyoboyz.flushfinders.models.FirestoreHelper;
 
 import java.util.ArrayList;
 
-public class ManageAmenityAdapter extends RecyclerView.Adapter<ManageAmenityAdapter.ManageAmenitiesHolder> {
-    private ArrayList<AmenityData> amenityData;
+public class ManageAmenityAdapter extends RecyclerView.Adapter<ManageAmenityAdapter.ManageAmenityHolder>
+{
+    private ArrayList<AmenityData> amenity_list;
     private Context context;
-    public ManageAmenityAdapter(ArrayList<AmenityData> amenityData, Context context) {
-        this.amenityData = amenityData;
+    public ManageAmenityAdapter(ArrayList<AmenityData> amenity_list, Context context)
+    {
+        this.amenity_list = amenity_list;
         this.context = context;
     }
 
     @NonNull
     @Override
-    public ManageAmenityAdapter.ManageAmenitiesHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
-        View view = layoutInflater.inflate(R.layout.view_restroom_manage_amenity_item_list,parent,false);
+    public ManageAmenityHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType)
+    {
+        LayoutInflater layout_inflate = LayoutInflater.from(parent.getContext());
+        View view = layout_inflate.inflate(R.layout.view_restroom_manage_amenity_item_list,parent,false);
 
-        return new ManageAmenitiesHolder(view);
+        return new ManageAmenityHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ManageAmenitiesHolder holder, int position) {
-        AmenityData data = amenityData.get(position);
-        holder.iv_amenity_icon.setImageBitmap(PictureHelper.decodeBase64ToBitmap(data.getAmenityPicture()));
-        holder.tv_amenity_description.setText(data.getName());
+    public void onBindViewHolder(@NonNull ManageAmenityHolder holder, int position)
+    {
+        final AmenityData amenity = amenity_list.get(position);
+        holder.iv_amenity_icon.setImageBitmap(PictureHelper.decodeBase64ToBitmap(amenity.getAmenityPicture()));
+        holder.tv_amenity_description.setText(amenity.getName());
         holder.btn_delete_amenity.setOnClickListener(view ->
         {
-            FirestoreHelper.getInstance().deleteAmenity(data.getName(), task ->
+            FirestoreHelper.getInstance().deleteAmenity(amenity.getName(), task ->
             {
                 //Delete the account and update the recycler view accordingly
                 int old_position = holder.getAbsoluteAdapterPosition();
-                amenityData.remove(old_position);
+                amenity_list.remove(old_position);
                 notifyItemRemoved(old_position);
-                notifyItemRangeChanged(old_position, amenityData.size());
+                notifyItemRangeChanged(old_position, amenity_list.size());
             });
         });
     }
 
     @Override
     public int getItemCount() {
-        return amenityData.size();
+        return amenity_list.size();
     }
 
-    public class ManageAmenitiesHolder extends RecyclerView.ViewHolder{
+    public class ManageAmenityHolder extends RecyclerView.ViewHolder
+    {
         ImageView iv_amenity_icon;
         TextView tv_amenity_description;
         Button btn_delete_amenity;
 
-        public ManageAmenitiesHolder(@NonNull View itemView) {
+        public ManageAmenityHolder(@NonNull View itemView)
+        {
             super(itemView);
             iv_amenity_icon = itemView.findViewById(R.id.iv_amenity_icon);
             tv_amenity_description = itemView.findViewById(R.id.tv_amenity_description);

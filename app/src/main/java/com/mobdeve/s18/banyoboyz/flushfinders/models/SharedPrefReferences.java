@@ -2,10 +2,10 @@ package com.mobdeve.s18.banyoboyz.flushfinders.models;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-
 import java.util.Date;
 
-public class SharedPrefReferences {
+public class SharedPrefReferences
+{
     public static final String SHARED_PREFS = "SHARED_PREFS";
     public static final String ACCOUNT_NAME_KEY = "ACCOUNT_NAME_KEY";
     public static final String ACCOUNT_EMAIL_KEY = "ACCOUNT_EMAIL_KEY";
@@ -26,6 +26,7 @@ public class SharedPrefReferences {
     {
         return calculateDaysBetween(loginTime, (new Date()).getTime()) - 3 <= 0;
     }
+
     private static long calculateDaysBetween(long startTime, long endTime) {
         // Convert milliseconds to Date objects
         Date startDate = new Date(startTime);

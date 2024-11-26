@@ -1,7 +1,7 @@
 package com.mobdeve.s18.banyoboyz.flushfinders.models;
 
-public class FirestoreReferences {
-
+public class FirestoreReferences
+{
     public static class Accounts
     {
         public final static String COLLECTION = "ACCOUNT";

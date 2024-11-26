@@ -1,6 +1,7 @@
 package com.mobdeve.s18.banyoboyz.flushfinders.models;
 
-public class RestroomReviewReportData {
+public class RestroomReviewReportData
+{
     private String id;
 
     //Building Info
@@ -22,7 +23,18 @@ public class RestroomReviewReportData {
     private int maintenance;
     private int vacancy;
 
-    public RestroomReviewReportData(String id, String building_name, String building_address, String building_picture, String restroom_id, String reviewer_email, float rating, String reviewReport, int cleanliness, int maintenance, int vacancy) {
+    public RestroomReviewReportData(String id,
+                                    String building_name,
+                                    String building_address,
+                                    String building_picture,
+                                    String restroom_id,
+                                    String reviewer_email,
+                                    float rating,
+                                    String reviewReport,
+                                    int cleanliness,
+                                    int maintenance,
+                                    int vacancy)
+    {
         this.id = id;
         this.building_name = building_name;
         this.building_address = building_address;

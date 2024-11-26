@@ -37,8 +37,8 @@ public class AccountAdapter extends RecyclerView.Adapter<AccountAdapter.ModViewH
     @Override
     public ModViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType)
     {
-        LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
-        View view = layoutInflater.inflate(R.layout.mod_account_item_list,parent,false);
+        LayoutInflater layout_inflater = LayoutInflater.from(parent.getContext());
+        View view = layout_inflater.inflate(R.layout.mod_account_item_list,parent,false);
 
         return new ModViewHolder(view);
     }
@@ -91,7 +91,8 @@ public class AccountAdapter extends RecyclerView.Adapter<AccountAdapter.ModViewH
     }
 
     @Override
-    public int getItemCount() {
+    public int getItemCount()
+    {
         return account_list.size();
     }
 

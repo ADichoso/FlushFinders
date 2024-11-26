@@ -30,104 +30,88 @@ public class BuildingRestroomAdapter extends RecyclerView.Adapter<BuildingRestro
     public static final String BUILDING_ID = "BUILDING_ID";
     public static final String RESTROOM_ID = "RESTROOM_ID";
 
-    ArrayList<RestroomData> restroomData;
+    ArrayList<RestroomData> restroom_list;
     Context context;
 
-    public BuildingRestroomAdapter(ArrayList<RestroomData> restroomData, Context context) {
-        this.restroomData = restroomData;
+    public BuildingRestroomAdapter(ArrayList<RestroomData> restroom_list, Context context) {
+        this.restroom_list = restroom_list;
         this.context = context;
     }
 
     @NonNull
     @Override
     public BuildingRestroomHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
+        LayoutInflater layout_inflater = LayoutInflater.from(parent.getContext());
 
         View view = new View(context);
 
         if(context instanceof ViewBuildingActivity)
-        {
-            view = layoutInflater.inflate(R.layout.search_restroom_item_list,parent,false);
-        }
+            view = layout_inflater.inflate(R.layout.search_restroom_item_list,parent,false);
 
         if(context instanceof DeleteRestroomActivity || context instanceof EditRestroomActivity)
-        {
-            view = layoutInflater.inflate(R.layout.restroom_item_list,parent,false);
-        }
+            view = layout_inflater.inflate(R.layout.restroom_item_list,parent,false);
 
         if(context instanceof ViewUserSuggestionsActivity)
-        {
-            view = layoutInflater.inflate(R.layout.user_suggestion_item_list,parent,false);
-        }
+            view = layout_inflater.inflate(R.layout.user_suggestion_item_list,parent,false);
 
         if(context instanceof SavedRestroomsActivity)
-        {
-            view = layoutInflater.inflate(R.layout.saved_restrooms_item_list,parent,false);
-        }
+            view = layout_inflater.inflate(R.layout.saved_restrooms_item_list,parent,false);
+
         return new BuildingRestroomHolder(view, context);
     }
 
     @Override
     public void onBindViewHolder(@NonNull BuildingRestroomHolder holder, int position) {
-        final RestroomData restroomDataList = restroomData.get(position);
+        final RestroomData restroom = restroom_list.get(position);
 
         if(context instanceof ViewBuildingActivity)
         {
-            holder.tv_name.setText(restroomDataList.getName());
-            holder.pb_cleanliness.setProgress(restroomDataList.getCleanliness());
-            holder.pb_maintenance.setProgress(restroomDataList.getMaintenance());
-            holder.pb_vacancy.setProgress(restroomDataList.getVacancy());
+            holder.tv_name.setText(restroom.getName());
+            holder.pb_cleanliness.setProgress(restroom.getCleanliness());
+            holder.pb_maintenance.setProgress(restroom.getMaintenance());
+            holder.pb_vacancy.setProgress(restroom.getVacancy());
             holder.btn_view_restroom.setOnClickListener(v -> {
                 Intent intent = new Intent(context, ViewRestroomActivity.class);
-                intent.putExtra(BUILDING_ID, restroomDataList.getBuildingId());
-                intent.putExtra(RESTROOM_ID, restroomDataList.getId());
+                intent.putExtra(BUILDING_ID, restroom.getBuildingId());
+                intent.putExtra(RESTROOM_ID, restroom.getId());
                 context.startActivity(intent);
             });
         }
 
         if(context instanceof EditRestroomActivity)
         {
-            holder.itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent i = new Intent(context, CreateEditRestroomActivity.class);
+            holder.itemView.setOnClickListener(v -> 
+            {
+                Intent i = new Intent(context, CreateEditRestroomActivity.class);
 
-                    context.startActivity(i);
-                }
+                context.startActivity(i);
             });
         }
 
         if(context instanceof DeleteRestroomActivity || context instanceof EditRestroomActivity)
         {
-            holder.iv_building_pic.setImageBitmap(PictureHelper.decodeBase64ToBitmap(restroomDataList.getBuildingPicture()));
+            holder.iv_building_pic.setImageBitmap(PictureHelper.decodeBase64ToBitmap(restroom.getBuildingPicture()));
         }
 
         if(context instanceof DeleteRestroomActivity || context instanceof EditRestroomActivity || context instanceof ViewUserSuggestionsActivity)
         {
-            holder.tv_name.setText(restroomDataList.getBuildingName());
-            holder.tv_floor.setText(restroomDataList.getName());
-            holder.pb_cleanliness.setProgress(restroomDataList.getCleanliness());
-            holder.pb_maintenance.setProgress(restroomDataList.getMaintenance());
-            holder.pb_vacancy.setProgress(restroomDataList.getVacancy());
+            holder.tv_name.setText(restroom.getBuildingName());
+            holder.tv_floor.setText(restroom.getName());
+            holder.pb_cleanliness.setProgress(restroom.getCleanliness());
+            holder.pb_maintenance.setProgress(restroom.getMaintenance());
+            holder.pb_vacancy.setProgress(restroom.getVacancy());
         }
-
-
-        /*
-         if(context instanceof ViewUserSuggestionsActivity)
-        {
-            AmenitiesAdapter amenitiesAdapter = new AmenitiesAdapter(restroomDataList.getAmenities(), context);
-            holder.rv_amenities.setAdapter(amenitiesAdapter);
-        }
-        * */
     }
 
     @Override
-    public int getItemCount() {
-        return restroomData.size();
+    public int getItemCount() 
+    {
+        return restroom_list.size();
     }
 
 
-    public class BuildingRestroomHolder extends RecyclerView.ViewHolder{
+    public class BuildingRestroomHolder extends RecyclerView.ViewHolder
+    {
         Button btn_view_restroom;
         ImageView iv_building_pic;
         TextView tv_name;
@@ -138,7 +122,8 @@ public class BuildingRestroomAdapter extends RecyclerView.Adapter<BuildingRestro
         ProgressBar pb_vacancy;
         RecyclerView rv_amenities;
 
-        public BuildingRestroomHolder(@NonNull View itemView, Context context) {
+        public BuildingRestroomHolder(@NonNull View itemView, Context context) 
+        {
             super(itemView);
             iv_building_pic = itemView.findViewById(R.id.iv_building_pic);
 

@@ -13,47 +13,55 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.mobdeve.s18.banyoboyz.flushfinders.R;
+import com.mobdeve.s18.banyoboyz.flushfinders.helper.PictureHelper;
 import com.mobdeve.s18.banyoboyz.flushfinders.models.RestroomReviewReportData;
 
 import java.util.ArrayList;
 
-public class RestroomReviewReportAdapter extends RecyclerView.Adapter<RestroomReviewReportAdapter.RestroomReviewReportHolder> {
+public class RestroomReviewReportAdapter extends RecyclerView.Adapter<RestroomReviewReportAdapter.RestroomReviewReportHolder>
+{
 
-    ArrayList<RestroomReviewReportData> restroomReviewReportData;
+    ArrayList<RestroomReviewReportData> restroom_review_report_list;
     Context context;
 
-    public RestroomReviewReportAdapter(ArrayList<RestroomReviewReportData> restroomReviewReportData, Context context) {
-        this.restroomReviewReportData = restroomReviewReportData;
+    public RestroomReviewReportAdapter(ArrayList<RestroomReviewReportData> restroom_review_report_list, Context context)
+    {
+        this.restroom_review_report_list = restroom_review_report_list;
         this.context = context;
     }
 
     @NonNull
     @Override
-    public RestroomReviewReportHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
-        View view = layoutInflater.inflate(R.layout.user_report_item_list,parent,false);
+    public RestroomReviewReportHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType)
+    {
+        LayoutInflater layout_inflater = LayoutInflater.from(parent.getContext());
+        View view = layout_inflater.inflate(R.layout.user_report_item_list,parent,false);
 
         return new RestroomReviewReportHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RestroomReviewReportHolder holder, int position) {
-        final RestroomReviewReportData restroomReviewReportDataList = restroomReviewReportData.get(position);
-        //holder.iv_building_pic.setImageResource(restroomReviewReportDataList.getBuildingImageResource());
-        holder.tv_name.setText(restroomReviewReportDataList.getBuildingName());
-        //holder.tv_floor.setText(restroomReviewReportDataList.getName());
-
-        holder.rb_rating.setRating(restroomReviewReportDataList.getRating());
-        holder.tv_report.setText(restroomReviewReportDataList.getReviewReport());
+    public void onBindViewHolder(@NonNull RestroomReviewReportHolder holder, int position)
+    {
+        final RestroomReviewReportData restroom_review_report = restroom_review_report_list.get(position);
+        holder.iv_building_pic.setImageBitmap(PictureHelper.decodeBase64ToBitmap(restroom_review_report.getBuildingPicture()));
+        holder.rb_rating.setRating(restroom_review_report.getRating());
+        holder.tv_report.setText(restroom_review_report.getReviewReport());
+        holder.tv_name.setText(restroom_review_report.getBuildingName());
+        holder.tv_floor.setText(restroom_review_report.getReviewReport());
+        holder.pb_cleanliness.setProgress(restroom_review_report.getCleanliness());
+        holder.pb_maintenance.setProgress(restroom_review_report.getMaintenance());
+        holder.pb_vacancy.setProgress(restroom_review_report.getVacancy());
     }
 
     @Override
     public int getItemCount() {
-        return restroomReviewReportData.size();
+        return restroom_review_report_list.size();
     }
 
 
-    public class RestroomReviewReportHolder extends RecyclerView.ViewHolder{
+    public class RestroomReviewReportHolder extends RecyclerView.ViewHolder
+    {
         ImageView iv_building_pic;
         RatingBar rb_rating;
         TextView tv_report;
@@ -63,7 +71,8 @@ public class RestroomReviewReportAdapter extends RecyclerView.Adapter<RestroomRe
         ProgressBar pb_maintenance;
         ProgressBar pb_vacancy;
 
-        public RestroomReviewReportHolder(@NonNull View itemView) {
+        public RestroomReviewReportHolder(@NonNull View itemView)
+        {
             super(itemView);
             iv_building_pic = itemView.findViewById(R.id.iv_building_pic);
 

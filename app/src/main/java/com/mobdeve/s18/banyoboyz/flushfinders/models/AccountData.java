@@ -3,7 +3,8 @@ package com.mobdeve.s18.banyoboyz.flushfinders.models;
 import java.time.Instant;
 import java.util.ArrayList;
 
-public class AccountData {
+public class AccountData
+{
     public enum AccountType
     {
         USER,
@@ -23,7 +24,16 @@ public class AccountData {
 
     public AccountData(){}
 
-    public AccountData(String email, String name, String password, boolean isActive, String profilePicture, Instant creationTime, AccountType type, boolean isMe, ArrayList<RestroomData> favorite_restrooms) {
+    public AccountData(String email,
+                       String name,
+                       String password,
+                       boolean isActive,
+                       String profilePicture,
+                       Instant creationTime,
+                       AccountType type,
+                       boolean isMe,
+                       ArrayList<RestroomData> favorite_restrooms)
+    {
         this.name = name;
         this.email = email;
         this.password = password;

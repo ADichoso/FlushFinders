@@ -24,8 +24,9 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.Query;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.mobdeve.s18.banyoboyz.flushfinders.R;
 import com.mobdeve.s18.banyoboyz.flushfinders.helper.MapHelper;
 import com.mobdeve.s18.banyoboyz.flushfinders.helper.PictureHelper;
@@ -43,14 +44,14 @@ import java.util.Map;
 
 public class CreateEditRestroomActivity extends AppCompatActivity {
 
-    RecyclerView rv_restroom_amenities;
+    private RecyclerView rv_restroom_amenities;
 
-    EditText et_restroom_name;
-    EditText et_restroom_floor;
-    SeekBar sb_cleanliness;
-    SeekBar sb_maintenance;
-    SeekBar sb_vacancy;
-    Button btn_submit_restroom_info;
+    private EditText et_restroom_name;
+    private EditText et_restroom_floor;
+    private SeekBar sb_cleanliness;
+    private SeekBar sb_maintenance;
+    private SeekBar sb_vacancy;
+    private Button btn_submit_restroom_info;
 
     private boolean suggestion;
     private double building_latitude;
@@ -61,40 +62,38 @@ public class CreateEditRestroomActivity extends AppCompatActivity {
 
 
     private final ActivityResultLauncher<Intent> activityResultLauncher = registerForActivityResult(
-            new ActivityResultContracts.StartActivityForResult(), result -> {
-                if (result.getResultCode() == RESULT_OK) {
-                    //Obtained the new profile picture here
-                    Uri image_URI = result.getData().getData();
+            new ActivityResultContracts.StartActivityForResult(), result ->
+            {
+                if (result.getResultCode() != RESULT_OK)
+                    return;
 
-                    // Load the selected image into a Bitmap
-                    Bitmap originalBitmap = null;
-                    try
-                    {
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-                            ImageDecoder.Source source = ImageDecoder.createSource(getContentResolver(), image_URI);
-                            originalBitmap = ImageDecoder.decodeBitmap(source);
-                        } else {
-                            originalBitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), image_URI);
-                        }
-                    }
-                    catch (IOException e)
-                    {
-                        Log.e("CreateAmenityActivity", "IMAGE NULL", e);
-                        throw new RuntimeException(e);
-                    }
+                //Obtained the new profile picture here
+                Uri image_URI = result.getData().getData();
 
-                    if(originalBitmap != null)
+                // Load the selected image into a Bitmap
+                Bitmap raw_bitmap = null;
+                try
+                {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P)
                     {
-                        Log.d("CreateAmenityActivity", "UPLOADED NEW IMAGE FOR USE");
-                        // Crop the center 512 x 512 region of the Bitmap
-                        Bitmap scaledBitmap = PictureHelper.scaleBitmap(originalBitmap, 256, 256);
-
-                        building_picture = PictureHelper.encodeBitmapToBase64(scaledBitmap);
+                        ImageDecoder.Source source = ImageDecoder.createSource(getContentResolver(), image_URI);
+                        raw_bitmap = ImageDecoder.decodeBitmap(source);
                     } else
-                    {
-                        Log.d("CreateAmenityActivity", "IMAGE NULL");
-                    }
+                        raw_bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), image_URI);
+                }
+                catch (IOException e)
+                {
+                    Log.e("CreateAmenityActivity", "IMAGE NULL", e);
+                    throw new RuntimeException(e);
+                }
 
+                if(raw_bitmap != null)
+                {
+                    Log.d("CreateAmenityActivity", "UPLOADED NEW IMAGE FOR USE");
+
+                    // Crop the center 512 x 512 region of the Bitmap
+                    Bitmap scaled_bitmap = PictureHelper.scaleBitmap(raw_bitmap, 256, 256);
+                    building_picture = PictureHelper.encodeBitmapToBase64(scaled_bitmap);
                 }
             }
     );
@@ -102,11 +101,13 @@ public class CreateEditRestroomActivity extends AppCompatActivity {
 
     private boolean building_exists;
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_get_restroom_data);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) ->
+        {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
@@ -128,11 +129,7 @@ public class CreateEditRestroomActivity extends AppCompatActivity {
         restroom_id = result_intent.getStringExtra(EditRestroomAdapter.RESTROOM_ID);
 
         btn_submit_restroom_info = findViewById(R.id.btn_submit_restroom_info);
-        btn_submit_restroom_info.setOnClickListener(view -> {
-            createBuildingButton();
-        });
-
-
+        btn_submit_restroom_info.setOnClickListener(view -> createBuildingButton());
 
         checkBuilding();
     }
@@ -181,37 +178,41 @@ public class CreateEditRestroomActivity extends AppCompatActivity {
         setResult(RESULT_OK, pickPhoto);
         activityResultLauncher.launch(pickPhoto);
     }
+
     @Override
-    protected void onStart() {
+    protected void onStart()
+    {
         super.onStart();
 
         Query query = FirestoreHelper.getInstance().getAmenitiesDBRef();
 
-        query.get().addOnCompleteListener(task -> {
-            if(task.isSuccessful())
-            {
-                ArrayList<AmenityData> amenityData = new ArrayList<AmenityData>();
+        query.get().addOnCompleteListener(task ->
+        {
+            if(!task.isSuccessful())
+                return;
 
-                for(QueryDocumentSnapshot document : task.getResult())
-                {
-                    Map<String, Object> data = document.getData();
-                    amenityData.add
-                    (
-                        new AmenityData
-                        (
-                                document.getId(),
-                                data.get(FirestoreReferences.Amenities.PICTURE).toString()
-                        )
-                    );
-                    Log.d("CreateEditRestroomActivity", document.getId());
-                }
-                AmenityAdapter amenityAdapter = new AmenityAdapter(amenityData, CreateEditRestroomActivity.this);
-                rv_restroom_amenities.setAdapter(amenityAdapter);
-            }
-            else
+            ArrayList<AmenityData> amenity_list = new ArrayList<AmenityData>();
+
+            QuerySnapshot amenity_documents = task.getResult();
+
+            if(amenity_documents == null || amenity_documents.isEmpty())
+                return;
+
+            for(DocumentSnapshot amenity_document : amenity_documents)
             {
-                Log.w("CreateEditRestroomActivity", "TASK NOT SUCCESSFUL", task.getException());
+                Map<String, Object> data = amenity_document.getData();
+                amenity_list.add
+                (
+                    new AmenityData
+                    (
+                            amenity_document.getId(),
+                            data.get(FirestoreReferences.Amenities.PICTURE).toString()
+                    )
+                );
+                Log.d("CreateEditRestroomActivity", amenity_document.getId());
             }
+            AmenityAdapter amenityAdapter = new AmenityAdapter(amenity_list, CreateEditRestroomActivity.this);
+            rv_restroom_amenities.setAdapter(amenityAdapter);
         });
     }
 
@@ -229,21 +230,19 @@ public class CreateEditRestroomActivity extends AppCompatActivity {
                 building_name = et_restroom_name.getText().toString();
 
                 Map<String, Object> new_building_data = FirestoreHelper.getInstance().createBuildingData
-                        (
-                                building_latitude,
-                                building_longitude,
-                                building_name,
-                                address,
-                                PictureHelper.decodeBase64ToBitmap(building_picture),
-                                suggestion
-                        );
+                (
+                    building_latitude,
+                    building_longitude,
+                    building_name,
+                    address,
+                    PictureHelper.decodeBase64ToBitmap(building_picture),
+                    suggestion
+                );
+
                 FirestoreHelper.getInstance().insertBuilding(building_latitude, building_longitude, new_building_data, task1 ->
                 {
                     if(task1.isSuccessful())
-                    {
-                        //Building has been inserted
                         createUpdateRestroom();
-                    }
                 });
             });
         }
@@ -253,25 +252,22 @@ public class CreateEditRestroomActivity extends AppCompatActivity {
     {
         //In this point, the building for the restroom should already exist.
 
-        //TODO: Create Restroom Support
         String restroom_name = et_restroom_floor.getText().toString();
         int cleanliness = sb_cleanliness.getProgress();
         int maintenance = sb_maintenance.getProgress();
         int vacancy = sb_vacancy.getProgress();
 
-        ArrayList<String> enabledAmenities = new ArrayList<String>();
+        ArrayList<String> enabled_amenities = new ArrayList<String>();
 
         //Go through amenities to check which ones are switched on
-        for (int i = 0; i < rv_restroom_amenities.getChildCount(); i++) {
+        for (int i = 0; i < rv_restroom_amenities.getChildCount(); i++)
+        {
             View itemView = rv_restroom_amenities.getChildAt(i);
             AmenityAdapter.AmenityHolder viewHolder = (AmenityAdapter.AmenityHolder) rv_restroom_amenities.getChildViewHolder(itemView);
 
-            //Check if enabled yung switch thingy
             if(viewHolder.isSwitchOn())
-            {
                 //Switch is on, get the name of the amenity
-                enabledAmenities.add(viewHolder.getAmenityName());
-            }
+                enabled_amenities.add(viewHolder.getAmenityName());
         }
 
         Map<String, Object> data = FirestoreHelper.getInstance().createRestroomData
@@ -280,7 +276,7 @@ public class CreateEditRestroomActivity extends AppCompatActivity {
             cleanliness,
             maintenance,
             vacancy,
-            enabledAmenities
+            enabled_amenities
         );
 
         if(restroom_id.isEmpty()) {
@@ -319,11 +315,15 @@ public class CreateEditRestroomActivity extends AppCompatActivity {
         finish();
     }
 
-    private void getAddressFromGeoPoint(AddressCallback callback) {
-        new Thread(() -> {
-            try {
+    private void getAddressFromGeoPoint(AddressCallback callback)
+    {
+        new Thread(() ->
+        {
+            try
+            {
                 List<Address> addresses = MapHelper.getInstance().getGeocoder().getFromLocation(building_latitude, building_longitude, 1);
-                if (addresses != null && !addresses.isEmpty()) {
+                if (addresses != null && !addresses.isEmpty())
+                {
                     Address address = addresses.get(0);
 
                     StringBuilder fullAddress = new StringBuilder();
@@ -335,17 +335,22 @@ public class CreateEditRestroomActivity extends AppCompatActivity {
                     }
 
                     runOnUiThread(() -> callback.onAddressRetrieved(fullAddress.toString()));
-                } else {
+                }
+                else
+                {
                     runOnUiThread(() -> callback.onAddressRetrieved(null)); // No address found
                 }
-            } catch (Exception e) {
+            }
+            catch (Exception e)
+            {
                 e.printStackTrace();
                 runOnUiThread(() -> callback.onAddressRetrieved(null)); // Error case
             }
         }).start();
     }
 
-    public interface AddressCallback {
+    public interface AddressCallback
+    {
         void onAddressRetrieved(String address);
     }
 }

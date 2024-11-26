@@ -21,17 +21,20 @@ import com.mobdeve.s18.banyoboyz.flushfinders.models.RestroomReviewReportData;
 import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class ReviewUserReportsActivity extends AppCompatActivity {
+public class ReviewUserReportsActivity extends AppCompatActivity
+{
 
-    RecyclerView rv_restroom_user_reports;
-    ArrayList<RestroomReviewReportData> restroomReviewReportData;
-    RestroomReviewReportAdapter restroomReviewReportAdapter;
+    private RecyclerView rv_restroom_user_reports;
+    private ArrayList<RestroomReviewReportData> restroomReviewReportData;
+    private RestroomReviewReportAdapter restroomReviewReportAdapter;
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_review_user_reports);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) ->
+        {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
@@ -40,14 +43,11 @@ public class ReviewUserReportsActivity extends AppCompatActivity {
         rv_restroom_user_reports = findViewById(R.id.rv_restroom_user_reports);
         rv_restroom_user_reports.setHasFixedSize(true);
         rv_restroom_user_reports.setLayoutManager(new LinearLayoutManager(this));
-
-
-
-
     }
 
     @Override
-    protected void onStart() {
+    protected void onStart()
+    {
         super.onStart();
 
         restroomReviewReportData = new ArrayList<RestroomReviewReportData>();

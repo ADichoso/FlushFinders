@@ -3,7 +3,8 @@ package com.mobdeve.s18.banyoboyz.flushfinders.models;
 import java.util.ArrayList;
 import java.util.Comparator;
 
-public class RestroomData implements Comparator<RestroomData> {
+public class RestroomData implements Comparator<RestroomData>
+{
     private String id;
     private String building_id;
     private String building_picture;
@@ -15,7 +16,17 @@ public class RestroomData implements Comparator<RestroomData> {
     private int vacancy;
     private ArrayList<AmenityData> amenities;
 
-    public RestroomData(String id, String building_id, String building_picture, String building_name, String building_address, String name, int cleanliness, int maintenance, int vacancy, ArrayList<AmenityData> amenities) {
+    public RestroomData(String id,
+                        String building_id,
+                        String building_picture,
+                        String building_name,
+                        String building_address,
+                        String name,
+                        int cleanliness,
+                        int maintenance,
+                        int vacancy,
+                        ArrayList<AmenityData> amenities)
+    {
         this.id = id;
         this.building_id = building_id;
         this.building_picture = building_picture;

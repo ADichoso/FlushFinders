@@ -19,7 +19,6 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.mobdeve.s18.banyoboyz.flushfinders.R;
 import com.mobdeve.s18.banyoboyz.flushfinders.helper.MapHelper;
-import com.mobdeve.s18.banyoboyz.flushfinders.usermode.SuggestRestroomDetailsActivity;
 
 import org.osmdroid.events.MapAdapter;
 import org.osmdroid.events.MapEventsReceiver;
@@ -42,10 +41,10 @@ public class SuggestRestroomLocationActivity extends AppCompatActivity{
     public static final String LATITUDE = "LATITUDE";
     public static final String LONGITUDE = "LONGITUDE";
 
-    Button btn_submit_restroom_location;
-    Button btn_toggle_tracking;
-    EditText et_restroom_name;
-    TextView tv_building_name;
+    private Button btn_submit_restroom_location;
+    private Button btn_toggle_tracking;
+    private EditText et_restroom_name;
+    private TextView tv_building_name;
 
     private String caller;
 
@@ -61,11 +60,13 @@ public class SuggestRestroomLocationActivity extends AppCompatActivity{
     private Marker.OnMarkerClickListener onMarkerClickListener;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_get_restroom_location);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) ->
+        {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
@@ -90,7 +91,8 @@ public class SuggestRestroomLocationActivity extends AppCompatActivity{
         //Hashmap to store Markers to show on device
         existing_locations = new HashMap<GeoPoint, Marker>();
         //What to do when a marker is clicked
-        onMarkerClickListener = new Marker.OnMarkerClickListener() {
+        onMarkerClickListener = new Marker.OnMarkerClickListener()
+        {
             @Override
             public boolean onMarkerClick(Marker marker, MapView mapView) {
                 updateChosenLocation(marker);
@@ -107,15 +109,18 @@ public class SuggestRestroomLocationActivity extends AppCompatActivity{
         map.setZoomLevel(20);
 
         //Update the markers to show on the map whenever the user moves around the map
-        map.addMapListener(new MapAdapter() {
+        map.addMapListener(new MapAdapter()
+        {
             @Override
-            public boolean onScroll(ScrollEvent event) {
+            public boolean onScroll(ScrollEvent event)
+            {
                 MapHelper.getInstance().updateVisibleMarkers(SuggestRestroomLocationActivity.this, map, onMarkerClickListener, existing_locations);
                 return super.onScroll(event);
             }
 
             @Override
-            public boolean onZoom(ZoomEvent event) {
+            public boolean onZoom(ZoomEvent event)
+            {
                 MapHelper.getInstance().updateVisibleMarkers(SuggestRestroomLocationActivity.this, map, onMarkerClickListener, existing_locations);
                 return super.onZoom(event);
             }
@@ -123,7 +128,8 @@ public class SuggestRestroomLocationActivity extends AppCompatActivity{
     }
 
     @Override
-    protected void onStart() {
+    protected void onStart()
+    {
         super.onStart();
         // Initialize MyLocationNewOverlay (Used to get the current location of the user)
         location_overlay = new MyLocationNewOverlay(new GpsMyLocationProvider(this), map);
@@ -131,7 +137,8 @@ public class SuggestRestroomLocationActivity extends AppCompatActivity{
         map.getOverlays().add(location_overlay);
 
         // Check for permissions
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED)
+        {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
             return; // Exit if permissions are not granted
         }
@@ -160,19 +167,22 @@ public class SuggestRestroomLocationActivity extends AppCompatActivity{
     }
 
     @Override
-    protected void onResume() {
+    protected void onResume()
+    {
         super.onResume();
         map.onResume();
     }
 
     @Override
-    protected void onPause() {
+    protected void onPause()
+    {
         super.onPause();
         map.onPause();
     }
 
     @Override
-    protected void onDestroy() {
+    protected void onDestroy()
+    {
         super.onDestroy();
         map.onDetach();
     }
@@ -278,12 +288,16 @@ public class SuggestRestroomLocationActivity extends AppCompatActivity{
         map.invalidate();
     }
 
-    private void geocodeLocation(String location_name) {
-        new Thread(() -> {
+    private void geocodeLocation(String location_name)
+    {
+        new Thread(() ->
+        {
             try {
                 List<Address> addresses = MapHelper.getInstance().getGeocoder().getFromLocationName(location_name, 1);
-                if (addresses != null && !addresses.isEmpty()) {
-                    runOnUiThread(() -> {
+                if (addresses != null && !addresses.isEmpty())
+                {
+                    runOnUiThread(() ->
+                    {
                         GeoPoint point = new GeoPoint(addresses.get(0).getLatitude(), addresses.get(0).getLongitude());
                         map.getController().animateTo(point);
 

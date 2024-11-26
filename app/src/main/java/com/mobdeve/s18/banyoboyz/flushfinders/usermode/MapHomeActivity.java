@@ -56,7 +56,8 @@ import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class MapHomeActivity extends AppCompatActivity implements SensorEventListener {
+public class MapHomeActivity extends AppCompatActivity implements SensorEventListener
+{
     public static final String LATITUDE = "LATITUDE";
     public static final String LONGITUDE = "LONGITUDE";
     public static final String BUILDING_ID = ViewRestroomActivity.BUILDING_ID;
@@ -98,11 +99,13 @@ public class MapHomeActivity extends AppCompatActivity implements SensorEventLis
     private RoadManager road_manager;
     private Polyline user_route;
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_map_home);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) ->
+        {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
@@ -148,9 +151,11 @@ public class MapHomeActivity extends AppCompatActivity implements SensorEventLis
 
         map.setZoomLevel(20);
 
-        map.addMapListener(new MapAdapter() {
+        map.addMapListener(new MapAdapter()
+        {
             @Override
-            public boolean onScroll(ScrollEvent event) {
+            public boolean onScroll(ScrollEvent event)
+            {
                 toggleTracking(false);
                 rotation_gesture_overlay.setEnabled(true);
                 MapHelper.getInstance().updateVisibleMarkers(MapHomeActivity.this, map, onMarkerClickListener, existing_locations);
@@ -158,7 +163,8 @@ public class MapHomeActivity extends AppCompatActivity implements SensorEventLis
             }
 
             @Override
-            public boolean onZoom(ZoomEvent event) {
+            public boolean onZoom(ZoomEvent event)
+            {
                 MapHelper.getInstance().updateVisibleMarkers(MapHomeActivity.this, map, onMarkerClickListener, existing_locations);
                 return super.onZoom(event);
             }
@@ -167,7 +173,8 @@ public class MapHomeActivity extends AppCompatActivity implements SensorEventLis
         //Initialize map variables to use for tracking
         chosen_marker = null;
         existing_locations = new HashMap<GeoPoint, Marker>();
-        onMarkerClickListener = (marker, mapView) -> {
+        onMarkerClickListener = (marker, mapView) ->
+        {
             updateChosenLocation(marker);
             toggleTracking(false);
             mapView.getController().animateTo(marker.getPosition());
@@ -183,9 +190,7 @@ public class MapHomeActivity extends AppCompatActivity implements SensorEventLis
 
         location_overlay = new MyLocationNewOverlay(new GpsMyLocationProvider(this), map);
         location_overlay.enableMyLocation();
-        location_overlay.runOnFirstFix(() -> {
-            curr_location = new GeoPoint(location_overlay.getMyLocation());
-        });
+        location_overlay.runOnFirstFix(() -> curr_location = new GeoPoint(location_overlay.getMyLocation()));
 
         map.getOverlays().add(location_overlay);
 
@@ -210,7 +215,8 @@ public class MapHomeActivity extends AppCompatActivity implements SensorEventLis
     }
 
     @Override
-    protected void onResume() {
+    protected void onResume()
+    {
         super.onResume();
         Configuration.getInstance().load(this, PreferenceManager.getDefaultSharedPreferences(this));
         map.onResume();
@@ -220,20 +226,23 @@ public class MapHomeActivity extends AppCompatActivity implements SensorEventLis
     }
 
     @Override
-    protected void onPause() {
+    protected void onPause()
+    {
         super.onPause();
         map.onPause();
         sensor_manager.unregisterListener(this);
     }
 
     @Override
-    protected void onDestroy() {
+    protected void onDestroy()
+    {
         super.onDestroy();
         location_overlay.disableMyLocation(); // Disable location tracking when done
     }
 
     @Override
-    public void onSensorChanged(SensorEvent event) {
+    public void onSensorChanged(SensorEvent event)
+    {
         if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER)
             gravity = event.values;
         else if (event.sensor.getType() == Sensor.TYPE_MAGNETIC_FIELD)
@@ -269,7 +278,8 @@ public class MapHomeActivity extends AppCompatActivity implements SensorEventLis
     }
 
     @Override
-    public void onAccuracyChanged(Sensor sensor, int i) {
+    public void onAccuracyChanged(Sensor sensor, int i)
+    {
         //Nothing
     }
 
@@ -286,8 +296,8 @@ public class MapHomeActivity extends AppCompatActivity implements SensorEventLis
         startActivity(intent);
     }
 
-    public void searchLocationButton(View view) {
-
+    public void searchLocationButton(View view)
+    {
         String location_name = et_search_restroom_name.getText().toString();
 
         new Thread(() -> {
@@ -378,6 +388,7 @@ public class MapHomeActivity extends AppCompatActivity implements SensorEventLis
         cv_restroom_rating.setVisibility(View.INVISIBLE);
         cv_restroom_rating.setActivated(false);
     }
+
     public void suggestRestroomButton(View view)
     {
         Intent intent = new Intent(MapHomeActivity.this, SuggestRestroomLocationActivity.class);
@@ -396,8 +407,8 @@ public class MapHomeActivity extends AppCompatActivity implements SensorEventLis
         clearLocationSelection();
     }
 
-
-    private void updateCurrentLocation(GeoPoint point) {
+    private void updateCurrentLocation(GeoPoint point)
+    {
         curr_location = point; // Save the current location as a GeoPoint
     }
 
@@ -425,12 +436,14 @@ public class MapHomeActivity extends AppCompatActivity implements SensorEventLis
         tv_chosen_building_address.setText("ADDRESS");
     }
 
-    private float smoothAzimuth(float newAzimuth) {
+    private float smoothAzimuth(float newAzimuth)
+    {
         last_azimuth += (newAzimuth - last_azimuth) * ALPHA;
         return last_azimuth;
     }
 
-    private void rotateMap(float azimuth, float rotation_threshold, float smoothing_factor) {
+    private void rotateMap(float azimuth, float rotation_threshold, float smoothing_factor)
+    {
         float smoothed_azimuth = smoothAzimuth(azimuth);
         float curr_orientation = map.getMapOrientation(); // Get current orientation
         float target_orientation = -smoothed_azimuth; // OSMdroid uses clockwise rotation
@@ -576,8 +589,8 @@ public class MapHomeActivity extends AppCompatActivity implements SensorEventLis
                 user_route.setWidth(10.0f);
                 map.getOverlays().add(user_route);
             }
+
             map.invalidate();
         });
-
     }
 }

@@ -12,7 +12,14 @@ public class BuildingData {
     private boolean suggestion;
     public BuildingData(){}
 
-    public BuildingData(double latitude, double longitude, String name, String address, String buildingPicture, ArrayList<RestroomData> restroomData, boolean suggestion) {
+    public BuildingData(double latitude,
+                        double longitude,
+                        String name,
+                        String address,
+                        String buildingPicture,
+                        ArrayList<RestroomData> restroomData,
+                        boolean suggestion)
+    {
         this.latitude = latitude;
         this.longitude = longitude;
         this.name = name;

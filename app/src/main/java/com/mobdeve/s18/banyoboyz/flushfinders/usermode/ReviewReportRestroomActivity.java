@@ -11,16 +11,12 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FirebaseFirestore;
 import com.mobdeve.s18.banyoboyz.flushfinders.R;
 import com.mobdeve.s18.banyoboyz.flushfinders.helper.MapHelper;
 import com.mobdeve.s18.banyoboyz.flushfinders.models.FirestoreHelper;
@@ -29,31 +25,33 @@ import com.mobdeve.s18.banyoboyz.flushfinders.models.SharedPrefReferences;
 
 import org.osmdroid.util.GeoPoint;
 
-import java.util.HashMap;
 import java.util.Map;
 
-public class ReviewReportRestroomActivity extends AppCompatActivity {
+public class ReviewReportRestroomActivity extends AppCompatActivity
+{
 
     private String building_id;
     private String restroom_id;
 
-    TextView tv_restroom_name;
-    TextView tv_restroom_floor;
-    SeekBar sb_cleanliness;
-    SeekBar sb_maintenance;
-    SeekBar sb_vacancy;
-    RatingBar rb_restroom_rating;
-    EditText et_restroom_review_report;
+    private TextView tv_restroom_name;
+    private TextView tv_restroom_floor;
+    private SeekBar sb_cleanliness;
+    private SeekBar sb_maintenance;
+    private SeekBar sb_vacancy;
+    private RatingBar rb_restroom_rating;
+    private EditText et_restroom_review_report;
 
-    SharedPreferences sharedpreferences;
-    String account_email;
+    private SharedPreferences sharedpreferences;
+    private String account_email;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_review_report_restroom);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) ->
+        {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
@@ -74,7 +72,8 @@ public class ReviewReportRestroomActivity extends AppCompatActivity {
 
 
     @Override
-    protected void onStart() {
+    protected void onStart()
+    {
         super.onStart();
 
         //Shared Preferences
@@ -84,28 +83,26 @@ public class ReviewReportRestroomActivity extends AppCompatActivity {
         //Update the Text views to show the building name and restroom name
 
         GeoPoint building_location = MapHelper.getInstance().decodeBuildingLocation(building_id);
-        FirestoreHelper.getInstance().readBuilding(building_location.getLatitude(), building_location.getLongitude(), task -> {
-            if(task.isSuccessful())
-            {
-                DocumentSnapshot building_document = task.getResult();
+        FirestoreHelper.getInstance().readBuilding(building_location.getLatitude(), building_location.getLongitude(), task ->
+        {
+            if(!task.isSuccessful())
+                return;
 
-                if(building_document != null && building_document.exists())
-                {
-                    tv_restroom_name.setText(building_document.getString(FirestoreReferences.Buildings.NAME));
-                }
-            }
+            DocumentSnapshot building_document = task.getResult();
+
+            if(building_document != null && building_document.exists())
+                tv_restroom_name.setText(building_document.getString(FirestoreReferences.Buildings.NAME));
         });
 
-        FirestoreHelper.getInstance().readRestroom(restroom_id, task -> {
-            if(task.isSuccessful())
-            {
-                DocumentSnapshot restroom_document = task.getResult();
+        FirestoreHelper.getInstance().readRestroom(restroom_id, task ->
+        {
+            if(!task.isSuccessful())
+                return;
 
-                if(restroom_document != null && restroom_document.exists())
-                {
-                    tv_restroom_floor.setText(restroom_document.getString(FirestoreReferences.Restrooms.NAME));
-                }
-            }
+            DocumentSnapshot restroom_document = task.getResult();
+
+            if(restroom_document != null && restroom_document.exists())
+                tv_restroom_floor.setText(restroom_document.getString(FirestoreReferences.Restrooms.NAME));
         });
     }
 
@@ -115,7 +112,6 @@ public class ReviewReportRestroomActivity extends AppCompatActivity {
             return;
 
         //1. Create a new review data object
-
         float rating = rb_restroom_rating.getRating();
         String report = et_restroom_review_report.getText().toString();
         int cleanliness = sb_cleanliness.getProgress();
@@ -123,21 +119,21 @@ public class ReviewReportRestroomActivity extends AppCompatActivity {
         int vacancy = sb_vacancy.getProgress();
 
         Map<String, Object> review_data = FirestoreHelper.getInstance().createReviewData(
-                restroom_id,
-                account_email,
-                rating,
-                report,
-                cleanliness,
-                maintenance,
-                vacancy);
+            restroom_id,
+            account_email,
+            rating,
+            report,
+            cleanliness,
+            maintenance,
+            vacancy
+        );
 
         String review_id = FirestoreHelper.getInstance().getReviewsDBRef().document().getId();
 
-        FirestoreHelper.getInstance().insertReview(review_id, review_data, task -> {
+        FirestoreHelper.getInstance().insertReview(review_id, review_data, task ->
+        {
             if(task.isSuccessful())
-            {
                 finish();
-            }
         });
     }
 }

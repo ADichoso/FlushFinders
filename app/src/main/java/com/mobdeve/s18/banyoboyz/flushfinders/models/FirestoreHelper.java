@@ -29,10 +29,7 @@ public class FirestoreHelper
         return instance;
     }
 
-    public FirestoreHelper()
-    {
-
-    }
+    public FirestoreHelper() {}
 
     public CollectionReference getAccountsDBRef()
     {
