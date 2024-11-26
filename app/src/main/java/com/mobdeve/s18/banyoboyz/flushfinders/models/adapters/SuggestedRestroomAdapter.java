@@ -70,6 +70,17 @@ public class SuggestedRestroomAdapter extends RecyclerView.Adapter<SuggestedRest
         return restroom_list.size();
     }
 
+    public void removeAllRestroomsWithIDs(ArrayList<String> restroom_ids) {
+        ArrayList<RestroomData> new_restroom_list = new ArrayList<RestroomData>();
+        for(RestroomData restroom : restroom_list)
+        {
+            if(!restroom_ids.contains(restroom.getId()))
+                new_restroom_list.add(restroom);
+        }
+
+        restroom_list = new_restroom_list;
+    }
+
 
     public class SuggestedRestroomHolder extends RecyclerView.ViewHolder
     {

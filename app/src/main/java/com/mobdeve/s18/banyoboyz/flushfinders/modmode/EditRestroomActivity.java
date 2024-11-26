@@ -2,6 +2,7 @@ package com.mobdeve.s18.banyoboyz.flushfinders.modmode;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 
@@ -158,6 +159,10 @@ public class EditRestroomActivity extends AppCompatActivity {
 
         restroom_list = new ArrayList<RestroomData>();
 
+        edit_restroom_adapter = new EditRestroomAdapter(restroom_list, this);
+        rv_restrooms.setAdapter(edit_restroom_adapter);
+
+        Log.d("EditRestroomActivity", "RESTROOMS START");
         FirestoreHelper.getInstance().getBuildingsDBRef().get()
         .addOnCompleteListener(task ->
         {
@@ -171,14 +176,16 @@ public class EditRestroomActivity extends AppCompatActivity {
             if(building_documents == null || building_documents.isEmpty())
                 return;
 
+            Log.d("EditRestroomActivity", "GET BUILDINGS RESTROOMS");
             AtomicInteger buildings = new AtomicInteger();
             for(DocumentSnapshot building_document : building_documents)
             {
                 ArrayList<String> restrooms_ids = (ArrayList<String>) building_document.get(FirestoreReferences.Buildings.RESTROOMS);
 
-                if(restrooms_ids == null || !restrooms_ids.isEmpty())
+                if(restrooms_ids == null || restrooms_ids.isEmpty())
                     continue;
 
+                Log.d("EditRestroomActivity", "RESTROOMS IDS");
                 for(String restroom_id : restrooms_ids)
                 {
                     FirestoreHelper.getInstance().readRestroom(restroom_id, task1 ->
@@ -187,6 +194,7 @@ public class EditRestroomActivity extends AppCompatActivity {
                             return;
 
                         DocumentSnapshot restroom_document = task1.getResult();
+                        Log.d("EditRestroomActivity", "RESTROOM DOCUMENT TEST");
 
                         if(restroom_document == null || !restroom_document.exists())
                             return;
@@ -204,15 +212,10 @@ public class EditRestroomActivity extends AppCompatActivity {
                                         restroom_document.get(FirestoreReferences.Restrooms.VACANCY, Integer.class),
                                         new ArrayList<AmenityData>()
                                 ));
-                        buildings.getAndIncrement();
+                        edit_restroom_adapter.notifyItemInserted(restroom_list.size() - 1);
+                        Log.d("EditRestroomActivity", "RESTROOMS");
                     });
                 }
-            }
-
-            if(buildings.get() == building_documents.size())
-            {
-                edit_restroom_adapter = new EditRestroomAdapter(restroom_list, this);
-                rv_restrooms.setAdapter(edit_restroom_adapter);
             }
         });
     }
@@ -220,72 +223,21 @@ public class EditRestroomActivity extends AppCompatActivity {
     public void searchRestroomsButton(View view)
     {
         String search_name = et_search_restroom_name.getText().toString();
-        restroom_list.clear();
 
-        FirestoreHelper.getInstance().getBuildingsDBRef().get()
-        .addOnCompleteListener(task ->
+        ArrayList<RestroomData> filtered_restroom_list = new ArrayList<RestroomData>();
+
+        if(search_name == null || search_name.isEmpty())
+            filtered_restroom_list = (ArrayList<RestroomData>) restroom_list.clone();
+        else
         {
-            //Get all the buildings
-            if(!task.isSuccessful())
-                return;
-
-            //Got the restrooms, add it to the restroomdata
-            QuerySnapshot building_documents = task.getResult();
-
-            if(building_documents == null || building_documents.isEmpty())
-                return;
-
-            AtomicInteger buildings = new AtomicInteger();
-            for(DocumentSnapshot building_document : building_documents)
+            for(RestroomData restroom : restroom_list)
             {
-                String building_name = building_document.getString(FirestoreReferences.Buildings.NAME);
-                ArrayList<String> restrooms_ids = (ArrayList<String>) building_document.get(FirestoreReferences.Buildings.RESTROOMS);
-
-                if(restrooms_ids == null || !restrooms_ids.isEmpty())
-                    continue;
-
-                for(String restroom_id : restrooms_ids)
-                {
-
-                    FirestoreHelper.getInstance().readRestroom(restroom_id, task1 ->
-                    {
-                        if(!task1.isSuccessful())
-                            return;
-
-                        DocumentSnapshot restroom_document = task1.getResult();
-
-                        if(restroom_document == null || !restroom_document.exists())
-                            return;
-
-                        String restroom_name = restroom_document.getString(FirestoreReferences.Restrooms.NAME);
-
-                        if(!search_name.isEmpty() && !building_name.contains(search_name) && !restroom_name.contains(search_name))
-                            return;
-
-                        restroom_list.add(new RestroomData
-                                (
-                                        restroom_document.getId(),
-                                        building_document.getId(),
-                                        building_document.getString(FirestoreReferences.Buildings.BUILDING_PICTURE),
-                                        building_name,
-                                        building_document.getString(FirestoreReferences.Buildings.ADDRESS),
-                                        restroom_name,
-                                        restroom_document.get(FirestoreReferences.Restrooms.CLEANLINESS, Integer.class),
-                                        restroom_document.get(FirestoreReferences.Restrooms.MAINTENANCE, Integer.class),
-                                        restroom_document.get(FirestoreReferences.Restrooms.VACANCY, Integer.class),
-                                        new ArrayList<AmenityData>()
-                                ));
-
-                        buildings.getAndIncrement();
-                    });
-                }
+                if(restroom.getName().toLowerCase().contains(search_name.toLowerCase()) || restroom.getBuildingName().toLowerCase().contains(search_name.toLowerCase()))
+                    filtered_restroom_list.add(restroom);
             }
+        }
 
-            if(buildings.get() == building_documents.size())
-            {
-                edit_restroom_adapter = new EditRestroomAdapter(restroom_list, this);
-                rv_restrooms.setAdapter(edit_restroom_adapter);
-            }
-        });
+        edit_restroom_adapter = new EditRestroomAdapter(filtered_restroom_list, this);
+        rv_restrooms.setAdapter(edit_restroom_adapter);
     }
 }

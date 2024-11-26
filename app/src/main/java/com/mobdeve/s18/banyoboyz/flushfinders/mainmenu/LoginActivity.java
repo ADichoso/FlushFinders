@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -105,8 +104,9 @@ public class LoginActivity extends AppCompatActivity
                     tv_login_invalid_message.setVisibility(View.VISIBLE);
                 else
                 {
+                    boolean is_active = Boolean.getBoolean(data.get(FirestoreReferences.Accounts.IS_ACTIVE).toString());
                     //Compare Passwords
-                    if(BCrypt.checkpw(account_password, data.get(FirestoreReferences.Accounts.PASSWORD).toString()))
+                    if(is_active && BCrypt.checkpw(account_password, data.get(FirestoreReferences.Accounts.PASSWORD).toString()))
                     {
                         //Successful Login
                         //Save account details for shared preferences
@@ -154,7 +154,6 @@ public class LoginActivity extends AppCompatActivity
 
             editor.clear();
             editor.apply();
-
 
             editor.putString(SharedPrefReferences.ACCOUNT_NAME_KEY, account_name);
             editor.putString(SharedPrefReferences.ACCOUNT_EMAIL_KEY, account_email);

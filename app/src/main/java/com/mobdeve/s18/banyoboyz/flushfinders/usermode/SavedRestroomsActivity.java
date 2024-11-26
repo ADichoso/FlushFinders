@@ -46,7 +46,6 @@ public class SavedRestroomsActivity extends AppCompatActivity
     private static final String TOP = "Top Restrooms Near You";
     private static final String SIMILAR = "Similar Restrooms Near You";
 
-
     private double latitude;
     private double longitude;
     private String current_state;

@@ -38,6 +38,7 @@
                 android:id="@+id/btn_search_restroom_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:onClick="searchRestroomsButton"
                 app:srcCompat="@drawable/icon_search" />
 
             <EditText
@@ -90,6 +91,7 @@
             android:id="@+id/btn_clear_restroom_selection"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:onClick="removeSelectedRestrooms"
             android:text="Clear Selection" />
 
     </LinearLayout>

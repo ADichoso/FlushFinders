@@ -71,7 +71,7 @@ public class ManageModAccountsActivity extends AppCompatActivity
         //Query the accounts from the database
         FirestoreHelper.getInstance().getAccountsDBRef().orderBy(FirestoreReferences.Accounts.NAME).get().addOnCompleteListener(task -> 
         {
-            if(task.isSuccessful())
+            if(!task.isSuccessful())
                 return;
 
             ArrayList<AccountData> account_list = new ArrayList<AccountData>();

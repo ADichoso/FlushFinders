@@ -23,6 +23,7 @@ public class DeleteRestroomAdapter extends RecyclerView.Adapter<DeleteRestroomAd
     public static final String RESTROOM_ID = "RESTROOM_ID";
 
     ArrayList<RestroomData> restroom_list;
+    ArrayList<RestroomData> selected_restrooms;
     ArrayList<DeleteRestroomHolder> selected_holders;
 
     Context context;
@@ -33,16 +34,23 @@ public class DeleteRestroomAdapter extends RecyclerView.Adapter<DeleteRestroomAd
             deleteRestroomHolder.toggleSelection(false);
 
         selected_holders.clear();
+        selected_restrooms.clear();
     }
 
-    public ArrayList<RestroomData> getRestroomData() {
+    public ArrayList<RestroomData> getSelectedRestrooms() {
+        return selected_restrooms;
+    }
+
+    public ArrayList<RestroomData> getRestrooms() {
         return restroom_list;
     }
 
-    public DeleteRestroomAdapter(ArrayList<RestroomData> restroom_list, Context context) 
+    public DeleteRestroomAdapter(ArrayList<RestroomData> restroom_list, Context context)
     {
         this.restroom_list = restroom_list;
         this.context = context;
+        selected_holders = new ArrayList<DeleteRestroomHolder>();
+        selected_restrooms = new ArrayList<RestroomData>();
     }
 
     @NonNull
@@ -70,10 +78,14 @@ public class DeleteRestroomAdapter extends RecyclerView.Adapter<DeleteRestroomAd
         holder.itemView.setOnClickListener(view -> {
             holder.toggleSelection(!holder.is_selected);
 
-            if(holder.is_selected)
+            if(holder.is_selected) {
                 selected_holders.add(holder);
-            else
+                selected_restrooms.add(restroom);
+            }
+            else {
                 selected_holders.remove(holder);
+                selected_restrooms.remove(restroom);
+            }
         });
     }
 

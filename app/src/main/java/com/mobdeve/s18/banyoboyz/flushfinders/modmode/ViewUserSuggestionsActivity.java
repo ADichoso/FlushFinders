@@ -1,6 +1,7 @@
 package com.mobdeve.s18.banyoboyz.flushfinders.modmode;
 
 import android.os.Bundle;
+import android.util.Log;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -30,8 +31,8 @@ public class ViewUserSuggestionsActivity extends AppCompatActivity
 {
 
     private RecyclerView rv_restroom_user_reports;
-    private SuggestedRestroomAdapter suggestedRestroomAdapter;
-    private ArrayList<RestroomData> restroomData;
+    private SuggestedRestroomAdapter suggested_restroom_adapter;
+    private ArrayList<RestroomData> restroom_list;
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -55,6 +56,10 @@ public class ViewUserSuggestionsActivity extends AppCompatActivity
     {
         super.onStart();
 
+        restroom_list = new ArrayList<RestroomData>();
+        suggested_restroom_adapter = new SuggestedRestroomAdapter(restroom_list, ViewUserSuggestionsActivity.this);
+        rv_restroom_user_reports.setAdapter(suggested_restroom_adapter);
+
         FirestoreHelper.getInstance().getBuildingsDBRef().whereEqualTo(FirestoreReferences.Buildings.SUGGESTION, true).get()
         .addOnCompleteListener(task ->
         {
@@ -66,6 +71,7 @@ public class ViewUserSuggestionsActivity extends AppCompatActivity
             if(building_documents == null || building_documents.isEmpty())
                 return;
 
+            Log.d("ViewUserSuggestionsActivity", "GOT BUILDINGS");
             for(DocumentSnapshot building_document : building_documents)
             {
                 //Get the restrooms in here
@@ -74,6 +80,7 @@ public class ViewUserSuggestionsActivity extends AppCompatActivity
                 if(restrooms_ids == null || restrooms_ids.isEmpty())
                     continue;
 
+                Log.d("ViewUserSuggestionsActivity", "GOT IDS");
                 FirestoreHelper.getInstance().getRestroomsDBRef().whereIn(FieldPath.documentId(), restrooms_ids).get().addOnCompleteListener(task1 ->
                 {
                     if(!task1.isSuccessful())
@@ -84,9 +91,10 @@ public class ViewUserSuggestionsActivity extends AppCompatActivity
                     if(restroom_documents == null || restroom_documents.isEmpty())
                         return;
 
+                    Log.d("ViewUserSuggestionsActivity", "GOT RESTROOMS");
                     for(DocumentSnapshot restroom_document : restroom_documents)
                     {
-                        restroomData.add(new RestroomData
+                        restroom_list.add(new RestroomData
                         (
                                 restroom_document.getId(),
                                 building_document.getId(),
@@ -99,10 +107,9 @@ public class ViewUserSuggestionsActivity extends AppCompatActivity
                                 restroom_document.get(FirestoreReferences.Restrooms.VACANCY, Integer.class),
                                 new ArrayList<AmenityData>()
                         ));
+                        Log.d("ViewUserSuggestionsActivity", "ADDED NEW REVIEW");
+                        suggested_restroom_adapter.notifyItemInserted(restroom_list.size() - 1);
                     }
-
-                    suggestedRestroomAdapter = new SuggestedRestroomAdapter(restroomData, ViewUserSuggestionsActivity.this);
-                    rv_restroom_user_reports.setAdapter(suggestedRestroomAdapter);
                 });
             }
         });
@@ -137,16 +144,13 @@ public class ViewUserSuggestionsActivity extends AppCompatActivity
                 });
             }
 
-            if(deleted_restrooms.get() == restroom_ids.size())
-            {
-                FirestoreHelper.getInstance().deleteBuilding(point.getLatitude(), point.getLongitude(), task2 -> {
-                    if(!task2.isSuccessful())
-                        return;
+            FirestoreHelper.getInstance().deleteBuilding(point.getLatitude(), point.getLongitude(), task2 -> {
+                if(!task2.isSuccessful())
+                    return;
 
-                    restroomData.removeAll(restroom_ids);
-                    suggestedRestroomAdapter.notifyDataSetChanged();
-                });
-            }
+                suggested_restroom_adapter.removeAllRestroomsWithIDs(restroom_ids);
+                suggested_restroom_adapter.notifyDataSetChanged();
+            });
         });
     }
 }

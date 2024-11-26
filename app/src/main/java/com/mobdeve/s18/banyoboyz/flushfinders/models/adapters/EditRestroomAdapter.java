@@ -73,6 +73,7 @@ public class EditRestroomAdapter extends RecyclerView.Adapter<EditRestroomAdapte
             intent.putExtra(LONGITUDE, point.getLongitude());
             intent.putExtra(RESTROOM_ID, restroom.getId());
 
+
             context.setResult(Activity.RESULT_OK, intent);
             context.activity_result_launcher.launch(intent);
         });

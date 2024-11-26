@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -91,13 +92,9 @@ public class SuggestRestroomLocationActivity extends AppCompatActivity{
         //Hashmap to store Markers to show on device
         existing_locations = new HashMap<GeoPoint, Marker>();
         //What to do when a marker is clicked
-        onMarkerClickListener = new Marker.OnMarkerClickListener()
-        {
-            @Override
-            public boolean onMarkerClick(Marker marker, MapView mapView) {
-                updateChosenLocation(marker);
-                return false;
-            }
+        onMarkerClickListener = (marker, mapView) -> {
+            updateChosenLocation(marker);
+            return false;
         };
 
         //Initialize the map
@@ -114,23 +111,31 @@ public class SuggestRestroomLocationActivity extends AppCompatActivity{
             @Override
             public boolean onScroll(ScrollEvent event)
             {
-                MapHelper.getInstance().updateVisibleMarkers(SuggestRestroomLocationActivity.this, map, onMarkerClickListener, existing_locations);
+                MapHelper.getInstance().updateVisibleMarkers(SuggestRestroomLocationActivity.this, map, onMarkerClickListener, existing_locations, true);
                 return super.onScroll(event);
             }
 
             @Override
             public boolean onZoom(ZoomEvent event)
             {
-                MapHelper.getInstance().updateVisibleMarkers(SuggestRestroomLocationActivity.this, map, onMarkerClickListener, existing_locations);
+                MapHelper.getInstance().updateVisibleMarkers(SuggestRestroomLocationActivity.this, map, onMarkerClickListener, existing_locations, true);
                 return super.onZoom(event);
             }
         });
+
     }
 
     @Override
     protected void onStart()
     {
         super.onStart();
+    }
+
+    @Override
+    protected void onResume()
+    {
+        super.onResume();
+
         // Initialize MyLocationNewOverlay (Used to get the current location of the user)
         location_overlay = new MyLocationNewOverlay(new GpsMyLocationProvider(this), map);
         location_overlay.enableMyLocation(); // Enable location tracking
@@ -148,6 +153,7 @@ public class SuggestRestroomLocationActivity extends AppCompatActivity{
 
         //Create a Geopoint spawner (Whenever the user clicks on the map, suggest a new marker location)
         MapEventsReceiver receiver = new MapEventsReceiver() {
+            private Marker marker;
             @Override
             public boolean singleTapConfirmedHelper(GeoPoint p) {
                 return false; //Do nothing for single taps
@@ -156,20 +162,15 @@ public class SuggestRestroomLocationActivity extends AppCompatActivity{
             @Override
             public boolean longPressHelper(GeoPoint p) {
                 //For long taps, create a marker in the map
-                updateChosenLocation(MapHelper.getInstance().createNewMarker(SuggestRestroomLocationActivity.this, map, p, onMarkerClickListener));
-
+                marker = MapHelper.getInstance().createNewMarker(SuggestRestroomLocationActivity.this, map, p, onMarkerClickListener);
+                updateChosenLocation(marker);
                 return true;
             }
         };
 
         MapEventsOverlay eventsOverlay = new MapEventsOverlay(receiver);
         map.getOverlays().add(eventsOverlay);
-    }
 
-    @Override
-    protected void onResume()
-    {
-        super.onResume();
         map.onResume();
     }
 
@@ -177,6 +178,7 @@ public class SuggestRestroomLocationActivity extends AppCompatActivity{
     protected void onPause()
     {
         super.onPause();
+        map.getOverlays().clear();
         map.onPause();
     }
 
@@ -184,6 +186,7 @@ public class SuggestRestroomLocationActivity extends AppCompatActivity{
     protected void onDestroy()
     {
         super.onDestroy();
+        map.getOverlays().clear();
         map.onDetach();
     }
 
@@ -241,12 +244,13 @@ public class SuggestRestroomLocationActivity extends AppCompatActivity{
         {
             //For case 1 and case 2, assign the chosen marker immediately
             chosen_marker = marker;
-
+            Log.d("SuggestRestroomLocationActivity", "CASE 1/2");
             if(!existing_locations.containsValue(marker))
             {
                 //Case 2 Additional: Assign the marker to the map overlay
                 map.getOverlays().add(chosen_marker);
                 chosen_marker.setTitle("NEW BUILDING LOCATION");
+                Log.d("SuggestRestroomLocationActivity", "CASE 2");
             }
         }
         else
@@ -264,9 +268,12 @@ public class SuggestRestroomLocationActivity extends AppCompatActivity{
 
                 //3. Update the existing location's marker.
                 existing_locations.put(new_marker.getPosition(), new_marker);
+                Log.d("SuggestRestroomLocationActivity", "CASE 3");
             }
 
+            Log.d("SuggestRestroomLocationActivity", "CASE 3/4");
             //4. Remove the old marker from the map.
+            map.getOverlays().remove(chosen_marker);
             map.getOverlays().remove(chosen_marker);
 
             //5. Update the position of the old marker
@@ -286,6 +293,19 @@ public class SuggestRestroomLocationActivity extends AppCompatActivity{
 
         tv_building_name.setText(chosen_marker.getTitle());
         map.invalidate();
+    }
+
+    public void clearInputButton(View view)
+    {
+
+        if(chosen_marker != null)
+        {
+            map.getOverlays().remove(chosen_marker);
+            map.getOverlays().remove(chosen_marker);
+            map.invalidate();
+            Log.d("SuggestRestroomLocationActivity", "CLEAR");
+            chosen_marker = null;
+        }
     }
 
     private void geocodeLocation(String location_name)

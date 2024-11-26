@@ -158,14 +158,14 @@ public class MapHomeActivity extends AppCompatActivity implements SensorEventLis
             {
                 toggleTracking(false);
                 rotation_gesture_overlay.setEnabled(true);
-                MapHelper.getInstance().updateVisibleMarkers(MapHomeActivity.this, map, onMarkerClickListener, existing_locations);
+                MapHelper.getInstance().updateVisibleMarkers(MapHomeActivity.this, map, onMarkerClickListener, existing_locations, false);
                 return super.onScroll(event);
             }
 
             @Override
             public boolean onZoom(ZoomEvent event)
             {
-                MapHelper.getInstance().updateVisibleMarkers(MapHomeActivity.this, map, onMarkerClickListener, existing_locations);
+                MapHelper.getInstance().updateVisibleMarkers(MapHomeActivity.this, map, onMarkerClickListener, existing_locations, false);
                 return super.onZoom(event);
             }
         });
@@ -414,21 +414,21 @@ public class MapHomeActivity extends AppCompatActivity implements SensorEventLis
 
     private void clearLocationSelection()
     {
-        if(!building_id.isEmpty() && !restroom_id.isEmpty())
+        if(building_id != null && restroom_id != null && !building_id.isEmpty() && !restroom_id.isEmpty())
             toggleDirectionMode(true);
 
-        if(chosen_marker == null)
-            return;
+        if(chosen_marker != null)
+        {
+            chosen_location = "";
+            Marker new_marker = MapHelper.getInstance().createNewMarker(this, map, chosen_marker.getPosition(), onMarkerClickListener);
+            new_marker.setTitle(chosen_marker.getTitle());
+            existing_locations.put(new_marker.getPosition(), new_marker);
+            map.getOverlays().remove(chosen_marker);
+            chosen_marker = null;
+        }
 
-        chosen_location = "";
-
-        Marker new_marker = MapHelper.getInstance().createNewMarker(this, map, chosen_marker.getPosition(), onMarkerClickListener);
-        new_marker.setTitle(chosen_marker.getTitle());
-        existing_locations.put(new_marker.getPosition(), new_marker);
-
-        map.getOverlays().remove(user_route);
-        map.getOverlays().remove(chosen_marker);
-        chosen_marker = null;
+        if(user_route != null)
+            map.getOverlays().remove(user_route);
 
         map.invalidate();
 
@@ -537,17 +537,6 @@ public class MapHomeActivity extends AppCompatActivity implements SensorEventLis
 
                 if(direction_mode)
                 {
-                    if(curr_location.distanceToAsDouble(point) < 5.0)
-                    {
-                        //User already in the building
-                        toggleDirectionMode(false);
-                        cv_restroom_rating.setActivated(true);
-                        cv_restroom_rating.setVisibility(View.VISIBLE);
-                        map.invalidate();
-                        return;
-                    }
-
-
                     waypoints = new ArrayList<GeoPoint>();
                     for(RoadNode node : current_road.mNodes)
                         waypoints.add(node.mLocation);
@@ -580,8 +569,24 @@ public class MapHomeActivity extends AppCompatActivity implements SensorEventLis
                         Double distance = refined_road.mLegs.get(0).mLength;
                         String direction_info = distance.toString() + "m";
 
-                        tv_route_info.setText("TOTAL: " + current_road.getLengthDurationText(this, -1));
-                        tv_route_directions.setText("( " +  direction_info + ") | " + current_road.mNodes.get(finalMin_index).mInstructions);
+                        if(finalMin_index == -1)
+                        {
+                            //TAPOS NA YOU IN DESTINATION
+                            tv_route_info.setText("YOU HAVE ARRIVED AT YOUR DESTINATION!");
+                            tv_route_directions.setText("0 METERS");
+
+                            toggleDirectionMode(false);
+                            cv_restroom_rating.setActivated(true);
+                            cv_restroom_rating.setVisibility(View.VISIBLE);
+                            map.invalidate();
+                        }
+                        else
+                        {
+                            tv_route_info.setText("TOTAL: " + current_road.getLengthDurationText(this, -1));
+                            tv_route_directions.setText("( " +  direction_info + ") | " + current_road.mNodes.get(finalMin_index).mInstructions);
+                        }
+
+
                     });
                 }
 

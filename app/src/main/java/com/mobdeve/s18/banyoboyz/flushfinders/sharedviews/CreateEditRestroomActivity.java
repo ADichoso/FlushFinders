@@ -13,10 +13,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.SeekBar;
+import android.widget.Switch;
 
 import androidx.activity.EdgeToEdge;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -24,7 +26,11 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldPath;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.mobdeve.s18.banyoboyz.flushfinders.R;
@@ -41,6 +47,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class CreateEditRestroomActivity extends AppCompatActivity {
 
@@ -60,8 +67,9 @@ public class CreateEditRestroomActivity extends AppCompatActivity {
     private String building_name;
     private String building_picture;
 
-
-    private final ActivityResultLauncher<Intent> activityResultLauncher = registerForActivityResult(
+    private ArrayList<AmenityData> amenity_list;
+    private AmenityAdapter amenity_adapter;
+    private final ActivityResultLauncher<Intent> activity_result_launcher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(), result ->
             {
                 if (result.getResultCode() != RESULT_OK)
@@ -113,6 +121,8 @@ public class CreateEditRestroomActivity extends AppCompatActivity {
             return insets;
         });
 
+        amenity_list = new ArrayList<AmenityData>();
+
         rv_restroom_amenities = findViewById(R.id.rv_restroom_amenities);
         et_restroom_name = findViewById(R.id.et_restroom_name);
         et_restroom_floor = findViewById(R.id.et_restroom_floor);
@@ -123,7 +133,7 @@ public class CreateEditRestroomActivity extends AppCompatActivity {
         rv_restroom_amenities.setLayoutManager(new LinearLayoutManager(this));
 
         Intent result_intent = getIntent();
-        suggestion = result_intent.getStringExtra(SuggestRestroomLocationActivity.CALLER).equals("USER");
+        suggestion = Objects.equals(result_intent.getStringExtra(SuggestRestroomLocationActivity.CALLER), "USER");
         building_latitude = result_intent.getDoubleExtra(SuggestRestroomLocationActivity.LATITUDE, Double.NaN);
         building_longitude = result_intent.getDoubleExtra(SuggestRestroomLocationActivity.LONGITUDE, Double.NaN);
         restroom_id = result_intent.getStringExtra(EditRestroomAdapter.RESTROOM_ID);
@@ -134,6 +144,62 @@ public class CreateEditRestroomActivity extends AppCompatActivity {
         checkBuilding();
     }
 
+    private void fillRestroomInfo()
+    {
+        FirestoreHelper.getInstance().readRestroom(restroom_id, task ->
+        {
+            if (!task.isSuccessful())
+                return;
+
+            DocumentSnapshot restroom_document = task.getResult();
+
+            if(restroom_document == null || !restroom_document.exists())
+                return;
+
+            et_restroom_floor.setText(restroom_document.getString(FirestoreReferences.Restrooms.NAME));
+            sb_cleanliness.setProgress(restroom_document.get(FirestoreReferences.Restrooms.CLEANLINESS, Integer.class));
+            sb_maintenance.setProgress(restroom_document.get(FirestoreReferences.Restrooms.MAINTENANCE, Integer.class));
+            sb_vacancy.setProgress(restroom_document.get(FirestoreReferences.Restrooms.VACANCY, Integer.class));
+
+            Log.d("CreateEditRestroomActivity", "Updated Others");
+            //Get the amenities
+            ArrayList<String> amenities_ids = (ArrayList<String>) restroom_document.get(FirestoreReferences.Restrooms.AMENITIES);
+
+            if(amenities_ids == null || amenities_ids.isEmpty())
+                return;
+
+            Log.d("CreateEditRestroomActivity", "Got amenity ids");
+            FirestoreHelper.getInstance().getAmenitiesDBRef().whereIn(FieldPath.documentId(), amenities_ids).get().addOnCompleteListener(task1 ->
+            {
+                if(!task1.isSuccessful())
+                    return;
+
+                QuerySnapshot amenity_documents = task1.getResult();
+
+                if(amenity_documents == null || amenity_documents.isEmpty())
+                    return;
+
+                Log.d("CreateEditRestroomActivity", "Found amenities");
+                for(DocumentSnapshot amenity_document : amenity_documents)
+                {
+                    for(AmenityData amenity : amenity_list)
+                    {
+                        if(amenity.getName().equals(amenity_document.getId()))
+                        {
+                            int amenity_index = amenity_list.indexOf(amenity);
+
+                            Switch sw_amenity_description = (Switch) rv_restroom_amenities.getChildAt(amenity_index).findViewById(R.id.sw_amenity_description);
+
+                            if(sw_amenity_description != null)
+                                sw_amenity_description.setChecked(true);
+
+                            Log.d("CreateEditRestroomActivity", "Toggled amenity");
+                        }
+                    }
+                }
+            });
+        });
+    }
     private void checkBuilding()
     {
         building_exists = false;
@@ -172,11 +238,11 @@ public class CreateEditRestroomActivity extends AppCompatActivity {
         Log.d("CreateEditRestroomActivity", "Building NOT Exists");
 
         //Take a picture of the building
-        Intent pickPhoto = new Intent(Intent.ACTION_PICK,
+        Intent photo_intent = new Intent(Intent.ACTION_PICK,
                 android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
 
-        setResult(RESULT_OK, pickPhoto);
-        activityResultLauncher.launch(pickPhoto);
+        setResult(RESULT_OK, photo_intent);
+        activity_result_launcher.launch(photo_intent);
     }
 
     @Override
@@ -184,44 +250,49 @@ public class CreateEditRestroomActivity extends AppCompatActivity {
     {
         super.onStart();
 
-        Query query = FirestoreHelper.getInstance().getAmenitiesDBRef();
+        amenity_list = new ArrayList<AmenityData>();
 
-        query.get().addOnCompleteListener(task ->
+        FirestoreHelper.getInstance().getAmenitiesDBRef().get().addOnCompleteListener(task ->
         {
             if(!task.isSuccessful())
                 return;
-
-            ArrayList<AmenityData> amenity_list = new ArrayList<AmenityData>();
 
             QuerySnapshot amenity_documents = task.getResult();
 
             if(amenity_documents == null || amenity_documents.isEmpty())
                 return;
 
+            int added_amenities = 0;
             for(DocumentSnapshot amenity_document : amenity_documents)
             {
-                Map<String, Object> data = amenity_document.getData();
                 amenity_list.add
                 (
                     new AmenityData
                     (
                             amenity_document.getId(),
-                            data.get(FirestoreReferences.Amenities.PICTURE).toString()
+                            amenity_document.getString(FirestoreReferences.Amenities.PICTURE)
                     )
                 );
+                added_amenities++;
+                if(added_amenities == amenity_documents.size())
+                {
+                    amenity_adapter = new AmenityAdapter(amenity_list, CreateEditRestroomActivity.this);
+                    rv_restroom_amenities.setAdapter(amenity_adapter);
+
+                    if(restroom_id != null && !restroom_id.isEmpty())
+                        fillRestroomInfo();
+                }
                 Log.d("CreateEditRestroomActivity", amenity_document.getId());
             }
-            AmenityAdapter amenityAdapter = new AmenityAdapter(amenity_list, CreateEditRestroomActivity.this);
-            rv_restroom_amenities.setAdapter(amenityAdapter);
+
         });
+
     }
 
     public void createBuildingButton()
     {
         if(building_exists)
-        {
             createUpdateRestroom();
-        }
         else
         {
             //The building DOES NOT EXIST, You need to insert a building entry first
@@ -279,10 +350,12 @@ public class CreateEditRestroomActivity extends AppCompatActivity {
             enabled_amenities
         );
 
-        if(restroom_id.isEmpty()) {
+        if(restroom_id == null || restroom_id.isEmpty()) {
             restroom_id = FirestoreHelper.getInstance().getRestroomsDBRef().document().getId();
-            FirestoreHelper.getInstance().insertRestroom(restroom_id, data, task -> {
-                if (task.isSuccessful()) {
+            FirestoreHelper.getInstance().insertRestroom(restroom_id, data, task ->
+            {
+                if (task.isSuccessful())
+                {
                     //Update Building with new RestroomData
                     FirestoreHelper.getInstance().appendStringToStringArray
                             (

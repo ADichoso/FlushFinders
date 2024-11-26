@@ -16,6 +16,7 @@ import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.Marker;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -99,7 +100,7 @@ public class MapHelper
         return new GeoPoint(latitude, longitude);
     }
 
-    public void loadVisibleMarkers(Context context, MapView map, Marker.OnMarkerClickListener onMarkerClickListener, Map<GeoPoint, Marker> existingLocations)
+    public void loadVisibleMarkers(Context context, MapView map, Marker.OnMarkerClickListener onMarkerClickListener, Map<GeoPoint, Marker> existingLocations, boolean show_hidden)
     {
         // Get the current bounding box of the map view
         BoundingBox bounding_box = map.getBoundingBox();
@@ -123,6 +124,12 @@ public class MapHelper
                 //1. Get the current locations that should be visible in the map
                 for (QueryDocumentSnapshot document : current_building_documents)
                 {
+                    //Check if restrooms is empty
+                    ArrayList<String> restrooms_ids = (ArrayList<String>) document.get(FirestoreReferences.Buildings.RESTROOMS);
+
+                    if((restrooms_ids == null || restrooms_ids.isEmpty()) && !show_hidden)
+                        continue;
+
                     GeoPoint point = decodeBuildingLocation(document.getId());
 
                     if(bounding_box.contains(point))
@@ -175,11 +182,11 @@ public class MapHelper
         return marker;
     }
 
-    public void updateVisibleMarkers(Context context, MapView map, Marker.OnMarkerClickListener onMarkerClickListener,  Map<GeoPoint, Marker> existingLocations)
+    public void updateVisibleMarkers(Context context, MapView map, Marker.OnMarkerClickListener onMarkerClickListener,  Map<GeoPoint, Marker> existingLocations, boolean showHidden)
     {
         Log.d("SuggestRestroomLocationActivity", "Updating Visible Markers");
 
         // Load markers again based on new visibility
-        loadVisibleMarkers(context, map, onMarkerClickListener, existingLocations);
+        loadVisibleMarkers(context, map, onMarkerClickListener, existingLocations, showHidden);
     }
 }

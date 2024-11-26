@@ -11,12 +11,20 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.mobdeve.s18.banyoboyz.flushfinders.R;
 import com.mobdeve.s18.banyoboyz.flushfinders.helper.PictureHelper;
 import com.mobdeve.s18.banyoboyz.flushfinders.models.AmenityData;
 import com.mobdeve.s18.banyoboyz.flushfinders.models.FirestoreHelper;
+import com.mobdeve.s18.banyoboyz.flushfinders.models.FirestoreReferences;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ManageAmenityAdapter extends RecyclerView.Adapter<ManageAmenityAdapter.ManageAmenityHolder>
 {
@@ -53,6 +61,30 @@ public class ManageAmenityAdapter extends RecyclerView.Adapter<ManageAmenityAdap
                 amenity_list.remove(old_position);
                 notifyItemRemoved(old_position);
                 notifyItemRangeChanged(old_position, amenity_list.size());
+
+                //Delete the restroom entries that had this amenity
+                FirestoreHelper.getInstance().getRestroomsDBRef().whereArrayContains(FirestoreReferences.Restrooms.AMENITIES, amenity.getName()).get().addOnCompleteListener(task1 ->
+                {
+                    if(!task1.isSuccessful())
+                        return;
+
+                    QuerySnapshot restroom_documents = task1.getResult();
+
+                    if(restroom_documents == null || restroom_documents.isEmpty())
+                        return;
+
+                    for(DocumentSnapshot restroom_document : restroom_documents)
+                    {
+                        Map<String, Object> update_data = new HashMap<String, Object>();
+
+                        update_data.put(FirestoreReferences.Restrooms.AMENITIES, FieldValue.arrayRemove(amenity.getName()));
+
+                        FirestoreHelper.getInstance().updateRestroom(restroom_document.getId(), update_data, task2 ->
+                        {
+
+                        });
+                    }
+                });
             });
         });
     }

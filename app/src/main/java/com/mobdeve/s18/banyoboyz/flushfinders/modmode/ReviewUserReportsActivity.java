@@ -19,14 +19,13 @@ import com.mobdeve.s18.banyoboyz.flushfinders.models.adapters.RestroomReviewRepo
 import com.mobdeve.s18.banyoboyz.flushfinders.models.RestroomReviewReportData;
 
 import java.util.ArrayList;
-import java.util.concurrent.atomic.AtomicInteger;
 
 public class ReviewUserReportsActivity extends AppCompatActivity
 {
 
     private RecyclerView rv_restroom_user_reports;
-    private ArrayList<RestroomReviewReportData> restroomReviewReportData;
-    private RestroomReviewReportAdapter restroomReviewReportAdapter;
+    private ArrayList<RestroomReviewReportData> restroom_review_report_data;
+    private RestroomReviewReportAdapter restroom_review_report_adapter;
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -50,7 +49,9 @@ public class ReviewUserReportsActivity extends AppCompatActivity
     {
         super.onStart();
 
-        restroomReviewReportData = new ArrayList<RestroomReviewReportData>();
+        restroom_review_report_data = new ArrayList<RestroomReviewReportData>();
+        restroom_review_report_adapter = new RestroomReviewReportAdapter(restroom_review_report_data, this);
+        rv_restroom_user_reports.setAdapter(restroom_review_report_adapter);
 
         FirestoreHelper.getInstance().getReviewsDBRef().get()
         .addOnCompleteListener(task -> {
@@ -59,15 +60,14 @@ public class ReviewUserReportsActivity extends AppCompatActivity
 
             QuerySnapshot review_documents = task.getResult();
 
+
             if(review_documents == null || review_documents.isEmpty())
                 return;
 
-            AtomicInteger obtained_reviews = new AtomicInteger();
             for(DocumentSnapshot review_document : review_documents)
             {
                 //2. Get the associated restroom
                 String restroom_id = review_document.getString(FirestoreReferences.Reviews.RESTROOM);
-
 
                 FirestoreHelper.getInstance().readRestroom(restroom_id, task1 ->
                 {
@@ -80,18 +80,23 @@ public class ReviewUserReportsActivity extends AppCompatActivity
                         return;
 
                     //3. Get the building where the restroom may be found
-                    FirestoreHelper.getInstance().getReviewsDBRef().whereArrayContains(FirestoreReferences.Buildings.RESTROOMS, restroom_id).limit(1).get().addOnCompleteListener(task2 ->
+                    FirestoreHelper.getInstance().getBuildingsDBRef().whereArrayContains(FirestoreReferences.Buildings.RESTROOMS, restroom_id).limit(1).get().addOnCompleteListener(task2 ->
                     {
                         if(!task2.isSuccessful())
                             return;
 
-                        DocumentSnapshot building_document = task2.getResult().getDocuments().get(0);
+                        QuerySnapshot building_documents = task2.getResult();
+
+                        if(building_documents == null || building_documents.isEmpty())
+                            return;
+
+                        DocumentSnapshot building_document = building_documents.getDocuments().get(0);
 
                         if(building_document == null || !building_document.exists())
                             return;
 
                         //4. Create the review data
-                        restroomReviewReportData.add(new RestroomReviewReportData(
+                        restroom_review_report_data.add(new RestroomReviewReportData(
                             review_document.getId(),
                             building_document.getString(FirestoreReferences.Buildings.NAME),
                             building_document.getString(FirestoreReferences.Buildings.ADDRESS),
@@ -104,15 +109,9 @@ public class ReviewUserReportsActivity extends AppCompatActivity
                             review_document.get(FirestoreReferences.Reviews.MAINTENANCE, Integer.class),
                             review_document.get(FirestoreReferences.Reviews.VACANCY, Integer.class))
                         );
-                        obtained_reviews.getAndIncrement();
+                        restroom_review_report_adapter.notifyItemInserted(restroom_review_report_data.size() - 1);
                     });
                 });
-            }
-
-            if(obtained_reviews.get() == restroomReviewReportData.size())
-            {
-                restroomReviewReportAdapter = new RestroomReviewReportAdapter(restroomReviewReportData, this);
-                rv_restroom_user_reports.setAdapter(restroomReviewReportAdapter);
             }
         });
     }
