@@ -185,7 +185,7 @@
                     <EditText
                         android:id="@+id/et_restroom_review_report"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="200dp"
                         android:ems="10"
                         android:inputType="text"
                         android:text="Name" />

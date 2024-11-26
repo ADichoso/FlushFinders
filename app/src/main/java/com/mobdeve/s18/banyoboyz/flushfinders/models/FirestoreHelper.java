@@ -57,6 +57,11 @@ public class FirestoreHelper {
         return FirebaseFirestore.getInstance().collection(FirestoreReferences.Amenities.COLLECTION);
     }
 
+    public CollectionReference getReviewsDBRef()
+    {
+        return FirebaseFirestore.getInstance().collection(FirestoreReferences.Reviews.COLLECTION);
+    }
+
     public Map<String, Object> createAccountData(String name, String password, boolean isActive, String type, Bitmap profile_picture, Long creation_time_epoch_seconds)
     {
         Map<String, Object> data = new HashMap<>();
@@ -97,6 +102,21 @@ public class FirestoreHelper {
         data.put(FirestoreReferences.Restrooms.MAINTENANCE, maintenance);
         data.put(FirestoreReferences.Restrooms.VACANCY, vacancy);
         data.put(FirestoreReferences.Restrooms.AMENITIES, amenities);
+
+        return data;
+    }
+
+    public Map<String, Object> createReviewData(String restroom_id, String reviewer_email, float rating, String report, int cleanliness, int maintenance, int vacancy)
+    {
+        Map<String, Object> data = new HashMap<>();
+
+        data.put(FirestoreReferences.Reviews.RESTROOM, restroom_id);
+        data.put(FirestoreReferences.Reviews.REVIEWER, reviewer_email);
+        data.put(FirestoreReferences.Reviews.RATING, rating);
+        data.put(FirestoreReferences.Reviews.REPORT, report);
+        data.put(FirestoreReferences.Reviews.CLEANLINESS, cleanliness);
+        data.put(FirestoreReferences.Reviews.MAINTENANCE, maintenance);
+        data.put(FirestoreReferences.Reviews.VACANCY, vacancy);
 
         return data;
     }
@@ -186,6 +206,25 @@ public class FirestoreHelper {
         deleteData(FirestoreReferences.Accounts.COLLECTION, account_email, onCompleteListener);
     }
 
+    public void insertReview(String id, Map<String, Object> review_data,  OnCompleteListener<Void> onCompleteListener)
+    {
+        insertData(FirestoreReferences.Reviews.COLLECTION, id, review_data, onCompleteListener);
+    }
+
+    public void updateReview(String id, Map<String, Object> review_data,  OnCompleteListener<Void> onCompleteListener)
+    {
+        updateData(FirestoreReferences.Reviews.COLLECTION, id, review_data, onCompleteListener);
+    }
+
+    public void readReview(String id, OnCompleteListener<DocumentSnapshot> onCompleteListener)
+    {
+        readData(FirestoreReferences.Reviews.COLLECTION, id, onCompleteListener);
+    }
+
+    public void deleteReview(String id, OnCompleteListener<Void> onCompleteListener)
+    {
+        deleteData(FirestoreReferences.Reviews.COLLECTION, id, onCompleteListener);
+    }
 
 
     private void updateData(String collection, String document_id, Map<String, Object> data,  OnCompleteListener<Void> onCompleteListener)

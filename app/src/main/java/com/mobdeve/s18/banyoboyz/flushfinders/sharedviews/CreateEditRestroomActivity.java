@@ -17,6 +17,7 @@ import android.widget.SeekBar;
 import androidx.activity.EdgeToEdge;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -24,16 +25,21 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.mobdeve.s18.banyoboyz.flushfinders.R;
 import com.mobdeve.s18.banyoboyz.flushfinders.helper.MapHelper;
 import com.mobdeve.s18.banyoboyz.flushfinders.helper.PictureHelper;
+import com.mobdeve.s18.banyoboyz.flushfinders.mainmenu.LoginActivity;
 import com.mobdeve.s18.banyoboyz.flushfinders.models.AmenityData;
 import com.mobdeve.s18.banyoboyz.flushfinders.models.FirestoreHelper;
 import com.mobdeve.s18.banyoboyz.flushfinders.models.FirestoreReferences;
 import com.mobdeve.s18.banyoboyz.flushfinders.models.adapters.AmenitiesAdapter;
+import com.mobdeve.s18.banyoboyz.flushfinders.models.adapters.EditRestroomAdapter;
 import com.mobdeve.s18.banyoboyz.flushfinders.modmode.ModHomeActivity;
 
 import java.io.IOException;
@@ -55,6 +61,7 @@ public class CreateEditRestroomActivity extends AppCompatActivity {
     private boolean suggestion;
     private double building_latitude;
     private double building_longitude;
+    private String restroom_id;
     private String building_name;
     private String building_picture;
 
@@ -120,18 +127,18 @@ public class CreateEditRestroomActivity extends AppCompatActivity {
         rv_restroom_amenities.setHasFixedSize(true);
         rv_restroom_amenities.setLayoutManager(new LinearLayoutManager(this));
 
-        btn_submit_restroom_info = findViewById(R.id.btn_submit_restroom_info);
-        btn_submit_restroom_info.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                createBuildingButton();
-            }
-        });
-
         Intent result_intent = getIntent();
         suggestion = result_intent.getStringExtra(SuggestRestroomLocationActivity.CALLER).equals("USER");
         building_latitude = result_intent.getDoubleExtra(SuggestRestroomLocationActivity.LATITUDE, Double.NaN);
         building_longitude = result_intent.getDoubleExtra(SuggestRestroomLocationActivity.LONGITUDE, Double.NaN);
+        restroom_id = result_intent.getStringExtra(EditRestroomAdapter.RESTROOM_ID);
+
+        btn_submit_restroom_info = findViewById(R.id.btn_submit_restroom_info);
+        btn_submit_restroom_info.setOnClickListener(view -> {
+            createBuildingButton();
+        });
+
+
 
         checkBuilding();
     }
@@ -218,7 +225,7 @@ public class CreateEditRestroomActivity extends AppCompatActivity {
     {
         if(building_exists)
         {
-            createNewRestroom();
+            createUpdateRestroom();
         }
         else
         {
@@ -241,14 +248,14 @@ public class CreateEditRestroomActivity extends AppCompatActivity {
                     if(task1.isSuccessful())
                     {
                         //Building has been inserted
-                        createNewRestroom();
+                        createUpdateRestroom();
                     }
                 });
             });
         }
     }
 
-    public void createNewRestroom()
+    public void createUpdateRestroom()
     {
         //In this point, the building for the restroom should already exist.
 
@@ -282,30 +289,39 @@ public class CreateEditRestroomActivity extends AppCompatActivity {
             enabledAmenities
         );
 
-        String restroom_id = FirebaseFirestore.getInstance().collection(FirestoreReferences.Restrooms.COLLECTION).document().getId();
-        FirestoreHelper.getInstance().insertRestroom(restroom_id, data, task -> {
-            if(task.isSuccessful())
+        if(restroom_id.isEmpty()) {
+            restroom_id = FirestoreHelper.getInstance().getRestroomsDBRef().document().getId();
+            FirestoreHelper.getInstance().insertRestroom(restroom_id, data, task -> {
+                if (task.isSuccessful()) {
+                    //Update Building with new RestroomData
+                    FirestoreHelper.getInstance().appendStringToStringArray
+                            (
+                                    FirestoreReferences.Buildings.COLLECTION,
+                                    MapHelper.getInstance().encodeBuildingID(building_latitude, building_longitude),
+                                    FirestoreReferences.Buildings.RESTROOMS,
+                                    restroom_id
+                            );
+                    goToHome();
+                }
+            });
+        }
+        else
+        {
+            //Update the restroom here
+            FirestoreHelper.getInstance().updateRestroom(restroom_id, data, task ->
             {
-                //Update Building with new RestroomData
-                FirestoreHelper.getInstance().appendStringToStringArray
-                        (
-                                FirestoreReferences.Buildings.COLLECTION,
-                                MapHelper.getInstance().encodeBuildingID(building_latitude, building_longitude),
-                                FirestoreReferences.Buildings.RESTROOMS,
-                                restroom_id
-                        );
-                goToHome();
-            }
-        });
-
-
+                if(task.isSuccessful())
+                    finish();
+            });
+        }
     }
 
     private void goToHome()
     {
-        Intent intent = new Intent(CreateEditRestroomActivity.this, ModHomeActivity.class);
+        Intent intent = new Intent(CreateEditRestroomActivity.this, LoginActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(intent);
+
+        setResult(RESULT_OK, intent);
         finish();
     }
 

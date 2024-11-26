@@ -256,7 +256,7 @@
         android:id="@+id/cv_restroom_rating"
         android:layout_width="250dp"
         android:layout_height="wrap_content"
-        android:visibility="invisible"
+        android:visibility="visible"
         app:cardBackgroundColor="#CCFFFFFF"
         app:cardCornerRadius="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -301,6 +301,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="8dp"
+                    android:onClick="closeRatingButton"
                     android:text="No" />
             </LinearLayout>
 

@@ -13,13 +13,16 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.mobdeve.s18.banyoboyz.flushfinders.R;
+import com.mobdeve.s18.banyoboyz.flushfinders.models.RestroomReviewReportData;
+
+import java.util.ArrayList;
 
 public class RestroomReviewReportAdapter extends RecyclerView.Adapter<RestroomReviewReportAdapter.RestroomReviewReportHolder> {
 
-    RestroomReviewReportData[] restroomReviewReportData;
+    ArrayList<RestroomReviewReportData> restroomReviewReportData;
     Context context;
 
-    public RestroomReviewReportAdapter(RestroomReviewReportData[] restroomReviewReportData, Context context) {
+    public RestroomReviewReportAdapter(ArrayList<RestroomReviewReportData> restroomReviewReportData, Context context) {
         this.restroomReviewReportData = restroomReviewReportData;
         this.context = context;
     }
@@ -35,10 +38,10 @@ public class RestroomReviewReportAdapter extends RecyclerView.Adapter<RestroomRe
 
     @Override
     public void onBindViewHolder(@NonNull RestroomReviewReportHolder holder, int position) {
-        final RestroomReviewReportData restroomReviewReportDataList = restroomReviewReportData[position];
-        holder.iv_building_pic.setImageResource(restroomReviewReportDataList.getBuildingImageResource());
+        final RestroomReviewReportData restroomReviewReportDataList = restroomReviewReportData.get(position);
+        //holder.iv_building_pic.setImageResource(restroomReviewReportDataList.getBuildingImageResource());
         holder.tv_name.setText(restroomReviewReportDataList.getBuildingName());
-        holder.tv_floor.setText(restroomReviewReportDataList.getName());
+        //holder.tv_floor.setText(restroomReviewReportDataList.getName());
 
         holder.rb_rating.setRating(restroomReviewReportDataList.getRating());
         holder.tv_report.setText(restroomReviewReportDataList.getReviewReport());
@@ -46,7 +49,7 @@ public class RestroomReviewReportAdapter extends RecyclerView.Adapter<RestroomRe
 
     @Override
     public int getItemCount() {
-        return restroomReviewReportData.length;
+        return restroomReviewReportData.size();
     }
 
 

@@ -41,4 +41,16 @@ public class FirestoreReferences {
         public final static String COLLECTION = "AMENITY";
         public final static String PICTURE = "picture";
     }
+
+    public static class Reviews
+    {
+        public final static String COLLECTION = "REVIEW";
+        public final static String RESTROOM = "restroom";
+        public final static String REVIEWER = "reviewer";
+        public final static String RATING = "rating";
+        public final static String REPORT = "report";
+        public final static String CLEANLINESS = "cleanliness";
+        public final static String MAINTENANCE = "maintenance";
+        public final static String VACANCY = "vacancy";
+    }
 }

@@ -9,8 +9,6 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.location.Address;
-import android.location.Location;
-import android.location.LocationListener;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.View;
@@ -19,7 +17,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.core.app.ActivityCompat;
@@ -43,9 +40,7 @@ import org.osmdroid.events.MapAdapter;
 import org.osmdroid.events.ScrollEvent;
 import org.osmdroid.events.ZoomEvent;
 import org.osmdroid.tileprovider.MapTileProviderBasic;
-import org.osmdroid.tileprovider.modules.TileWriter;
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
-import org.osmdroid.util.BoundingBox;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.Marker;
@@ -61,10 +56,11 @@ import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class MapHomeActivity extends AppCompatActivity implements SensorEventListener, LocationListener {
+public class MapHomeActivity extends AppCompatActivity implements SensorEventListener {
     public static final String LATITUDE = "LATITUDE";
     public static final String LONGITUDE = "LONGITUDE";
-    public static final String BUILDING_ID = "BUILDING_ID";
+    public static final String BUILDING_ID = ViewRestroomActivity.BUILDING_ID;
+    public static final String RESTROOM_ID = ViewRestroomActivity.RESTROOM_ID;
     private static final float ALPHA = 0.05f; // Smoothing factor (0 < alpha < 1)
     private float last_azimuth; // Store the last smoothed azimuth
     private SensorManager sensor_manager;
@@ -73,6 +69,7 @@ public class MapHomeActivity extends AppCompatActivity implements SensorEventLis
 
     private CardView cv_building_info;
     private CardView cv_route_tracking;
+    private CardView cv_restroom_rating;
     private TextView tv_route_directions;
     private TextView tv_route_info;
     private TextView tv_chosen_building_name;
@@ -93,6 +90,7 @@ public class MapHomeActivity extends AppCompatActivity implements SensorEventLis
     private GeoPoint destination_location;
     private boolean direction_mode;
     private String building_id;
+    private String restroom_id;
 
     private RotationGestureOverlay rotation_gesture_overlay;
 
@@ -117,8 +115,6 @@ public class MapHomeActivity extends AppCompatActivity implements SensorEventLis
         Configuration.getInstance().setTileDownloadThreads((short) 2); // Limit concurrent downloads
         Configuration.getInstance().setTileDownloadMaxQueueSize((short) 20); // Adjust to prevent overwhelming the memory
 
-
-
         // Initialize Sensor Manager
         sensor_manager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         last_azimuth = 0f;
@@ -126,6 +122,7 @@ public class MapHomeActivity extends AppCompatActivity implements SensorEventLis
         //Initialize map
         cv_building_info = findViewById(R.id.cv_building_info);
         cv_route_tracking = findViewById(R.id.cv_route_tracking);
+        cv_restroom_rating = findViewById(R.id.cv_restroom_rating);
         tv_route_directions = findViewById(R.id.tv_route_directions);
         tv_route_info = findViewById(R.id.tv_route_info);
         tv_chosen_building_name = findViewById(R.id.tv_chosen_building_name);
@@ -133,6 +130,8 @@ public class MapHomeActivity extends AppCompatActivity implements SensorEventLis
         et_search_restroom_name = findViewById(R.id.et_search_restroom_name);
         btn_reset_tracking = findViewById(R.id.btn_reset_tracking);
 
+        cv_restroom_rating.setActivated(false);
+        cv_restroom_rating.setVisibility(View.INVISIBLE);
         btn_reset_tracking.bringToFront();
 
         map = findViewById(R.id.map);
@@ -191,7 +190,8 @@ public class MapHomeActivity extends AppCompatActivity implements SensorEventLis
         map.getOverlays().add(location_overlay);
 
         Intent intent = getIntent();
-        building_id = intent.getStringExtra(ViewBuildingActivity.BUILDING_ID);
+        building_id = intent.getStringExtra(BUILDING_ID);
+        restroom_id = intent.getStringExtra(RESTROOM_ID);
 
         toggleTracking(true);
 
@@ -271,11 +271,6 @@ public class MapHomeActivity extends AppCompatActivity implements SensorEventLis
     @Override
     public void onAccuracyChanged(Sensor sensor, int i) {
         //Nothing
-    }
-
-    @Override
-    public void onLocationChanged(@NonNull Location location) {
-
     }
 
     public void viewChosenBuildingInfoButton(View view)
@@ -367,11 +362,22 @@ public class MapHomeActivity extends AppCompatActivity implements SensorEventLis
 
     public void rateRestroomsButton(View view)
     {
+        if(building_id == null || building_id.isEmpty() || restroom_id == null || restroom_id.isEmpty())
+            return;
+
         Intent intent = new Intent(MapHomeActivity.this, ReviewReportRestroomActivity.class);
+
+        intent.putExtra(BUILDING_ID, building_id);
+        intent.putExtra(RESTROOM_ID, restroom_id);
 
         startActivity(intent);
     }
 
+    public void closeRatingButton(View view)
+    {
+        cv_restroom_rating.setVisibility(View.INVISIBLE);
+        cv_restroom_rating.setActivated(false);
+    }
     public void suggestRestroomButton(View view)
     {
         Intent intent = new Intent(MapHomeActivity.this, SuggestRestroomLocationActivity.class);
@@ -397,6 +403,9 @@ public class MapHomeActivity extends AppCompatActivity implements SensorEventLis
 
     private void clearLocationSelection()
     {
+        if(!building_id.isEmpty() && !restroom_id.isEmpty())
+            toggleDirectionMode(true);
+
         if(chosen_marker == null)
             return;
 
@@ -515,6 +524,17 @@ public class MapHomeActivity extends AppCompatActivity implements SensorEventLis
 
                 if(direction_mode)
                 {
+                    if(curr_location.distanceToAsDouble(point) < 5.0)
+                    {
+                        //User already in the building
+                        toggleDirectionMode(false);
+                        cv_restroom_rating.setActivated(true);
+                        cv_restroom_rating.setVisibility(View.VISIBLE);
+                        map.invalidate();
+                        return;
+                    }
+
+
                     waypoints = new ArrayList<GeoPoint>();
                     for(RoadNode node : current_road.mNodes)
                         waypoints.add(node.mLocation);

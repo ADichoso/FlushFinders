@@ -41,6 +41,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 public class SavedRestroomsActivity extends AppCompatActivity {
+    private static final double EARTH_RADIUS = 6371000; // Earth's radius in meters
+    private static final double SEARCH_RADIUS = 250; //Search radius in meters
+
     private static final String SAVED = "Saved Restrooms";
     private static final String TOP = "Top Restrooms Near You";
     private static final String SIMILAR = "Similar Restrooms Near You";
@@ -84,8 +87,6 @@ public class SavedRestroomsActivity extends AppCompatActivity {
         initializeBoundaries();
     }
 
-    private static final double EARTH_RADIUS = 6371000; // Earth's radius in meters
-    private static final double SEARCH_RADIUS = 250; //Search radius in meters
     private void initializeBoundaries()
     {
         double latRadians = Math.toRadians(latitude);

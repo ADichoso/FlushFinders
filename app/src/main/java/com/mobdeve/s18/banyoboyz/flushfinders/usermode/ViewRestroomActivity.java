@@ -1,7 +1,5 @@
 package com.mobdeve.s18.banyoboyz.flushfinders.usermode;
 
-import static com.mobdeve.s18.banyoboyz.flushfinders.usermode.ViewBuildingActivity.BUILDING_ID;
-
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -44,7 +42,8 @@ import org.osmdroid.util.GeoPoint;
 import java.util.ArrayList;
 
 public class ViewRestroomActivity extends AppCompatActivity {
-
+    public static final String BUILDING_ID = "BUILDING_ID";
+    public static final String RESTROOM_ID = "RESTROOM_ID";
 
     SharedPreferences sharedpreferences;
     String account_email;
@@ -179,6 +178,7 @@ public class ViewRestroomActivity extends AppCompatActivity {
         Intent intent = new Intent(ViewRestroomActivity.this, MapHomeActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.putExtra(BUILDING_ID, building_id);
+        intent.putExtra(RESTROOM_ID, restroom_id);
         startActivity(intent);
         finish();
     }

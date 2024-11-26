@@ -32,7 +32,6 @@ import org.osmdroid.util.GeoPoint;
 import java.util.ArrayList;
 
 public class ViewBuildingActivity extends AppCompatActivity {
-    public static final String BUILDING_ID = "BUILDING_ID";
 
     String building_id;
     GeoPoint building_location;
@@ -119,14 +118,5 @@ public class ViewBuildingActivity extends AppCompatActivity {
                 });
             }
         });
-    }
-
-    public void getBuildingDirectionsButton(View view)
-    {
-        Intent intent = new Intent(ViewBuildingActivity.this, MapHomeActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-        intent.putExtra(BUILDING_ID, building_id);
-        startActivity(intent);
-        finish();
     }
 }
