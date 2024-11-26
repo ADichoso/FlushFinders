@@ -16,12 +16,14 @@ import com.mobdeve.s18.banyoboyz.flushfinders.models.SharedPrefReferences;
 import com.mobdeve.s18.banyoboyz.flushfinders.usermode.MapHomeActivity;
 import com.mobdeve.s18.banyoboyz.flushfinders.R;
 
-public class MainActivity extends AppCompatActivity {
-    SharedPreferences sharedpreferences;
-    Long account_login_time;
+public class MainActivity extends AppCompatActivity 
+{
+    private SharedPreferences shared_preferences;
+    private Long account_login_time;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) 
+    {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
@@ -32,30 +34,17 @@ public class MainActivity extends AppCompatActivity {
         });
 
         // getting the data which is stored in shared preferences.
-        sharedpreferences = getSharedPreferences(SharedPrefReferences.SHARED_PREFS, Context.MODE_PRIVATE);
+        shared_preferences = getSharedPreferences(SharedPrefReferences.SHARED_PREFS, Context.MODE_PRIVATE);
 
         // Check if user is already logged in
-        account_login_time = sharedpreferences.getLong(SharedPrefReferences.ACCOUNT_LOGIN_TIME_KEY, -1);
+        account_login_time = shared_preferences.getLong(SharedPrefReferences.ACCOUNT_LOGIN_TIME_KEY, -1);
 
-        if(account_login_time == -1 || (account_login_time > 0 && SharedPrefReferences.isLoginExpired(account_login_time)) )
-        {
+        if(account_login_time == -1 || (account_login_time > 0 && SharedPrefReferences.isLoginExpired(account_login_time)))
             //Login has expired, clear sharedPreferences
             SharedPrefReferences.clearSharedPreferences(this);
-        }
         else
-        {
             //Still logged in
             login();
-        }
-    }
-
-    private boolean areFieldsNotEmpty(String[] fields)
-    {
-        for(String field : fields)
-            if (!field.isEmpty())
-                return true;
-
-        return false;
     }
 
     public void useGuestButton(View view)

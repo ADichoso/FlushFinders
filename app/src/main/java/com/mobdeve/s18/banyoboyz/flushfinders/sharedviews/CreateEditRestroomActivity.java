@@ -17,7 +17,6 @@ import android.widget.SeekBar;
 import androidx.activity.EdgeToEdge;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -25,10 +24,6 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.mobdeve.s18.banyoboyz.flushfinders.R;
@@ -38,9 +33,8 @@ import com.mobdeve.s18.banyoboyz.flushfinders.mainmenu.LoginActivity;
 import com.mobdeve.s18.banyoboyz.flushfinders.models.AmenityData;
 import com.mobdeve.s18.banyoboyz.flushfinders.models.FirestoreHelper;
 import com.mobdeve.s18.banyoboyz.flushfinders.models.FirestoreReferences;
-import com.mobdeve.s18.banyoboyz.flushfinders.models.adapters.AmenitiesAdapter;
+import com.mobdeve.s18.banyoboyz.flushfinders.models.adapters.AmenityAdapter;
 import com.mobdeve.s18.banyoboyz.flushfinders.models.adapters.EditRestroomAdapter;
-import com.mobdeve.s18.banyoboyz.flushfinders.modmode.ModHomeActivity;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -93,7 +87,7 @@ public class CreateEditRestroomActivity extends AppCompatActivity {
                     {
                         Log.d("CreateAmenityActivity", "UPLOADED NEW IMAGE FOR USE");
                         // Crop the center 512 x 512 region of the Bitmap
-                        Bitmap scaledBitmap = PictureHelper.scaleBitmap(originalBitmap);
+                        Bitmap scaledBitmap = PictureHelper.scaleBitmap(originalBitmap, 256, 256);
 
                         building_picture = PictureHelper.encodeBitmapToBase64(scaledBitmap);
                     } else
@@ -211,8 +205,8 @@ public class CreateEditRestroomActivity extends AppCompatActivity {
                     );
                     Log.d("CreateEditRestroomActivity", document.getId());
                 }
-                AmenitiesAdapter amenitiesAdapter = new AmenitiesAdapter(amenityData, CreateEditRestroomActivity.this);
-                rv_restroom_amenities.setAdapter(amenitiesAdapter);
+                AmenityAdapter amenityAdapter = new AmenityAdapter(amenityData, CreateEditRestroomActivity.this);
+                rv_restroom_amenities.setAdapter(amenityAdapter);
             }
             else
             {
@@ -270,7 +264,7 @@ public class CreateEditRestroomActivity extends AppCompatActivity {
         //Go through amenities to check which ones are switched on
         for (int i = 0; i < rv_restroom_amenities.getChildCount(); i++) {
             View itemView = rv_restroom_amenities.getChildAt(i);
-            AmenitiesAdapter.AmenityHolder viewHolder = (AmenitiesAdapter.AmenityHolder) rv_restroom_amenities.getChildViewHolder(itemView);
+            AmenityAdapter.AmenityHolder viewHolder = (AmenityAdapter.AmenityHolder) rv_restroom_amenities.getChildViewHolder(itemView);
 
             //Check if enabled yung switch thingy
             if(viewHolder.isSwitchOn())

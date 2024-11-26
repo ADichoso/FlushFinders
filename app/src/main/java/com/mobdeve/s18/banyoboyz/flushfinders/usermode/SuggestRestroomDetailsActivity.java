@@ -15,7 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.mobdeve.s18.banyoboyz.flushfinders.R;
 import com.mobdeve.s18.banyoboyz.flushfinders.models.AmenityData;
-import com.mobdeve.s18.banyoboyz.flushfinders.models.adapters.AmenitiesAdapter;
+import com.mobdeve.s18.banyoboyz.flushfinders.models.adapters.AmenityAdapter;
 
 import java.util.ArrayList;
 
@@ -41,8 +41,8 @@ public class SuggestRestroomDetailsActivity extends AppCompatActivity {
 
         ArrayList<AmenityData> amenityData = new ArrayList<AmenityData>();
 
-        AmenitiesAdapter amenitiesAdapter = new AmenitiesAdapter(amenityData, SuggestRestroomDetailsActivity.this);
-        rv_restroom_amenities.setAdapter(amenitiesAdapter);
+        AmenityAdapter amenityAdapter = new AmenityAdapter(amenityData, SuggestRestroomDetailsActivity.this);
+        rv_restroom_amenities.setAdapter(amenityAdapter);
 
         btn_submit_restroom_info = findViewById(R.id.btn_submit_restroom_info);
         btn_submit_restroom_info.setOnClickListener(new View.OnClickListener() {

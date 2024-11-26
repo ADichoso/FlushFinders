@@ -2,7 +2,6 @@ package com.mobdeve.s18.banyoboyz.flushfinders.adminmode;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 
 import androidx.activity.EdgeToEdge;
@@ -15,49 +14,53 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.firebase.ui.firestore.FirestoreRecyclerOptions;
-import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.mobdeve.s18.banyoboyz.flushfinders.R;
 import com.mobdeve.s18.banyoboyz.flushfinders.models.AmenityData;
 import com.mobdeve.s18.banyoboyz.flushfinders.models.FirestoreHelper;
 import com.mobdeve.s18.banyoboyz.flushfinders.models.FirestoreReferences;
-import com.mobdeve.s18.banyoboyz.flushfinders.models.adapters.ManageAmenitiesAdapter;
+import com.mobdeve.s18.banyoboyz.flushfinders.models.adapters.ManageAmenityAdapter;
 
 import java.util.ArrayList;
 import java.util.Map;
 
-public class ManageAmenitiesActivity extends AppCompatActivity {
-    private ArrayList<AmenityData> amenityData;
-    private ManageAmenitiesAdapter manageAmenitiesAdapter;
+public class ManageAmenitiesActivity extends AppCompatActivity
+{
+    private ArrayList<AmenityData> amenity_list;
+    private ManageAmenityAdapter manage_amenity_adapter;
     private RecyclerView rv_manage_amenities;
 
-    private final ActivityResultLauncher<Intent> activityResultLauncher = registerForActivityResult(
-            new ActivityResultContracts.StartActivityForResult(), result -> {
-                if (result.getResultCode() == RESULT_OK) {
-                    //New amenity has been added, update adapter and Recycler View
-                    Intent intent = result.getData();
-                    String amenity_name = intent.getStringExtra(CreateAmenityActivity.AMENITY_NAME);
-                    String amenity_picture = intent.getStringExtra(CreateAmenityActivity.AMENITY_PICTURE);
+    private final ActivityResultLauncher<Intent> activity_result_launcher = registerForActivityResult(
+        new ActivityResultContracts.StartActivityForResult(), result ->
+        {
+            if (result.getResultCode() != RESULT_OK)
+                return;
 
-                    amenityData.add(new AmenityData(amenity_name, amenity_picture));
-                    manageAmenitiesAdapter.notifyItemInserted(amenityData.size() - 1);
-                }
-            }
+            //New amenity has been added, update adapter and Recycler View
+            Intent intent = result.getData();
+            String amenity_name = intent.getStringExtra(CreateAmenityActivity.AMENITY_NAME);
+            String amenity_picture = intent.getStringExtra(CreateAmenityActivity.AMENITY_PICTURE);
+
+            amenity_list.add(new AmenityData(amenity_name, amenity_picture));
+            manage_amenity_adapter.notifyItemInserted(amenity_list.size() - 1);
+        }
     );
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_manage_amenities);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) ->
+        {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
 
-        amenityData = new ArrayList<AmenityData>();
+        amenity_list = new ArrayList<AmenityData>();
 
         rv_manage_amenities = findViewById(R.id.rv_manage_amenities);
         rv_manage_amenities.setHasFixedSize(true);
@@ -68,46 +71,42 @@ public class ManageAmenitiesActivity extends AppCompatActivity {
     {
         Intent intent = new Intent(this, CreateAmenityActivity.class);
 
-        activityResultLauncher.launch(intent);
+        activity_result_launcher.launch(intent);
     }
 
     @Override
-    protected void onStart() {
+    protected void onStart()
+    {
         super.onStart();
+        
+        //Get all amenities
+        FirestoreHelper.getInstance().getAmenitiesDBRef().get().addOnCompleteListener(task ->
+        {
+            if(!task.isSuccessful())
+                return;
 
-        Query query = FirestoreHelper.getInstance().getAmenitiesDBRef();
-
-        query.get().addOnCompleteListener(task -> {
-            if(task.isSuccessful())
+            QuerySnapshot amenity_documents = task.getResult();
+            
+            if(amenity_documents == null || amenity_documents.isEmpty())
+                return;
+            
+            //Populate amenity list
+            for(QueryDocumentSnapshot amenity_document : amenity_documents)
             {
-                for(QueryDocumentSnapshot document : task.getResult())
-                {
-                    Map<String, Object> data = document.getData();
-                    amenityData.add
+                Map<String, Object> data = amenity_document.getData();
+                amenity_list.add
+                (
+                    new AmenityData
                     (
-                        new AmenityData
-                        (
-                            document.getId(),
-                            data.get(FirestoreReferences.Amenities.PICTURE).toString()
-                        )
-                    );
-                    Log.d("ManageAmenitiesActivity", document.getId());
-                }
-
-
-                manageAmenitiesAdapter = new ManageAmenitiesAdapter(amenityData, ManageAmenitiesActivity.this);
-                rv_manage_amenities.setAdapter(manageAmenitiesAdapter);
+                        amenity_document.getId(),
+                        data.get(FirestoreReferences.Amenities.PICTURE).toString()
+                    )
+                );
             }
-            else
-            {
-                Log.w("ManageAmenitiesActivity", "TASK NOT SUCCESSFUL", task.getException());
-            }
+
+            //Assign to recycler view
+            manage_amenity_adapter = new ManageAmenityAdapter(amenity_list, ManageAmenitiesActivity.this);
+            rv_manage_amenities.setAdapter(manage_amenity_adapter);
         });
-
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
     }
 }

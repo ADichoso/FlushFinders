@@ -27,41 +27,46 @@ import com.mobdeve.s18.banyoboyz.flushfinders.mainmenu.ResetPasswordActivity;
 import com.mobdeve.s18.banyoboyz.flushfinders.models.SharedPrefReferences;
 import com.mobdeve.s18.banyoboyz.flushfinders.usermode.SavedRestroomsActivity;
 
-public class AccountHomeActivity extends AppCompatActivity {
+public class AccountHomeActivity extends AppCompatActivity
+{
     public static final String HOME_NAME = "HOME_NAME";
     public static final String HOME_PP = "HOME_PP";
 
-    SharedPreferences sharedpreferences;
-    String account_name;
-    String account_email;
-    String account_pp;
+    private SharedPreferences sharedpreferences;
+    private String account_name;
+    private String account_email;
+    private String account_pp;
 
-    ImageView iv_account_pp;
-    TextView tv_account_name;
-    TextView tv_account_email;
+    private ImageView iv_account_pp;
+    private TextView tv_account_name;
+    private TextView tv_account_email;
 
 
-    private ActivityResultLauncher<Intent> activityResultLauncher = registerForActivityResult(
-            new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
-                public void onActivityResult(ActivityResult result) {
-                    Log.d("AccountHomeActivity", "2222WEWEEWWEW");
-                    if (result.getResultCode() == RESULT_OK) {
-                        //Update Profile Picture things
-                        Intent intent = result.getData();
-                        account_name = intent.getStringExtra(AccountEditActivity.UPDATE_NAME);
-                        account_pp = intent.getStringExtra(AccountEditActivity.UPDATE_PP);
-                        updateAccountHome();
-                    }
+    private ActivityResultLauncher<Intent> activity_result_launcher = registerForActivityResult(
+        new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>()
+        {
+            public void onActivityResult(ActivityResult result)
+            {
+                if (result.getResultCode() == RESULT_OK)
+                {
+                    //Update Profile Picture
+                    Intent intent = result.getData();
+                    account_name = intent.getStringExtra(AccountEditActivity.UPDATE_NAME);
+                    account_pp = intent.getStringExtra(AccountEditActivity.UPDATE_PP);
+                    updateAccountHome();
                 }
             }
+        }
     );
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_account_home);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) ->
+        {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
@@ -73,7 +78,8 @@ public class AccountHomeActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onStart() {
+    protected void onStart()
+    {
         super.onStart();
 
         // getting the data which is stored in shared preferences.
@@ -90,23 +96,14 @@ public class AccountHomeActivity extends AppCompatActivity {
     private void updateAccountHome()
     {
         // check if the fields are not null then one current user is logged in
-        if (areFieldsNotEmpty(new String[]{account_name, account_email, account_pp}))
-        {
-            //Valid items, go ahead and show the user info
-            Log.d("AccountHomeActivity", "UPDATING UI NOW!" + account_name);
-            tv_account_name.setText(account_name);
-            tv_account_email.setText(account_email);
-            iv_account_pp.setImageBitmap(PictureHelper.decodeBase64ToBitmap(account_pp));
-        }
-    }
+        if (account_name.isEmpty() || account_email.isEmpty() || account_pp.isEmpty())
+            return;
 
-    private boolean areFieldsNotEmpty(String[] fields)
-    {
-        for(String field : fields)
-            if (!field.isEmpty())
-                return true;
-
-        return false;
+        //Valid items, go ahead and show the user info
+        Log.d("AccountHomeActivity", "UPDATING UI NOW!" + account_name);
+        tv_account_name.setText(account_name);
+        tv_account_email.setText(account_email);
+        iv_account_pp.setImageBitmap(PictureHelper.decodeBase64ToBitmap(account_pp));
     }
 
     public void viewSavedRestroomsButton(View view)
@@ -122,19 +119,19 @@ public class AccountHomeActivity extends AppCompatActivity {
         intent.putExtra(HOME_NAME, account_name);
         intent.putExtra(HOME_PP, account_pp);
 
-        activityResultLauncher.launch(intent);
+        activity_result_launcher.launch(intent);
     }
 
     public void resetPasswordButton(View view)
     {
         //Check if all fields are not null
-        if(!account_email.isEmpty())
-        {
-            //Go to the reset password activity and pass the given email there.
-            Intent intent = new Intent(AccountHomeActivity.this, ResetPasswordActivity.class);
-            intent.putExtra(ForgotPasswordActivity.FP_EMAIL, account_email);
-            startActivity(intent);
-        }
+        if (account_name.isEmpty() || account_email.isEmpty() || account_pp.isEmpty())
+            return;
+
+        //Go to the reset password activity and pass the given email there.
+        Intent intent = new Intent(AccountHomeActivity.this, ResetPasswordActivity.class);
+        intent.putExtra(ForgotPasswordActivity.FP_EMAIL, account_email);
+        startActivity(intent);
     }
     public void deleteAccountButton(View view)
     {

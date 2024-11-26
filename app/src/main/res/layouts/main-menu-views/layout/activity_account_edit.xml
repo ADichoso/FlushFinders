@@ -21,6 +21,21 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.148" />
 
+    <TextView
+        android:id="@+id/tv_invalid_message"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:enabled="false"
+        android:fontFamily="@font/mitr_light"
+        android:letterSpacing="0.02"
+        android:text="Invalid Email/Password"
+        android:textColor="#FF4F4F"
+        android:textSize="14sp"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_edit_acc" />
+
     <LinearLayout
         android:id="@+id/ll_edit_account_form"
         android:layout_width="250dp"
@@ -29,7 +44,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_edit_acc"
+        app:layout_constraintTop_toBottomOf="@+id/tv_invalid_message"
         app:layout_constraintVertical_bias="0.100000024">
 
         <LinearLayout

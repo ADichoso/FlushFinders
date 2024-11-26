@@ -5,7 +5,6 @@ import android.view.View;
 import android.widget.EditText;
 
 import androidx.activity.EdgeToEdge;
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -13,8 +12,6 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.mobdeve.s18.banyoboyz.flushfinders.R;
@@ -27,14 +24,18 @@ import com.mobdeve.s18.banyoboyz.flushfinders.models.adapters.DeleteRestroomAdap
 import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class DeleteRestroomActivity extends AppCompatActivity {
+public class DeleteRestroomActivity extends AppCompatActivity
+{
 
-    RecyclerView rv_restrooms;
-    EditText et_search_restroom_name;
+    private RecyclerView rv_restrooms;
+    private EditText et_search_restroom_name;
 
-    private DeleteRestroomAdapter deleteRestroomAdapter;
+    private ArrayList<RestroomData> restroom_list;
+    private DeleteRestroomAdapter delete_restroom_adapter;
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_delete_restrooms);
@@ -43,6 +44,8 @@ public class DeleteRestroomActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+        //Get Views
         et_search_restroom_name = findViewById(R.id.et_search_restroom_name);
         rv_restrooms = findViewById(R.id.rv_restrooms);
         rv_restrooms.setHasFixedSize(true);
@@ -50,24 +53,26 @@ public class DeleteRestroomActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onStart() {
+    protected void onStart()
+    {
         super.onStart();
 
-        ArrayList<RestroomData> restroomData = new ArrayList<RestroomData>();
+        //Populate the Recycler View with restroom data
+        restroom_list = new ArrayList<RestroomData>();
 
-        FirestoreHelper.getInstance().getBuildingsDBRef().get()
+        //1. Get all actively used buildings.
+        FirestoreHelper.getInstance().getBuildingsDBRef().whereEqualTo(FirestoreReferences.Buildings.SUGGESTION, false).get()
         .addOnCompleteListener(task ->
         {
-            //Get all the buildings
             if(!task.isSuccessful())
                 return;
 
-            //Got the restrooms, add it to the restroomdata
             QuerySnapshot building_documents = task.getResult();
 
             if(building_documents == null || building_documents.isEmpty())
                 return;
 
+            //2. For every building, get the restrooms.
             AtomicInteger buildings = new AtomicInteger();
             for(DocumentSnapshot building_document : building_documents)
             {
@@ -88,7 +93,8 @@ public class DeleteRestroomActivity extends AppCompatActivity {
                         if(restroom_document == null || !restroom_document.exists())
                             return;
 
-                        restroomData.add(new RestroomData
+                        //Create restroom object from database info
+                        restroom_list.add(new RestroomData
                         (
                                 restroom_document.getId(),
                                 building_document.getId(),
@@ -106,10 +112,11 @@ public class DeleteRestroomActivity extends AppCompatActivity {
                 }
             }
 
+            //3. Got all restrooms. Create RecyclerView
             if(buildings.get() == building_documents.size())
             {
-                deleteRestroomAdapter = new DeleteRestroomAdapter(restroomData, DeleteRestroomActivity.this);
-                rv_restrooms.setAdapter(deleteRestroomAdapter);
+                delete_restroom_adapter = new DeleteRestroomAdapter(restroom_list, DeleteRestroomActivity.this);
+                rv_restrooms.setAdapter(delete_restroom_adapter);
             }
         });
     }
@@ -117,109 +124,75 @@ public class DeleteRestroomActivity extends AppCompatActivity {
     public void searchRestroomsButton(View view)
     {
         String search_name = et_search_restroom_name.getText().toString();
-        ArrayList<RestroomData> restroomData = new ArrayList<RestroomData>();
+        ArrayList<RestroomData> filteredRestroomData = new ArrayList<RestroomData>();
 
-        FirestoreHelper.getInstance().getBuildingsDBRef().get()
-        .addOnCompleteListener(task ->
+        //1. Go through every restroom
+        if(search_name.isEmpty())
+            filteredRestroomData = (ArrayList<RestroomData>) restroom_list.clone();
+        else
         {
-            //Get all the buildings
-            if(!task.isSuccessful())
-                return;
-
-            //Got the restrooms, add it to the restroomdata
-            QuerySnapshot building_documents = task.getResult();
-
-            if(building_documents == null || building_documents.isEmpty())
-                return;
-
-            AtomicInteger buildings = new AtomicInteger();
-            for(DocumentSnapshot building_document : building_documents)
+            for(RestroomData restroom: restroom_list)
             {
-                String building_name = building_document.getString(FirestoreReferences.Buildings.NAME);
-                ArrayList<String> restrooms_ids = (ArrayList<String>) building_document.get(FirestoreReferences.Buildings.RESTROOMS);
-
-                if(restrooms_ids == null || !restrooms_ids.isEmpty())
-                    continue;
-
-                for(String restroom_id : restrooms_ids)
-                {
-
-                    FirestoreHelper.getInstance().readRestroom(restroom_id, task1 ->
-                    {
-                        if(!task1.isSuccessful())
-                            return;
-
-                        DocumentSnapshot restroom_document = task1.getResult();
-
-                        if(restroom_document == null || !restroom_document.exists())
-                            return;
-
-                        String restroom_name = restroom_document.getString(FirestoreReferences.Restrooms.NAME);
-
-                        if(!search_name.isEmpty() && !building_name.contains(search_name) && !restroom_name.contains(search_name))
-                            return;
-
-                        restroomData.add(new RestroomData
-                                (
-                                        restroom_document.getId(),
-                                        building_document.getId(),
-                                        building_document.getString(FirestoreReferences.Buildings.BUILDING_PICTURE),
-                                        building_name,
-                                        building_document.getString(FirestoreReferences.Buildings.ADDRESS),
-                                        restroom_name,
-                                        restroom_document.get(FirestoreReferences.Restrooms.CLEANLINESS, Integer.class),
-                                        restroom_document.get(FirestoreReferences.Restrooms.MAINTENANCE, Integer.class),
-                                        restroom_document.get(FirestoreReferences.Restrooms.VACANCY, Integer.class),
-                                        new ArrayList<AmenityData>()
-                                ));
-
-                        buildings.getAndIncrement();
-                    });
-                }
+                if(restroom.getBuildingName().contains(search_name) || restroom.getName().contains(search_name))
+                    filteredRestroomData.add(restroom);
             }
+        }
 
-            if(buildings.get() == building_documents.size())
-            {
-                deleteRestroomAdapter = new DeleteRestroomAdapter(restroomData, DeleteRestroomActivity.this);
-                rv_restrooms.setAdapter(deleteRestroomAdapter);
-            }
-        });
+        //2. Update the data of the restroom adapter
+        delete_restroom_adapter = new DeleteRestroomAdapter(filteredRestroomData, DeleteRestroomActivity.this);
+        rv_restrooms.setAdapter(delete_restroom_adapter);
     }
 
     public void deleteRestroomButton(View view)
     {
-        for(String restroom_id : deleteRestroomAdapter.getSelectedRestroomsIds())
+        AtomicInteger deleted_restrooms = new AtomicInteger();
+        for(RestroomData restroom : delete_restroom_adapter.getRestroomData())
         {
-                FirestoreHelper.getInstance().deleteRestroom(restroom_id, task -> {
-                    if(!task.isSuccessful())
+            FirestoreHelper.getInstance().deleteRestroom(restroom.getId(), task ->
+            {
+                if(!task.isSuccessful())
+                    return;
+
+                AtomicInteger deleted_reviews = new AtomicInteger();
+                //Delete any associated reviews for the restroom
+                FirestoreHelper.getInstance().getReviewsDBRef().whereEqualTo(FirestoreReferences.Reviews.RESTROOM, restroom.getId()).get()
+                .addOnCompleteListener(task1 ->
+                {
+                    if(!task1.isSuccessful())
                         return;
 
-                    //Delete any associated reviews for the restroom
-                    FirestoreHelper.getInstance().getReviewsDBRef().whereEqualTo(FirestoreReferences.Reviews.RESTROOM, restroom_id).get()
-                    .addOnCompleteListener(task1 -> {
-                        if(!task1.isSuccessful())
-                            return;
+                    QuerySnapshot review_documents = task1.getResult();
 
-                        QuerySnapshot review_documents = task1.getResult();
+                    if(review_documents == null || review_documents.isEmpty())
+                        return;
 
-                        if(review_documents == null || review_documents.isEmpty())
-                            return;
-
-                        for(DocumentSnapshot review_document: review_documents)
+                    for(DocumentSnapshot review_document: review_documents)
+                    {
+                        String review_id = review_document.getId();
+                        FirestoreHelper.getInstance().deleteReview(review_id, task2 ->
                         {
-                            String review_id = review_document.getId();
-                            FirestoreHelper.getInstance().deleteReview(review_id, task2 -> {
-                                if(!task2.isSuccessful())
-                                    return;
-                            });
-                        }
-                    });
+                            deleted_reviews.getAndIncrement();
+                        });
+                    }
+
+                    if(deleted_reviews.get() == review_documents.size())
+                    {
+                        restroom_list.remove(restroom);
+                        deleted_restrooms.getAndIncrement();
+                    }
+                });
             });
+        }
+
+        if(deleted_restrooms.get() == delete_restroom_adapter.getRestroomData().size())
+        {
+            delete_restroom_adapter = new DeleteRestroomAdapter(restroom_list, DeleteRestroomActivity.this);
+            rv_restrooms.setAdapter(delete_restroom_adapter);
         }
     }
 
     public void removeSelectedRestrooms(View view)
     {
-        deleteRestroomAdapter.clearSelectedHolders();
+        delete_restroom_adapter.clearSelectedHolders();
     }
 }

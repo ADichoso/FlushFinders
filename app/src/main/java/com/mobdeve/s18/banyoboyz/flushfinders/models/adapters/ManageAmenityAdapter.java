@@ -11,8 +11,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
-import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.mobdeve.s18.banyoboyz.flushfinders.R;
 import com.mobdeve.s18.banyoboyz.flushfinders.helper.PictureHelper;
 import com.mobdeve.s18.banyoboyz.flushfinders.models.AmenityData;
@@ -20,17 +18,17 @@ import com.mobdeve.s18.banyoboyz.flushfinders.models.FirestoreHelper;
 
 import java.util.ArrayList;
 
-public class ManageAmenitiesAdapter extends RecyclerView.Adapter<ManageAmenitiesAdapter.ManageAmenitiesHolder> {
+public class ManageAmenityAdapter extends RecyclerView.Adapter<ManageAmenityAdapter.ManageAmenitiesHolder> {
     private ArrayList<AmenityData> amenityData;
     private Context context;
-    public ManageAmenitiesAdapter(ArrayList<AmenityData> amenityData, Context context) {
+    public ManageAmenityAdapter(ArrayList<AmenityData> amenityData, Context context) {
         this.amenityData = amenityData;
         this.context = context;
     }
 
     @NonNull
     @Override
-    public ManageAmenitiesAdapter.ManageAmenitiesHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ManageAmenityAdapter.ManageAmenitiesHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
         View view = layoutInflater.inflate(R.layout.view_restroom_manage_amenity_item_list,parent,false);
 

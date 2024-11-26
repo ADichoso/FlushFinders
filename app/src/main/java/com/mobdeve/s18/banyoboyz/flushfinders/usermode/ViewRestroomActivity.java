@@ -4,15 +4,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -20,21 +17,17 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldPath;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.mobdeve.s18.banyoboyz.flushfinders.R;
 import com.mobdeve.s18.banyoboyz.flushfinders.helper.MapHelper;
-import com.mobdeve.s18.banyoboyz.flushfinders.helper.PictureHelper;
 import com.mobdeve.s18.banyoboyz.flushfinders.models.AmenityData;
 import com.mobdeve.s18.banyoboyz.flushfinders.models.FirestoreHelper;
 import com.mobdeve.s18.banyoboyz.flushfinders.models.FirestoreReferences;
-import com.mobdeve.s18.banyoboyz.flushfinders.models.RestroomData;
 import com.mobdeve.s18.banyoboyz.flushfinders.models.SharedPrefReferences;
-import com.mobdeve.s18.banyoboyz.flushfinders.models.adapters.AmenitiesAdapter;
+import com.mobdeve.s18.banyoboyz.flushfinders.models.adapters.AmenityAdapter;
 import com.mobdeve.s18.banyoboyz.flushfinders.models.adapters.BuildingRestroomAdapter;
 
 import org.osmdroid.util.GeoPoint;
@@ -140,8 +133,8 @@ public class ViewRestroomActivity extends AppCompatActivity {
                 {
                     ArrayList<AmenityData> amenityData = new ArrayList<AmenityData>();
 
-                    AmenitiesAdapter amenitiesAdapter = new AmenitiesAdapter(amenityData, ViewRestroomActivity.this);
-                    rv_restroom_amenities.setAdapter(amenitiesAdapter);
+                    AmenityAdapter amenityAdapter = new AmenityAdapter(amenityData, ViewRestroomActivity.this);
+                    rv_restroom_amenities.setAdapter(amenityAdapter);
                 }
                 else
                 {
@@ -164,8 +157,8 @@ public class ViewRestroomActivity extends AppCompatActivity {
                                 );
                             }
 
-                            AmenitiesAdapter amenitiesAdapter = new AmenitiesAdapter(amenityData, ViewRestroomActivity.this);
-                            rv_restroom_amenities.setAdapter(amenitiesAdapter);
+                            AmenityAdapter amenityAdapter = new AmenityAdapter(amenityData, ViewRestroomActivity.this);
+                            rv_restroom_amenities.setAdapter(amenityAdapter);
                         }
                     });
                 }

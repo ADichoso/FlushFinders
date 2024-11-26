@@ -19,13 +19,11 @@ import com.mobdeve.s18.banyoboyz.flushfinders.modmode.ViewUserSuggestionsActivit
 import com.mobdeve.s18.banyoboyz.flushfinders.usermode.SuggestRestroomDetailsActivity;
 import com.mobdeve.s18.banyoboyz.flushfinders.usermode.ViewRestroomActivity;
 
-import java.util.ArrayList;
-
-public class AmenitiesAdapter extends RecyclerView.Adapter<AmenitiesAdapter.AmenityHolder> {
-    ArrayList<AmenityData> amenityData;
+public class RateAmenityAdapter extends RecyclerView.Adapter<RateAmenityAdapter.AmenityHolder> {
+    AmenityData[] amenityData;
     Context context;
 
-    public AmenitiesAdapter(ArrayList<AmenityData>  amenityData, Context context) {
+    public RateAmenityAdapter(AmenityData[] amenityData, Context context) {
         this.amenityData = amenityData;
         this.context = context;
     }
@@ -51,7 +49,7 @@ public class AmenitiesAdapter extends RecyclerView.Adapter<AmenitiesAdapter.Amen
 
     @Override
     public void onBindViewHolder(@NonNull AmenityHolder holder, int position) {
-        final AmenityData amenityDataList = amenityData.get(position);
+        final AmenityData amenityDataList = amenityData[position];
         holder.iv_amenity_icon.setImageBitmap(PictureHelper.decodeBase64ToBitmap(amenityDataList.getAmenityPicture()));
 
         if(context instanceof ViewRestroomActivity || context instanceof ViewUserSuggestionsActivity)
@@ -68,7 +66,7 @@ public class AmenitiesAdapter extends RecyclerView.Adapter<AmenitiesAdapter.Amen
 
     @Override
     public int getItemCount() {
-        return amenityData.size();
+        return amenityData.length;
     }
 
 
@@ -89,16 +87,6 @@ public class AmenitiesAdapter extends RecyclerView.Adapter<AmenitiesAdapter.Amen
             {
                 sw_amenity_description = itemView.findViewById(R.id.sw_amenity_description);
             }
-        }
-
-        public boolean isSwitchOn()
-        {
-            return sw_amenity_description != null && sw_amenity_description.isChecked();
-        }
-
-        public String getAmenityName()
-        {
-            return sw_amenity_description.getText().toString();
         }
     }
 }

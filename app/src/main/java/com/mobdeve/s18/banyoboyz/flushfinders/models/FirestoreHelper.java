@@ -1,26 +1,23 @@
 package com.mobdeve.s18.banyoboyz.flushfinders.models;
 
 import android.graphics.Bitmap;
-import android.location.Address;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
 import com.mobdeve.s18.banyoboyz.flushfinders.helper.MapHelper;
 import com.mobdeve.s18.banyoboyz.flushfinders.helper.PictureHelper;
 
 import org.mindrot.jbcrypt.BCrypt;
-import org.osmdroid.util.GeoPoint;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-public class FirestoreHelper {
+public class FirestoreHelper
+{
     private static FirestoreHelper instance = null;
 
     public static FirestoreHelper getInstance()

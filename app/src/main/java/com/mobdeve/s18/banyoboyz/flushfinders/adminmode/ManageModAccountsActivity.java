@@ -2,12 +2,9 @@ package com.mobdeve.s18.banyoboyz.flushfinders.adminmode;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 
 import androidx.activity.EdgeToEdge;
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -15,11 +12,6 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.mobdeve.s18.banyoboyz.flushfinders.R;
@@ -34,21 +26,23 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Map;
 
-public class ManageModAccountsActivity extends AppCompatActivity {
+public class ManageModAccountsActivity extends AppCompatActivity
+{
 
-    RecyclerView rv_mod_accounts;
+    private RecyclerView rv_mod_accounts;
+    private AccountAdapter account_adapter;
 
-    private AccountAdapter accountAdapter;
-
-
-    SharedPreferences sharedpreferences;
-    String account_email;
+    private SharedPreferences shared_preferences;
+    private String account_email;
+    
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) 
+    {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_manage_mod_accounts);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> 
+        {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
@@ -61,55 +55,57 @@ public class ManageModAccountsActivity extends AppCompatActivity {
 
 
     @Override
-    protected void onStart() {
+    protected void onStart() 
+    {
         super.onStart();
 
         // getting the data which is stored in shared preferences.
-        sharedpreferences = getSharedPreferences(SharedPrefReferences.SHARED_PREFS, Context.MODE_PRIVATE);
+        shared_preferences = getSharedPreferences(SharedPrefReferences.SHARED_PREFS, Context.MODE_PRIVATE);
 
         // Check if user is already logged in
-        account_email = sharedpreferences.getString(SharedPrefReferences.ACCOUNT_EMAIL_KEY, "");
+        account_email = shared_preferences.getString(SharedPrefReferences.ACCOUNT_EMAIL_KEY, "");
+        
+        if(account_email.isEmpty())
+            return;
+        
         //Query the accounts from the database
-        Query query = FirestoreHelper.getInstance().getAccountsDBRef().orderBy(FirestoreReferences.Accounts.NAME);
+        FirestoreHelper.getInstance().getAccountsDBRef().orderBy(FirestoreReferences.Accounts.NAME).get().addOnCompleteListener(task -> 
+        {
+            if(task.isSuccessful())
+                return;
 
-        query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if(task.isSuccessful())
-                {
-                    Log.d("ManageModAccountsActivity", "Account Results:" + task.getResult().toString());
-                    Log.d("ManageModAccountsActivity", "Account Results Length:" + task.getResult().size());
+            ArrayList<AccountData> account_list = new ArrayList<AccountData>();
 
-                    ArrayList<AccountData> accountData = new ArrayList<AccountData>();
-                    int i = 0;
-                    for(QueryDocumentSnapshot document : task.getResult())
-                    {
-                        Map<String, Object> data = document.getData();
+            QuerySnapshot account_documents = task.getResult();
 
-                        accountData.add(
-                                new AccountData
-                                (
-                                    document.getId(),
-                                    data.get(FirestoreReferences.Accounts.NAME).toString(),
-                                    data.get(FirestoreReferences.Accounts.PASSWORD).toString(),
-                                    Boolean.parseBoolean(data.get(FirestoreReferences.Accounts.IS_ACTIVE).toString()),
-                                    data.get(FirestoreReferences.Accounts.PROFILE_PICTURE).toString(),
-                                    Instant.ofEpochSecond(Long.parseLong(data.get(FirestoreReferences.Accounts.CREATION_TIME).toString())),
-                                    AccountData.convertType(data.get(FirestoreReferences.Accounts.TYPE).toString()),
-                                    document.getId().equals(account_email),
-                                    new ArrayList<RestroomData>()
-                                )
-                        );
-                    }
+            if(account_documents == null || account_documents.isEmpty())
+                return;
 
-                    accountAdapter = new AccountAdapter(accountData, ManageModAccountsActivity.this);
-                    rv_mod_accounts.setAdapter(accountAdapter);
-                }
-                else
-                {
-                    Log.w("ManageModAccountsActivity", "TASK NOT SUCCESSFUL", task.getException());
-                }
+            //Populate account list
+            for(QueryDocumentSnapshot account_document : account_documents)
+            {
+                Map<String, Object> data = account_document.getData();
+
+                account_list.add
+                (
+                    new AccountData
+                    (
+                        account_document.getId(),
+                        data.get(FirestoreReferences.Accounts.NAME).toString(),
+                        data.get(FirestoreReferences.Accounts.PASSWORD).toString(),
+                        Boolean.parseBoolean(data.get(FirestoreReferences.Accounts.IS_ACTIVE).toString()),
+                        data.get(FirestoreReferences.Accounts.PROFILE_PICTURE).toString(),
+                        Instant.ofEpochSecond(Long.parseLong(data.get(FirestoreReferences.Accounts.CREATION_TIME).toString())),
+                        AccountData.convertType(data.get(FirestoreReferences.Accounts.TYPE).toString()),
+                        account_document.getId().equals(account_email),
+                        new ArrayList<RestroomData>()
+                    )
+                );
             }
+
+            //Assign to recycler view
+            account_adapter = new AccountAdapter(account_list, ManageModAccountsActivity.this);
+            rv_mod_accounts.setAdapter(account_adapter);
         });
     }
 }

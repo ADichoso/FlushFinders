@@ -7,16 +7,11 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.FirebaseFirestore;
 import com.mobdeve.s18.banyoboyz.flushfinders.R;
 import com.mobdeve.s18.banyoboyz.flushfinders.models.FirestoreHelper;
 import com.mobdeve.s18.banyoboyz.flushfinders.models.FirestoreReferences;
@@ -27,15 +22,17 @@ import org.mindrot.jbcrypt.BCrypt;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ResetPasswordActivity extends AppCompatActivity {
+public class ResetPasswordActivity extends AppCompatActivity
+{
     private String account_email;
-    TextView tv_reset_password_email;
-    EditText et_reset_password_new_password;
-    TextView tv_reset_pass_invalid_message;
+    private TextView tv_reset_password_email;
+    private EditText et_reset_password_new_password;
+    private TextView tv_reset_pass_invalid_message;
 
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_reset_password);
@@ -68,11 +65,11 @@ public class ResetPasswordActivity extends AppCompatActivity {
 
             //1. Get the ID of the person's account.
             //2. Update the password
-            Map<String, Object> updateMap = new HashMap<>();
+            Map<String, Object> update_data = new HashMap<>();
 
-            updateMap.put(FirestoreReferences.Accounts.PASSWORD, BCrypt.hashpw(account_password, BCrypt.gensalt(10)));
+            update_data.put(FirestoreReferences.Accounts.PASSWORD, BCrypt.hashpw(account_password, BCrypt.gensalt(10)));
 
-            FirestoreHelper.getInstance().updateAccount(account_email, updateMap, task -> {
+            FirestoreHelper.getInstance().updateAccount(account_email, update_data, task -> {
                 if(task.isSuccessful())
                 {
                     //CLEAR SHARED PREFERENCES
@@ -84,15 +81,11 @@ public class ResetPasswordActivity extends AppCompatActivity {
                     startActivity(intent);
                 }
                 else
-                {
                     tv_reset_pass_invalid_message.setVisibility(View.VISIBLE);
-                }
             });
         }
         else
-        {
             tv_reset_pass_invalid_message.setVisibility(View.VISIBLE);
-        }
 
 
     }

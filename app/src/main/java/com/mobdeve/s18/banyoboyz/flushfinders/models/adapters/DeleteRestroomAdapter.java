@@ -32,7 +32,6 @@ public class DeleteRestroomAdapter extends RecyclerView.Adapter<DeleteRestroomAd
     public static final String RESTROOM_ID = "RESTROOM_ID";
 
     ArrayList<RestroomData> restroomData;
-    ArrayList<String> selected_restrooms_ids;
     ArrayList<DeleteRestroomHolder> selected_holders;
 
     Context context;
@@ -43,10 +42,10 @@ public class DeleteRestroomAdapter extends RecyclerView.Adapter<DeleteRestroomAd
             deleteRestroomHolder.toggleSelection(false);
 
         selected_holders.clear();
-        selected_restrooms_ids.clear();
     }
-    public ArrayList<String> getSelectedRestroomsIds() {
-        return selected_restrooms_ids;
+
+    public ArrayList<RestroomData> getRestroomData() {
+        return restroomData;
     }
 
     public DeleteRestroomAdapter(ArrayList<RestroomData> restroomData, Context context) {
@@ -79,15 +78,9 @@ public class DeleteRestroomAdapter extends RecyclerView.Adapter<DeleteRestroomAd
             holder.toggleSelection(!holder.is_selected);
 
             if(holder.is_selected)
-            {
                 selected_holders.add(holder);
-                selected_restrooms_ids.add(restroomDataList.getId());
-            }
             else
-            {
                 selected_holders.remove(holder);
-                selected_restrooms_ids.remove(restroomDataList.getId());
-            }
         });
     }
 

@@ -20,14 +20,16 @@ import com.mobdeve.s18.banyoboyz.flushfinders.models.FirestoreHelper;
 import java.time.Instant;
 import java.util.Map;
 
-public class RegisterActivity extends AppCompatActivity {
+public class RegisterActivity extends AppCompatActivity
+{
 
     EditText et_register_name;
     EditText et_register_email;
     EditText et_register_password;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_register);
@@ -63,7 +65,7 @@ public class RegisterActivity extends AppCompatActivity {
 
                         //Generate Default Profile Picture
                         Bitmap default_profile_picture = BitmapFactory.decodeResource(RegisterActivity.this.getResources(), R.drawable.mumei);
-                        default_profile_picture = PictureHelper.scaleBitmap(default_profile_picture);
+                        default_profile_picture = PictureHelper.scaleBitmap(default_profile_picture, 512, 512);
 
                         //Create account data
                         Map<String, Object> data = FirestoreHelper.getInstance().createAccountData
