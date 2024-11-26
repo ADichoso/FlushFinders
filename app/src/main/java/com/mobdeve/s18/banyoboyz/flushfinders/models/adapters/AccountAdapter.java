@@ -51,6 +51,7 @@ public class AccountAdapter extends RecyclerView.Adapter<AccountAdapter.ModViewH
         holder.iv_profile_pic.setImageBitmap(PictureHelper.decodeBase64ToBitmap(account.getProfilePicture()));
         holder.tv_name.setText(account.getName());
         holder.tv_email.setText(account.getEmail());
+        holder.tv_type.setText(account.getType().toString());
 
         if(account.isMe())
         {
@@ -101,6 +102,7 @@ public class AccountAdapter extends RecyclerView.Adapter<AccountAdapter.ModViewH
         ImageView iv_profile_pic;
         TextView tv_name;
         TextView tv_email;
+        TextView tv_type;
         Switch sw_is_active;
         Button btn_delete_mod_account;
 
@@ -110,6 +112,7 @@ public class AccountAdapter extends RecyclerView.Adapter<AccountAdapter.ModViewH
             iv_profile_pic = itemView.findViewById(R.id.iv_mod_account_pp);
             tv_name = itemView.findViewById(R.id.tv_mod_name);
             tv_email = itemView.findViewById(R.id.tv_mod_email);
+            tv_type = itemView.findViewById(R.id.tv_type);
             sw_is_active = itemView.findViewById(R.id.sw_mod_access);
             btn_delete_mod_account = itemView.findViewById(R.id.btn_delete_mod_account);
         }

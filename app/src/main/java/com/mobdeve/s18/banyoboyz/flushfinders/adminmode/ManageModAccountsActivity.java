@@ -12,6 +12,7 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.mobdeve.s18.banyoboyz.flushfinders.R;
@@ -82,21 +83,20 @@ public class ManageModAccountsActivity extends AppCompatActivity
                 return;
 
             //Populate account list
-            for(QueryDocumentSnapshot account_document : account_documents)
+            for(DocumentSnapshot account_document : account_documents)
             {
-                Map<String, Object> data = account_document.getData();
 
                 account_list.add
                 (
                     new AccountData
                     (
                         account_document.getId(),
-                        data.get(FirestoreReferences.Accounts.NAME).toString(),
-                        data.get(FirestoreReferences.Accounts.PASSWORD).toString(),
-                        Boolean.parseBoolean(data.get(FirestoreReferences.Accounts.IS_ACTIVE).toString()),
-                        data.get(FirestoreReferences.Accounts.PROFILE_PICTURE).toString(),
-                        Instant.ofEpochSecond(Long.parseLong(data.get(FirestoreReferences.Accounts.CREATION_TIME).toString())),
-                        AccountData.convertType(data.get(FirestoreReferences.Accounts.TYPE).toString()),
+                        account_document.getString(FirestoreReferences.Accounts.NAME),
+                        account_document.getString(FirestoreReferences.Accounts.PASSWORD),
+                        account_document.get(FirestoreReferences.Accounts.IS_ACTIVE, Boolean.class),
+                        account_document.getString(FirestoreReferences.Accounts.PROFILE_PICTURE),
+                        Instant.ofEpochSecond(account_document.getLong(FirestoreReferences.Accounts.CREATION_TIME)),
+                        AccountData.convertType(account_document.getString(FirestoreReferences.Accounts.TYPE)),
                         account_document.getId().equals(account_email),
                         new ArrayList<RestroomData>()
                     )

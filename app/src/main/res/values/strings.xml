@@ -11,8 +11,8 @@
     <string name="login_failed">"Login failed"</string>
 
     <string-array name="mod_types_array">
-        <item>Moderator</item>
-        <item>Administrator</item>
+        <item>MODERATOR</item>
+        <item>ADMINISTRATOR</item>
     </string-array>
     <string-array name="restroom_filters_array">
         <item>Saved Restrooms</item>

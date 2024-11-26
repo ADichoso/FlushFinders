@@ -53,6 +53,13 @@
                     android:layout_margin="10dp"
                     android:text="Mod Email Address" />
 
+                <TextView
+                    android:id="@+id/tv_type"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:text="Mod Email Address" />
+
                 <Switch
                     android:id="@+id/sw_mod_access"
                     android:layout_width="match_parent"
@@ -63,7 +70,7 @@
                     android:id="@+id/btn_delete_mod_account"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Delete Mod Account" />
+                    android:text="Delete Account" />
 
             </LinearLayout>
 
