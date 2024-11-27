@@ -142,7 +142,10 @@ public class LoginActivity extends AppCompatActivity
             //Sign in user in firebase auth
             FireAuthHelper.getInstance().signInUser(account_email, account_password, task1 -> {
                 if(!task1.isSuccessful())
+                {
+                    tv_login_invalid_message.setVisibility(View.VISIBLE);
                     return;
+                }
 
                 //Go to that home page
                 if(FireAuthHelper.getInstance().isCurrentUserVerified())

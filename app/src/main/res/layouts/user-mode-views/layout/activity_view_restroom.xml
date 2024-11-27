@@ -67,6 +67,7 @@
                     android:layout_height="48dp"
                     android:background="@null"
                     android:contentDescription="Toggle Favorite"
+                    android:onClick="toggleRestroomAsFavoriteButton"
                     android:scaleType="centerInside"
                     app:srcCompat="@drawable/icon_star" />
             </LinearLayout>
@@ -188,9 +189,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:backgroundTint="@color/accent_light"
+                android:onClick="getRestroomDirectionsButton"
                 android:text="Navigate to Restroom ⇒"
                 android:textColor="@color/text_primary"
-                android:textSize="24sp"/>
+                android:textSize="24sp" />
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 </androidx.constraintlayout.widget.ConstraintLayout>

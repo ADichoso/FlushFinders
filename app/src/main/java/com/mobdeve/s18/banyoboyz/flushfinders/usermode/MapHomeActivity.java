@@ -175,8 +175,14 @@ public class MapHomeActivity extends AppCompatActivity implements SensorEventLis
         existing_locations = new HashMap<GeoPoint, Marker>();
         onMarkerClickListener = (marker, mapView) ->
         {
-            updateChosenLocation(marker);
+            if(direction_mode)
+                toggleDirectionMode(false);
+
             toggleTracking(false);
+
+            updateChosenLocation(marker);
+
+
             mapView.getController().animateTo(marker.getPosition());
             return false;
         };

@@ -144,6 +144,11 @@ public class DeleteRestroomActivity extends AppCompatActivity
     {
         for(RestroomData restroom : delete_restroom_adapter.getSelectedRestrooms())
         {
+            int old_restroom_index = delete_restroom_adapter.getRestrooms().indexOf(restroom);
+            restroom_list.remove(restroom);
+            rv_restrooms.removeViewAt(old_restroom_index);
+            delete_restroom_adapter.notifyDataSetChanged();
+
             //Delete the restroom entries that had this amenity
             FirestoreHelper.getInstance().getBuildingsDBRef().whereArrayContains(FirestoreReferences.Buildings.RESTROOMS, restroom.getId()).get().addOnCompleteListener(task ->
             {
@@ -195,41 +200,9 @@ public class DeleteRestroomActivity extends AppCompatActivity
 
                         });
                     }
-
-                    int old_restroom_index = delete_restroom_adapter.getRestrooms().indexOf(restroom);
-                    restroom_list.remove(restroom);
-                    rv_restrooms.removeViewAt(old_restroom_index);
-                    delete_restroom_adapter.notifyDataSetChanged();
                 });
             });
         }
-
-        //Check for any buildings that have empty restroom arrays and delete those as well
-        /*FirestoreHelper.getInstance().getBuildingsDBRef().whereEqualTo(FirestoreReferences.Buildings.SUGGESTION, false).get().addOnCompleteListener(task ->
-        {
-            if(!task.isSuccessful())
-                return;
-
-            QuerySnapshot building_documents = task.getResult();
-
-            if(building_documents == null || building_documents.isEmpty())
-                return;
-
-            for(DocumentSnapshot building_document : building_documents)
-            {
-                GeoPoint point = MapHelper.getInstance().decodeBuildingLocation(building_document.getId());
-                ArrayList<String> restrooms_ids = (ArrayList<String>) building_document.get(FirestoreReferences.Buildings.RESTROOMS);
-
-                if(restrooms_ids != null && !restrooms_ids.isEmpty())
-                    continue;
-
-                //Delete the building in here!
-                FirestoreHelper.getInstance().deleteBuilding(point.getLatitude(), point.getLongitude(), task2 ->
-                {
-
-                });
-            }
-        });*/
     }
 
     public void removeSelectedRestrooms(View view)

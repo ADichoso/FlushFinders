@@ -20,6 +20,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.mobdeve.s18.banyoboyz.flushfinders.R;
+import com.mobdeve.s18.banyoboyz.flushfinders.helper.FireAuthHelper;
 import com.mobdeve.s18.banyoboyz.flushfinders.helper.PictureHelper;
 import com.mobdeve.s18.banyoboyz.flushfinders.mainmenu.ForgotPasswordActivity;
 import com.mobdeve.s18.banyoboyz.flushfinders.mainmenu.MainActivity;
@@ -144,6 +145,7 @@ public class AccountHomeActivity extends AppCompatActivity
     {
         //Clear shared preferences
         SharedPrefReferences.clearSharedPreferences(this);
+        FireAuthHelper.getInstance().signOutUser();
 
         Intent intent = new Intent(AccountHomeActivity.this, MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);

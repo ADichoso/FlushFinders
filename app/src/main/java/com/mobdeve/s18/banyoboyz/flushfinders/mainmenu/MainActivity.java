@@ -86,7 +86,6 @@ public class MainActivity extends AppCompatActivity
     private void signout()
     {
         SharedPrefReferences.clearSharedPreferences(this);
-        if(FireAuthHelper.getInstance().isCurrentUserSignedIn())
-            FireAuthHelper.getInstance().signOutUser();
+        FireAuthHelper.getInstance().signOutUser();
     }
 }

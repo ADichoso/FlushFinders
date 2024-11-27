@@ -13,6 +13,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.mobdeve.s18.banyoboyz.flushfinders.R;
+import com.mobdeve.s18.banyoboyz.flushfinders.helper.FireAuthHelper;
 import com.mobdeve.s18.banyoboyz.flushfinders.mainmenu.MainActivity;
 import com.mobdeve.s18.banyoboyz.flushfinders.helper.FirestoreHelper;
 import com.mobdeve.s18.banyoboyz.flushfinders.helper.SharedPrefReferences;
@@ -51,7 +52,7 @@ public class AccountDeleteActivity extends AppCompatActivity
 
             //Clear shared preferences
             SharedPrefReferences.clearSharedPreferences(AccountDeleteActivity.this);
-
+            FireAuthHelper.getInstance().signOutUser();
             //Go back to main menu
             Intent intent = new Intent(AccountDeleteActivity.this, MainActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
