@@ -112,8 +112,7 @@ public class CreateModAccountActivity extends AppCompatActivity
             }
 
             //User does not currently exist, you are free to create a new account.
-            //TODO: Pick a different default profile picture.
-            Bitmap default_profile_picture = BitmapFactory.decodeResource(CreateModAccountActivity.this.getResources(), R.drawable.mumei);
+            Bitmap default_profile_picture = BitmapFactory.decodeResource(CreateModAccountActivity.this.getResources(), R.drawable.looey);
             default_profile_picture = PictureHelper.scaleBitmap(default_profile_picture, 512, 512);
 
             //ID of accounts will be the email (Unique Identifier)

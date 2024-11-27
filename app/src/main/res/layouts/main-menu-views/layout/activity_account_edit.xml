@@ -5,6 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/background_light"
     tools:context=".accounts.AccountEditActivity">
 
     <TextView
@@ -12,6 +13,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Edit Account Information"
+        android:textColor="@color/text_primary"
         android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -29,18 +31,24 @@
         android:fontFamily="@font/mitr_light"
         android:letterSpacing="0.02"
         android:text="Invalid Email/Password"
-        android:textColor="#FF4F4F"
+        android:textColor="@color/error"
         android:textSize="14sp"
         android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_edit_acc" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_edit_acc"
+        app:layout_constraintVertical_bias="0.00999999" />
 
     <LinearLayout
         android:id="@+id/ll_edit_account_form"
-        android:layout_width="250dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
+        android:background="@color/primary"
+        android:layout_margin="20dp"
+        android:paddingHorizontal="5dp"
+        android:paddingVertical="15dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -60,6 +68,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
+                android:padding="5dp"
+                android:background="@color/secondary_light"
                 tools:srcCompat="@tools:sample/avatars" />
 
             <Button
@@ -69,7 +79,9 @@
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
                 android:onClick="getProfilePicture"
-                android:text="Change Picture" />
+                android:backgroundTint="@color/primary_dark"
+                android:text="Change Picture"
+                android:textColor="@color/text_on_accent" />
         </LinearLayout>
 
         <LinearLayout
@@ -77,21 +89,24 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
-    
+
             <TextView
                 android:id="@+id/tv_edit_account_label_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="TextView" />
-    
+                android:text="Name"
+                android:textColor="@color/text_secondary" />
+
             <EditText
                 android:id="@+id/et_edit_account_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
+                android:backgroundTint="@color/primary_light"
                 android:inputType="text"
-                android:text="Name" />
-    
+                android:text="Name"
+                android:textColor="@color/text_primary" />
+
         </LinearLayout>
 
     </LinearLayout>
@@ -100,9 +115,11 @@
         android:id="@+id/btn_edit_account_acc"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:backgroundTint="#825CBD"
+        android:layout_marginHorizontal="15dp"
+        android:backgroundTint="@color/primary_dark"
         android:onClick="editAccountButton"
         android:text="Edit Account Information"
+        android:textColor="@color/text_on_primary"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

@@ -4,14 +4,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:background="@color/background_light"
+    android:padding="10dp"
+    android:orientation="vertical">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cv_rate_amenity_item"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
-        app:cardBackgroundColor="#FFFFFF"
+        app:cardBackgroundColor="@color/secondary"
         app:cardCornerRadius="10dp"
         app:cardElevation="10dp">
 
@@ -19,30 +22,37 @@
             android:id="@+id/ll_rate_amenity_item"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:padding="5dp">
 
             <ImageView
                 android:id="@+id/iv_amenity_icon"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
-                android:layout_weight="1"
-                android:src="@android:drawable/arrow_down_float" />
+                android:src="@android:drawable/arrow_down_float"
+                />
 
             <TextView
                 android:id="@+id/tv_amenity_description"
-                android:layout_width="wrap_content"
+                android:layout_width="150dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="2"
-                android:text="TextView" />
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:text="Amenity Description"
+                android:textColor="@color/text_primary"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:gravity="center_vertical" />
 
             <Button
                 android:id="@+id/btn_delete_amenity"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Delete Amenity" />
+                android:text="Delete Amenity"
+                android:textColor="@color/text_on_accent"
+                android:backgroundTint="@color/accent_dark" />
 
         </LinearLayout>
 

@@ -5,14 +5,15 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/background_primary"
     tools:context=".adminmode.ManageModAccountsActivity">
 
     <ScrollView
         android:id="@+id/sv_mod_accounts"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="5dp"
-        android:background="#B7BAED"
+        android:layout_margin="16dp"
+        android:background="@color/background_light"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -22,13 +23,16 @@
             android:id="@+id/ll_mod_accounts"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:padding="12dp">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_mod_accounts"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-            />
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:clipToPadding="false"
+                android:scrollbars="vertical" />
         </LinearLayout>
     </ScrollView>
 

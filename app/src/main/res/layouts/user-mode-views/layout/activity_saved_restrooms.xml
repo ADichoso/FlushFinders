@@ -5,49 +5,46 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/background_light"
     tools:context=".usermode.SavedRestroomsActivity">
 
-
+    <!-- CardView for Filters -->
     <androidx.cardview.widget.CardView
         android:id="@+id/cv_restroom_filters"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingStart="10dp"
-        android:paddingLeft="10dp"
-        android:paddingTop="10dp"
-        android:paddingEnd="10dp"
-        android:paddingRight="10dp"
-        android:paddingBottom="10dp"
-        app:cardBackgroundColor="#BBD9E9"
+        android:layout_margin="15dp"
+        android:padding="10dp"
+        app:cardBackgroundColor="@color/primary"
         app:cardCornerRadius="12dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
 
         <Spinner
             android:id="@+id/sp_restroom_filters"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
+            android:layout_height="wrap_content"
+            android:contentDescription="Filter saved restrooms"
+            android:spinnerMode="dropdown" />
     </androidx.cardview.widget.CardView>
 
+    <!-- ScrollView containing RecyclerView -->
     <ScrollView
         android:id="@+id/sv_restrooms"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        android:layout_margin="10dp"
+        app:layout_constraintTop_toBottomOf="@id/cv_restroom_filters"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cv_restroom_filters"
-        app:layout_constraintVertical_bias="0.0">
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_recommended_restrooms"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:contentDescription="List of saved restrooms" />
     </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

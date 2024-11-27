@@ -6,13 +6,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_weight="1"
+    android:background="@color/primary"
     tools:context=".usermode.MapHomeActivity">
-
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/cl_user_operations"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginHorizontal="5dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -35,6 +36,7 @@
                 android:layout_weight="1"
                 android:onClick="accountHomeButton"
                 android:scaleType="fitCenter"
+                android:backgroundTint="@color/secondary"
                 app:srcCompat="@drawable/icon_account" />
 
             <ImageButton
@@ -44,6 +46,7 @@
                 android:layout_weight="1"
                 android:onClick="recommendedRestroomsButton"
                 android:scaleType="fitCenter"
+                android:backgroundTint="@color/secondary"
                 app:srcCompat="@drawable/icon_star" />
 
             <ImageButton
@@ -53,6 +56,7 @@
                 android:layout_weight="1"
                 android:onClick="suggestRestroomButton"
                 android:scaleType="fitCenter"
+                android:backgroundTint="@color/secondary"
                 app:srcCompat="@drawable/icon_like" />
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -65,6 +69,7 @@
         android:padding="8dp"
         android:text="Reset Navigation"
         android:textSize="0sp"
+        android:backgroundTint="@color/accent_dark"
         app:icon="@drawable/baseline_my_location_24"
         app:iconGravity="textTop"
         app:iconPadding="0dp"
@@ -90,14 +95,10 @@
             android:id="@+id/cv_map_menu_bar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingStart="10dp"
-            android:paddingLeft="10dp"
-            android:paddingTop="10dp"
-            android:paddingEnd="10dp"
-            android:paddingRight="10dp"
-            android:paddingBottom="10dp"
+            android:padding="10dp"
+            android:layout_marginHorizontal="5dp"
             android:visibility="visible"
-            app:cardBackgroundColor="#CCFFFFFF"
+            android:backgroundTint="@color/secondary"
             app:cardCornerRadius="100dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -117,7 +118,7 @@
                     android:id="@+id/btn_search_restroom_name"
                     android:layout_width="21dp"
                     android:layout_height="wrap_content"
-                    android:background="#00FFFFFF"
+                    android:background="@color/secondary"
                     android:onClick="searchLocationButton"
                     android:scaleType="fitCenter"
                     app:srcCompat="@drawable/icon_search" />
@@ -130,24 +131,20 @@
                     android:hint="Find empty toilets near you."
                     android:inputType="text"
                     android:textAlignment="viewStart"
+                    android:textColor="@color/text_primary"
+                    android:textColorHint="@color/text_secondary"
                     android:textSize="16sp" />
-
             </LinearLayout>
-
         </androidx.cardview.widget.CardView>
 
         <org.osmdroid.views.MapView
             android:id="@+id/map"
-            layout_height=""
             android:layout_width="0dp"
             android:layout_height="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-        </org.osmdroid.views.MapView>
-
+            app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.cardview.widget.CardView
@@ -157,7 +154,7 @@
         android:layout_marginStart="15dp"
         android:layout_marginEnd="15dp"
         android:visibility="visible"
-        app:cardBackgroundColor="#B2FFFFFF"
+        app:cardBackgroundColor="@color/secondary"
         app:cardCornerRadius="12dp"
         app:layout_constraintBottom_toBottomOf="@+id/cl_building_map"
         app:layout_constraintEnd_toEndOf="parent"
@@ -168,12 +165,13 @@
         <LinearLayout
             android:id="@+id/ll_building_info"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
             android:orientation="horizontal">
 
             <LinearLayout
                 android:id="@+id/ll_building_info_labels"
-                android:layout_width="150dp"
+                android:layout_width="200dp"
                 android:layout_height="match_parent"
                 android:orientation="vertical">
 
@@ -181,14 +179,16 @@
                     android:id="@+id/tv_chosen_building_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Building Name Here" />
+                    android:text="Building Name Here"
+                    android:textColor="@color/text_primary"/>
 
                 <TextView
                     android:id="@+id/tv_chosen_building_address"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Building Address Here" />
+                    android:text="Building Address Here"
+                    android:textColor="@color/text_primary"/>
             </LinearLayout>
 
             <LinearLayout
@@ -199,21 +199,21 @@
 
                 <Button
                     android:id="@+id/btn_view_building_info"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:onClick="viewChosenBuildingInfoButton"
-                    android:text="View Building Information" />
+                    android:text="View Building"
+                    android:backgroundTint="@color/accent_dark"/>
 
                 <Button
                     android:id="@+id/btn_clear_building_info"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:onClick="clearBuildingSelectionButton"
-                    android:text="Clear Building Selection" />
+                    android:text="Clear Building Selection"
+                    android:backgroundTint="@color/accent_dark"/>
             </LinearLayout>
-
         </LinearLayout>
-
     </androidx.cardview.widget.CardView>
 
     <androidx.cardview.widget.CardView
@@ -222,7 +222,7 @@
         android:layout_height="100dp"
         android:layout_marginStart="15dp"
         android:layout_marginEnd="15dp"
-        android:visibility="visible"
+        android:visibility="invisible"
         app:cardBackgroundColor="#B2FFFFFF"
         app:cardCornerRadius="12dp"
         app:layout_constraintBottom_toBottomOf="@+id/cl_building_map"
@@ -241,15 +241,18 @@
                 android:id="@+id/tv_route_directions"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="TextView" />
+                android:text="TextView"
+                android:textAlignment="center"
+                android:textColor="@color/text_primary"/>
 
             <TextView
                 android:id="@+id/tv_route_info"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="TextView" />
+                android:text="TextView"
+                android:textAlignment="center"
+                android:textColor="@color/text_primary"/>
         </LinearLayout>
-
     </androidx.cardview.widget.CardView>
 
     <androidx.cardview.widget.CardView
@@ -257,7 +260,7 @@
         android:layout_width="250dp"
         android:layout_height="wrap_content"
         android:visibility="visible"
-        app:cardBackgroundColor="#CCFFFFFF"
+        app:cardBackgroundColor="@color/secondary_light"
         app:cardCornerRadius="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -268,6 +271,8 @@
             android:id="@+id/ll_restroom_rating"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_margin="5dp"
+            android:background="@color/secondary"
             android:orientation="vertical"
             android:paddingLeft="2dp"
             android:paddingTop="4dp"
@@ -278,7 +283,6 @@
                 android:id="@+id/tv_restroom_rating"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:fontFamily="sans-serif"
                 android:text="Leave a Rating?"
                 android:textAlignment="center" />
 
@@ -293,19 +297,21 @@
                     android:id="@+id/btn_rate_restroom"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:backgroundTint="@color/accent_dark"
                     android:onClick="rateRestroomsButton"
-                    android:text="Yes!" />
+                    android:text="Yes!"
+                    android:textColor="@color/text_on_accent" />
 
                 <Button
                     android:id="@+id/btn_close_rating_view"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="8dp"
+                    android:backgroundTint="@color/accent_dark"
                     android:onClick="closeRatingButton"
-                    android:text="No" />
+                    android:text="No"
+                    android:textColor="@color/text_on_accent" />
             </LinearLayout>
-
         </LinearLayout>
     </androidx.cardview.widget.CardView>
-
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     tools:context=".mainmenu.LoginActivity">
 
-
+    <!-- Title Group with Icon and Text -->
     <LinearLayout
         android:id="@+id/register_title_group"
         android:layout_width="250dp"
@@ -36,10 +36,12 @@
             android:lineSpacingExtra="-10sp"
             android:paddingLeft="10dp"
             android:text="Login to your Account"
-            android:textSize="24sp" />
+            android:textSize="24sp"
+            android:textColor="@color/text_primary" />
 
     </LinearLayout>
 
+    <!-- Error Message for Invalid Login -->
     <TextView
         android:id="@+id/tv_login_invalid_message"
         android:layout_width="wrap_content"
@@ -49,7 +51,7 @@
         android:fontFamily="@font/mitr_light"
         android:letterSpacing="0.02"
         android:text="Invalid Email/Password"
-        android:textColor="#FF4F4F"
+        android:textColor="@color/error"
         android:textSize="14sp"
         android:visibility="invisible"
         app:layout_constraintBottom_toTopOf="@+id/ll_login_form"
@@ -57,61 +59,75 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/register_title_group" />
 
+    <!-- Login Form Fields -->
     <LinearLayout
         android:id="@+id/ll_login_form"
         android:layout_width="250dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
         android:orientation="vertical"
+        android:padding="5dp"
+        android:background="@color/primary"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/register_title_group"
         app:layout_constraintVertical_bias="0.0">
 
+        <!-- Email Field -->
         <LinearLayout
             android:id="@+id/ll_login_group_email"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:padding="5dp"
+            android:background="@color/secondary"
             android:orientation="vertical">
 
             <TextView
                 android:id="@+id/tv_login_label_email"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Email Address" />
+                android:text="Email Address"
+                android:textColor="@color/text_primary" />
 
             <EditText
                 android:id="@+id/et_login_email"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:inputType="textEmailAddress" />
+                android:inputType="textEmailAddress"
+                android:backgroundTint="@color/primary" />
         </LinearLayout>
 
+        <!-- Password Field -->
         <LinearLayout
             android:id="@+id/ll_login_group_password"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="5dp"
+            android:padding="5dp"
+            android:background="@color/secondary"
             android:orientation="vertical">
 
             <TextView
                 android:id="@+id/tv_login_label_password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Password" />
+                android:text="Password"
+                android:textColor="@color/text_primary" />
 
             <EditText
                 android:id="@+id/et_login_password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:inputType="textPassword" />
+                android:inputType="textPassword"
+                android:backgroundTint="@color/primary" />
         </LinearLayout>
 
     </LinearLayout>
 
+    <!-- Login Button -->
     <Button
         android:id="@+id/btn_login_account"
         android:layout_width="wrap_content"
@@ -129,8 +145,11 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/ll_login_form"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintVertical_bias="1.0"
+        android:textColor="@color/text_on_accent"
+        android:backgroundTint="@color/accent" />
 
+    <!-- Forgot Password Link -->
     <TextView
         android:id="@+id/tv_forgot_password"
         android:layout_width="wrap_content"
@@ -140,6 +159,7 @@
         android:letterSpacing="0.02"
         android:onClick="forgotPasswordButton"
         android:text="Forgot Password?"
+        android:textColor="@color/accent"
         app:layout_constraintEnd_toEndOf="@+id/btn_login_account"
         app:layout_constraintStart_toStartOf="@+id/btn_login_account"
         app:layout_constraintTop_toBottomOf="@+id/btn_login_account" />

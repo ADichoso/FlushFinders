@@ -5,12 +5,16 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/contrast_complementary_light"
     tools:context=".adminmode.CreateAmenityActivity">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.cardview.widget.CardView
         android:id="@+id/cv_create_amenity"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:backgroundTint="@color/primary_light"
+        app:cardCornerRadius="16dp"
+        app:cardElevation="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -21,45 +25,64 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            android:padding="20dp"
+            android:gravity="center">
 
             <TextView
                 android:id="@+id/tv_create_amenity"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Create New Amenity"
-                android:textAlignment="center" />
+                android:textAlignment="center"
+                android:textSize="22sp"
+                android:textStyle="bold"
+                android:textColor="@color/text_primary"
+                android:layout_marginBottom="12dp" />
 
             <ImageView
                 android:id="@+id/iv_amenity_icon"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:srcCompat="@drawable/accessible" />
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:layout_gravity="center"
+                app:srcCompat="@drawable/accessible"
+                android:backgroundTint="@color/contrast_light"
+                android:padding="8dp"
+                android:layout_marginBottom="16dp" />
 
             <Button
                 android:id="@+id/btn_change_amenity_icon"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:onClick="getAmenityIconButton"
-                android:text="Change Icon" />
+                android:text="Change Icon"
+                android:backgroundTint="@color/accent_dark"
+                android:textColor="@color/text_on_accent"
+                android:layout_marginBottom="12dp"
+                android:padding="12dp" />
 
             <EditText
                 android:id="@+id/et_amenity_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:inputType="text"
-                android:text="Amenity Name" />
+                android:hint="Amenity Name"
+                android:textColor="@color/text_primary"
+                android:textColorHint="@color/text_secondary"
+                android:backgroundTint="@color/border_light"
+                android:padding="10dp"
+                android:textSize="16sp"
+                android:layout_marginBottom="12dp" />
 
             <Button
                 android:id="@+id/btn_submit_amenity"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:onClick="createAmenityButton"
-                android:text="Create New Amenity" />
+                android:text="Create Amenity"
+                android:backgroundTint="@color/accent_dark"
+                android:textColor="@color/text_on_accent"
+                android:padding="12dp" />
 
         </LinearLayout>
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

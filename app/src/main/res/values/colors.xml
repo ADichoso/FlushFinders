@@ -1,6 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="black">#000000</color>
-    <color name="white">#FFFFFFFF</color>
-    <color name="warning">#A82828</color>
+    <!-- Primary Colors -->
+    <color name="primary">#BBD9E9</color> <!-- Baby Blue -->
+    <color name="primary_dark">#80ABD1</color> <!-- Slightly Darker Baby Blue -->
+    <color name="primary_light">#D8EDF5</color> <!-- Lighter Baby Blue -->
+
+    <!-- Secondary Colors -->
+    <color name="secondary">#FFFFFF</color> <!-- Pure White -->
+    <color name="secondary_light">#E3EEF4</color> <!-- Very Light Blue-White -->
+    <color name="secondary_dark">#CBDDE4</color> <!-- Soft Grayish Blue -->
+
+    <!-- Accent Colors -->
+    <color name="accent">#89C3D5</color> <!-- Teal (complementary to Baby Blue) -->
+    <color name="accent_light">#A6D6D6</color> <!-- Lighter Teal -->
+    <color name="accent_dark">#5FA9A9</color> <!-- Darker Teal -->
+
+    <!-- Contrast Colors -->
+    <color name="contrast">#BFE7D6</color> <!-- Soft Mint Green -->
+    <color name="contrast_light">#E1F5EB</color> <!-- Lighter Mint -->
+    <color name="contrast_dark">#8CCFB7</color> <!-- Rich Mint Green -->
+
+    <!-- Contrast Complementary Colors -->
+    <color name="contrast_complementary">#D7C2F0</color> <!-- Soft Lavender -->
+    <color name="contrast_complementary_light">#EDE4F7</color> <!-- Lighter Lavender -->
+    <color name="contrast_complementary_dark">#B8A4D6</color> <!-- Deep Lavender -->
+
+    <!-- Pastel Peach Colors -->
+    <color name="peach">#FAD6B5</color> <!-- Soft Peach -->
+    <color name="peach_light">#FCE9D4</color> <!-- Light Peach -->
+    <color name="peach_dark">#F3B18A</color> <!-- Darker Peach -->
+    <color name="peach_accent">#FFCC99</color> <!-- Warm Peach Accent -->
+
+    <!-- Text Colors -->
+    <color name="text_primary">#1E3A4C</color> <!-- Deep Blue for readability -->
+    <color name="text_secondary">#51626F</color> <!-- Muted Blue-Gray for secondary text -->
+    <color name="text_on_primary">#FFFFFF</color> <!-- White text on blue backgrounds -->
+    <color name="text_on_accent">#FFFFFF</color> <!-- White text on teal backgrounds -->
+
+    <!-- Background Colors -->
+    <color name="background_light">#F9FAFB</color> <!-- Soft Off-White Background -->
+    <color name="background_primary">#BCCEEF</color> <!-- Pale Blue Background -->
+    <color name="background_accent">#C4F2F2</color> <!-- Pale Teal Background -->
+    <color name="background_peach">#FFE9D5</color> <!-- Soft Peach Background -->
+
+    <!-- Borders and Lines -->
+    <color name="border_light">#D4E1E8</color> <!-- Soft Border for Light Mode -->
+    <color name="border_dark">#AFC3CE</color> <!-- Subtle Darker Border -->
+
+    <!-- Error and Success Colors -->
+    <color name="error">#FFB5B5</color> <!-- Light Coral Red -->
+    <color name="success">#A2E8D3</color> <!-- Soft Green-Teal for Success -->
+
+    <!-- Transparent Overlays -->
+    <color name="overlay_light">#80BBD9E9</color> <!-- Semi-transparent Baby Blue -->
+    <color name="overlay_dark">#40000000</color> <!-- Semi-transparent Black -->
 </resources>

@@ -5,25 +5,18 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".adminmode.DeleteRestroomActivity">
-
+    android:background="@color/background_primary"
+    tools:context=".modmode.EditRestroomActivity">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cv_search_restrooms"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingStart="10dp"
-        android:paddingLeft="10dp"
-        android:paddingTop="10dp"
-        android:paddingEnd="10dp"
-        android:paddingRight="10dp"
-        android:paddingBottom="10dp"
-        app:cardBackgroundColor="#BBD9E9"
+        android:layout_margin="12dp"
+        app:cardBackgroundColor="@color/accent_light"
         app:cardCornerRadius="12dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/rv_restrooms"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0">
@@ -31,22 +24,32 @@
         <LinearLayout
             android:id="@+id/ll_search_restrooms"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal">
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="10dp"
+            android:gravity="center_vertical">
 
             <ImageButton
                 android:id="@+id/btn_search_restroom_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:onClick="searchRestroomsButton"
-                app:srcCompat="@drawable/icon_search" />
+                app:srcCompat="@drawable/icon_search"
+                android:backgroundTint="@color/accent"
+                android:contentDescription="Search Restroom" />
 
             <EditText
                 android:id="@+id/et_search_restroom_name"
-                android:layout_width="200dp"
-                android:layout_height="match_parent"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:inputType="text"
-                android:textAlignment="viewEnd" />
+                android:hint="Enter restroom name"
+                android:textAlignment="viewEnd"
+                android:padding="8dp"
+                android:textColor="@color/text_primary"
+                android:textColorHint="@color/text_secondary"
+                android:backgroundTint="@color/border_light" />
 
         </LinearLayout>
 
@@ -56,11 +59,13 @@
         android:id="@+id/rv_restrooms"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:background="#B7BAED"
+        android:layout_marginHorizontal="10dp"
+        android:padding="5dp"
+        android:background="@color/primary_light"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cv_search_restrooms" />
-
+        app:layout_constraintTop_toBottomOf="@+id/cv_search_restrooms"
+        app:layout_constraintVertical_bias="0.0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

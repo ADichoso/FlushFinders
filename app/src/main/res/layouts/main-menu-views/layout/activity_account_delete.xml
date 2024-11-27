@@ -5,16 +5,21 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/peach"
     tools:context=".accounts.AccountDeleteActivity">
 
+    <!-- Confirmation message -->
     <TextView
         android:id="@+id/tv_delete_acc"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginHorizontal="15dp"
         android:text="Are you sure you want to delete your account?"
         android:textAlignment="center"
         android:textSize="24sp"
         android:textStyle="bold"
+        android:textColor="@color/text_primary"
+        android:background="@color/peach_light"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.495"
@@ -22,6 +27,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.148" />
 
+    <!-- Button container -->
     <LinearLayout
         android:id="@+id/ll_delete_form"
         android:layout_width="250dp"
@@ -33,21 +39,27 @@
         app:layout_constraintTop_toBottomOf="@+id/tv_delete_acc"
         app:layout_constraintVertical_bias="0.100000024">
 
+        <!-- Delete Account Button -->
         <Button
             android:id="@+id/btn_delete_user_account"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:backgroundTint="#825CBD"
             android:onClick="deleteAccountButton"
-            android:text="Delete Account" />
+            android:text="Delete Account"
+            android:textSize="15sp"
+            android:backgroundTint="@color/error"
+            android:textColor="@color/text_primary" />
 
+        <!-- Return to Account Menu Button -->
         <Button
             android:id="@+id/btn_return_menu"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:backgroundTint="#825CBD"
             android:onClick="backButton"
-            android:text="Go back to Account Menu" />
+            android:text="Go back to Account Menu"
+            android:textSize="15sp"
+            android:backgroundTint="@color/peach_light"
+            android:textColor="@color/text_primary" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

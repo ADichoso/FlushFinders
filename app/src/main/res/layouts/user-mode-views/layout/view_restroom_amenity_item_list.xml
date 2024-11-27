@@ -4,14 +4,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:padding="10dp"
+    android:background="@color/background_light"
+    android:orientation="vertical">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cv_amenity_item"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
-        app:cardBackgroundColor="#FFFFFF"
+        app:cardBackgroundColor="@color/secondary"
         app:cardCornerRadius="10dp"
         app:cardElevation="10dp">
 
@@ -19,16 +22,17 @@
             android:id="@+id/ll_amenity_item"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:padding="5dp">
 
             <ImageView
                 android:id="@+id/iv_amenity_icon"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
-                android:layout_weight="1"
-                android:src="@android:drawable/arrow_down_float" />
+                android:src="@android:drawable/arrow_down_float"
+                />
 
             <TextView
                 android:id="@+id/tv_amenity_description"
@@ -38,9 +42,10 @@
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
                 android:text="Amenities Description"
-                android:textColor="#000"
-                android:textSize="25sp"
-                android:textStyle="bold" />
+                android:textColor="@color/text_primary"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:gravity="center_vertical" />
 
         </LinearLayout>
 

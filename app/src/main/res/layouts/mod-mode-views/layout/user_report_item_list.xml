@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    tools:context=".modmode.UserReportActivity">
+    tools:context=".modmode.ReviewUserReportsActivity">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cv_restroom_user_report"
@@ -14,7 +14,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
-        app:cardBackgroundColor="#BBD9E9"
+        app:cardBackgroundColor="@color/accent_light"
         app:cardCornerRadius="12dp">
 
         <LinearLayout
@@ -27,17 +27,18 @@
                 android:id="@+id/ll_report_details"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:layout_marginVertical="5dp">
 
                 <ImageView
                     android:id="@+id/iv_building_pic"
-                    android:layout_width="150dp"
-                    android:layout_height="150dp"
+                    android:layout_width="160dp"
+                    android:layout_height="160dp"
                     app:srcCompat="@drawable/goks" />
 
                 <LinearLayout
                     android:id="@+id/ll_restroom_location"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
@@ -49,7 +50,8 @@
                         android:layout_marginRight="5dp"
                         android:text="Gokongwei Building"
                         android:textAlignment="center"
-                        android:textSize="24sp" />
+                        android:textSize="32sp"
+                        android:textColor="@color/text_primary" />
 
                     <TextView
                         android:id="@+id/tv_restroom_floor"
@@ -59,24 +61,26 @@
                         android:layout_marginRight="5dp"
                         android:text="1st Floor"
                         android:textAlignment="center"
-                        android:textSize="24sp" />
+                        android:textSize="22sp"
+                        android:textColor="@color/text_secondary" />
 
                 </LinearLayout>
             </LinearLayout>
-
 
             <LinearLayout
                 android:id="@+id/ll_restroom_metrics"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="5dp"
+                android:layout_marginHorizontal="7dp"
                 android:orientation="vertical">
 
                 <androidx.cardview.widget.CardView
                     android:id="@+id/cv_restroom_cleanliness"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="5dp">
+                    android:layout_marginBottom="5dp"
+                    app:cardBackgroundColor="@color/secondary_light">
 
                     <LinearLayout
                         android:id="@+id/ll_restroom_cleanliness"
@@ -88,17 +92,20 @@
 
                         <TextView
                             android:id="@+id/tv_cleanliness"
-                            android:layout_width="wrap_content"
+                            android:layout_width="100dp"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="5dp"
-                            android:text="Cleanliness" />
+                            android:layout_marginHorizontal="5dp"
+                            android:text="Cleanliness"
+                            android:textColor="@color/text_primary" />
 
                         <ProgressBar
                             android:id="@+id/pb_cleanliness"
                             style="?android:attr/progressBarStyleHorizontal"
-                            android:layout_width="200dp"
+                            android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:layout_marginLeft="5dp" />
+                            android:layout_marginHorizontal="5dp"
+                            android:progressBackgroundTint="@color/text_primary"
+                            android:progressTint="@color/primary"/>
 
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
@@ -107,7 +114,8 @@
                     android:id="@+id/cv_restroom_maintenance"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="5dp">
+                    android:layout_marginBottom="5dp"
+                    app:cardBackgroundColor="@color/secondary_light">
 
                     <LinearLayout
                         android:id="@+id/ll_restroom_maintenance"
@@ -119,17 +127,20 @@
 
                         <TextView
                             android:id="@+id/tv_maintenance"
-                            android:layout_width="wrap_content"
+                            android:layout_width="100dp"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="5dp"
-                            android:text="Maintenance" />
+                            android:layout_marginHorizontal="5dp"
+                            android:text="Maintenance"
+                            android:textColor="@color/text_primary" />
 
                         <ProgressBar
                             android:id="@+id/pb_maintenance"
                             style="?android:attr/progressBarStyleHorizontal"
-                            android:layout_width="200dp"
+                            android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:layout_marginLeft="5dp" />
+                            android:layout_marginHorizontal="5dp"
+                            android:progressBackgroundTint="@color/text_primary"
+                            android:progressTint="@color/primary"/>
 
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
@@ -138,7 +149,8 @@
                     android:id="@+id/cv_restroom_vacancy"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="5dp">
+                    android:layout_marginBottom="5dp"
+                    app:cardBackgroundColor="@color/secondary_light">
 
                     <LinearLayout
                         android:id="@+id/ll_restroom_vacancy"
@@ -150,20 +162,22 @@
 
                         <TextView
                             android:id="@+id/tv_vacancy"
-                            android:layout_width="wrap_content"
+                            android:layout_width="100dp"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="5dp"
-                            android:text="Vacancy" />
+                            android:layout_marginHorizontal="5dp"
+                            android:text="Vacancy"
+                            android:textColor="@color/text_primary" />
 
                         <ProgressBar
                             android:id="@+id/pb_vacancy"
                             style="?android:attr/progressBarStyleHorizontal"
-                            android:layout_width="200dp"
+                            android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:layout_marginLeft="5dp" />
+                            android:layout_marginHorizontal="5dp"
+                            android:progressBackgroundTint="@color/text_primary"
+                            android:progressTint="@color/primary"/>
 
                     </LinearLayout>
-
                 </androidx.cardview.widget.CardView>
 
             </LinearLayout>
@@ -172,19 +186,29 @@
                 android:id="@+id/rb_restroom_rating"
                 android:layout_width="wrap_content"
                 android:layout_height="50dp"
-                android:numStars="5" />
+                android:numStars="5"
+                android:rating="0"
+                android:stepSize="1"
+                android:layout_gravity="center" />
 
             <TextView
                 android:id="@+id/tv_user_review_report"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="This is a user report, they type all kinds of things in here regarding a restroom!" />
+                android:background="@color/contrast"
+                android:layout_marginHorizontal="5dp"
+                android:text="This is a user report, they type all kinds of things in here regarding a restroom!"
+                android:textColor="@color/text_primary"
+                android:padding="8dp" />
 
             <Button
                 android:id="@+id/btn_mark_user_report_resolved"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Mark as Resolved" />
+                android:layout_margin="5dp"
+                android:text="Mark as Resolved"
+                android:backgroundTint="@color/accent_dark"
+                android:textColor="@color/text_on_accent" />
 
         </LinearLayout>
     </androidx.cardview.widget.CardView>

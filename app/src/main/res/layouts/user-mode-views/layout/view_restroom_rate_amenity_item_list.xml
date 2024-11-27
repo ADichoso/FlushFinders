@@ -4,14 +4,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:background="@color/background_light"
+    android:padding="10dp"
+    android:orientation="vertical">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cv_rate_amenity_item"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
-        app:cardBackgroundColor="#FFFFFF"
+        app:cardBackgroundColor="@color/secondary"
         app:cardCornerRadius="10dp"
         app:cardElevation="10dp">
 
@@ -19,26 +22,28 @@
             android:id="@+id/ll_rate_amenity_item"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:padding="5dp">
 
             <ImageView
                 android:id="@+id/iv_amenity_icon"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
-                android:layout_weight="8"
-                android:src="@android:drawable/arrow_down_float" />
+                android:src="@android:drawable/arrow_down_float"
+                />
 
             <Switch
                 android:id="@+id/sw_amenity_description"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
-                android:layout_weight="1"
-                android:text="Amenities Description"
-                android:textSize="24sp" />
+                android:text="Amenity"
+                android:textColor="@color/text_primary"
+                android:textSize="24sp"
+                android:gravity="center_vertical"/>
 
         </LinearLayout>
 

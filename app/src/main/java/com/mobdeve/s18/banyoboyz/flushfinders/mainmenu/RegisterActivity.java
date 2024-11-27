@@ -104,7 +104,7 @@ public class RegisterActivity extends AppCompatActivity
             //THE USER WITH THIS EMAIL DOES NOT EXIST
             //Generate Default Profile Picture
             //TODO: Pick a different default profile picture.
-            Bitmap default_profile_picture = BitmapFactory.decodeResource(RegisterActivity.this.getResources(), R.drawable.mumei);
+            Bitmap default_profile_picture = BitmapFactory.decodeResource(RegisterActivity.this.getResources(), R.drawable.looey);
             default_profile_picture = PictureHelper.scaleBitmap(default_profile_picture, 512, 512);
 
             //Create account data

@@ -7,6 +7,7 @@
     android:layout_height="match_parent"
     tools:context=".mainmenu.RegisterActivity">
 
+    <!-- Register Title Group -->
     <LinearLayout
         android:id="@+id/ll_register_title_group"
         android:layout_width="250dp"
@@ -34,10 +35,10 @@
             android:paddingLeft="10dp"
             android:text="Register for a new Account"
             android:textSize="24sp"
-            />
-
+            android:textColor="@color/text_primary" />
     </LinearLayout>
 
+    <!-- Invalid Email/Password Message -->
     <TextView
         android:id="@+id/tv_invalid_message"
         android:layout_width="wrap_content"
@@ -47,7 +48,7 @@
         android:fontFamily="@font/mitr_light"
         android:letterSpacing="0.02"
         android:text="Invalid Email/Password"
-        android:textColor="#FF4F4F"
+        android:textColor="@color/error"
         android:textSize="14sp"
         android:visibility="invisible"
         app:layout_constraintBottom_toTopOf="@+id/ll_register_form"
@@ -55,50 +56,56 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/ll_register_title_group" />
 
+    <!-- Register Form -->
     <LinearLayout
         android:id="@+id/ll_register_form"
         android:layout_width="250dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
         android:orientation="vertical"
+        android:padding="5dp"
+        android:background="@color/primary"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ll_register_title_group">>
+        app:layout_constraintTop_toBottomOf="@+id/ll_register_title_group">
 
+        <!-- Username Group -->
         <LinearLayout
             android:id="@+id/ll_register_group_name"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:padding="5dp"
+            android:background="@color/secondary"
             android:orientation="vertical">
-
             <TextView
                 android:id="@+id/tv_register_label_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Username" />
-
+                android:text="Username"
+                android:textColor="@color/text_primary" />
             <EditText
                 android:id="@+id/et_register_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:inputType="text" />
-
         </LinearLayout>
 
+        <!-- Email Group -->
         <LinearLayout
             android:id="@+id/ll_register_group_email"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="5dp"
+            android:padding="5dp"
+            android:background="@color/secondary"
             android:orientation="vertical">
-
             <TextView
                 android:id="@+id/tv_register_label_email"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Email Address" />
-
+                android:text="Email Address"
+                android:textColor="@color/text_primary" />
             <EditText
                 android:id="@+id/et_register_email"
                 android:layout_width="match_parent"
@@ -107,19 +114,21 @@
                 android:inputType="textEmailAddress" />
         </LinearLayout>
 
+        <!-- Password Group -->
         <LinearLayout
             android:id="@+id/ll_register_group_password"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="5dp"
+            android:padding="5dp"
+            android:background="@color/secondary"
             android:orientation="vertical">
-
             <TextView
                 android:id="@+id/tv_register_label_password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Password" />
-
+                android:text="Password"
+                android:textColor="@color/text_primary" />
             <EditText
                 android:id="@+id/et_register_password"
                 android:layout_width="match_parent"
@@ -127,9 +136,9 @@
                 android:ems="10"
                 android:inputType="textPassword" />
         </LinearLayout>
-
     </LinearLayout>
 
+    <!-- Register Button -->
     <Button
         android:id="@+id/btn_register_acc"
         android:layout_width="wrap_content"
@@ -142,13 +151,16 @@
         android:paddingEnd="40dp"
         android:text="Sign up"
         android:textSize="24sp"
+        android:textColor="@color/text_on_accent"
         app:cornerRadius="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/ll_register_form"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintVertical_bias="1.0"
+        android:backgroundTint="@color/accent" />
 
+    <!-- Terms of Service Disclaimer -->
     <TextView
         android:id="@+id/tos_disclaimer"
         android:layout_width="250dp"
@@ -158,6 +170,7 @@
         android:lineSpacingExtra="-5dp"
         android:text="By registering for an account, you agree to comply with our Terms \u0026 Conditions."
         android:textSize="12sp"
+        android:textColor="@color/text_secondary"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/ll_register_form" />

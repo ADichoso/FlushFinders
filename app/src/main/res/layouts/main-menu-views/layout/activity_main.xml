@@ -5,6 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/primary"
     tools:context=".mainmenu.MainActivity">
 
     <ImageView
@@ -14,7 +15,6 @@
         android:layout_marginStart="30dp"
         android:layout_marginTop="120dp"
         android:foreground="@drawable/ic_launcher_foreground"
-        android:foregroundTint="@color/black"
         android:scaleType="centerInside"
         android:scaleX="2"
         android:scaleY="2"
@@ -31,12 +31,14 @@
         android:lineSpacingExtra="-24sp"
         android:text="Flush Finder"
         android:textSize="48sp"
+        android:textColor="@color/text_primary"
         app:layout_constraintBottom_toBottomOf="@+id/iv_main_logo"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.04"
         app:layout_constraintStart_toEndOf="@+id/iv_main_logo"
         app:layout_constraintTop_toTopOf="@+id/iv_main_logo" />
 
+    <!-- Tagline -->
     <TextView
         android:id="@+id/tagline"
         android:layout_width="wrap_content"
@@ -44,10 +46,12 @@
         android:fontFamily="@font/mitr_medium"
         android:letterSpacing=".05"
         android:text="When you're in a flush!"
+        android:textColor="@color/text_secondary"
         app:layout_constraintEnd_toEndOf="@+id/tv_app_name"
         app:layout_constraintStart_toStartOf="@+id/iv_main_logo"
         app:layout_constraintTop_toBottomOf="@+id/iv_main_logo" />
 
+    <!-- Main Menu Actions -->
     <LinearLayout
         android:id="@+id/hl_main_menu_actions"
         android:layout_width="wrap_content"
@@ -62,12 +66,14 @@
         app:layout_constraintTop_toBottomOf="@+id/tagline"
         app:layout_constraintVertical_bias="1.0">
 
+        <!-- Vertical Button Layout -->
         <LinearLayout
             android:id="@+id/ll_main_menu_actions"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:orientation="vertical">
 
+            <!-- Register Button -->
             <Button
                 android:id="@+id/btn_register"
                 android:layout_width="match_parent"
@@ -75,9 +81,12 @@
                 android:onClick="registerButton"
                 android:text="Register"
                 android:textAlignment="textStart"
+                android:textColor="@color/text_on_accent"
+                android:backgroundTint="@color/accent"
                 app:cornerRadius="20sp"
                 app:icon="@drawable/baseline_app_registration_24" />
 
+            <!-- Use as Guest Button -->
             <Button
                 android:id="@+id/btn_guest"
                 android:layout_width="wrap_content"
@@ -85,11 +94,14 @@
                 android:onClick="useGuestButton"
                 android:text="Use as Guest"
                 android:textAlignment="textStart"
+                android:textColor="@color/text_on_accent"
+                android:backgroundTint="@color/accent"
                 app:cornerRadius="20sp"
                 app:icon="@drawable/baseline_person_24" />
 
         </LinearLayout>
 
+        <!-- Login Button -->
         <Button
             android:id="@+id/btn_login"
             android:layout_width="128sp"
@@ -97,6 +109,8 @@
             android:layout_marginLeft="10sp"
             android:onClick="loginButton"
             android:text="Login"
+            android:textColor="@color/text_on_accent"
+            android:backgroundTint="@color/accent"
             app:cornerRadius="20sp"
             app:icon="@drawable/baseline_login_24"
             app:iconGravity="textTop"
@@ -104,6 +118,7 @@
             app:iconSize="70dp" />
     </LinearLayout>
 
+    <!-- Copyright Text -->
     <TextView
         android:id="@+id/copyright"
         android:layout_width="wrap_content"
@@ -112,10 +127,12 @@
         android:fontFamily="@font/mitr_extralight"
         android:letterSpacing="-0.01"
         android:text="Banyo Boyz LLC © 2024"
+        android:textColor="@color/text_primary"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
+    <!-- Disclaimer Text -->
     <TextView
         android:id="@+id/disclaimer"
         android:layout_width="wrap_content"
@@ -124,7 +141,9 @@
         android:fontFamily="@font/mitr_light"
         android:text="*Accounts are only required for reviewing!"
         android:textSize="12sp"
+        android:textColor="@color/text_secondary"
         app:layout_constraintEnd_toEndOf="@+id/hl_main_menu_actions"
         app:layout_constraintStart_toStartOf="@+id/hl_main_menu_actions"
         app:layout_constraintTop_toBottomOf="@+id/hl_main_menu_actions" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
