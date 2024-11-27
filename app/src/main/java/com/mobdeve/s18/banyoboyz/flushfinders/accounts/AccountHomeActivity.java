@@ -24,7 +24,7 @@ import com.mobdeve.s18.banyoboyz.flushfinders.helper.PictureHelper;
 import com.mobdeve.s18.banyoboyz.flushfinders.mainmenu.ForgotPasswordActivity;
 import com.mobdeve.s18.banyoboyz.flushfinders.mainmenu.MainActivity;
 import com.mobdeve.s18.banyoboyz.flushfinders.mainmenu.ResetPasswordActivity;
-import com.mobdeve.s18.banyoboyz.flushfinders.models.SharedPrefReferences;
+import com.mobdeve.s18.banyoboyz.flushfinders.helper.SharedPrefReferences;
 import com.mobdeve.s18.banyoboyz.flushfinders.usermode.SavedRestroomsActivity;
 
 public class AccountHomeActivity extends AppCompatActivity

@@ -19,9 +19,9 @@ import androidx.core.view.WindowInsetsCompat;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.mobdeve.s18.banyoboyz.flushfinders.R;
 import com.mobdeve.s18.banyoboyz.flushfinders.helper.MapHelper;
-import com.mobdeve.s18.banyoboyz.flushfinders.models.FirestoreHelper;
-import com.mobdeve.s18.banyoboyz.flushfinders.models.FirestoreReferences;
-import com.mobdeve.s18.banyoboyz.flushfinders.models.SharedPrefReferences;
+import com.mobdeve.s18.banyoboyz.flushfinders.helper.FirestoreHelper;
+import com.mobdeve.s18.banyoboyz.flushfinders.helper.FirestoreReferences;
+import com.mobdeve.s18.banyoboyz.flushfinders.helper.SharedPrefReferences;
 
 import org.osmdroid.util.GeoPoint;
 

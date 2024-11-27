@@ -22,7 +22,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.mobdeve.s18.banyoboyz.flushfinders.R;
 import com.mobdeve.s18.banyoboyz.flushfinders.helper.PictureHelper;
-import com.mobdeve.s18.banyoboyz.flushfinders.models.FirestoreHelper;
+import com.mobdeve.s18.banyoboyz.flushfinders.helper.FirestoreHelper;
 
 import java.io.IOException;
 import java.util.Map;

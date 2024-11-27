@@ -1,4 +1,4 @@
-package com.mobdeve.s18.banyoboyz.flushfinders.models;
+package com.mobdeve.s18.banyoboyz.flushfinders.helper;
 
 import android.graphics.Bitmap;
 
@@ -7,8 +7,6 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.mobdeve.s18.banyoboyz.flushfinders.helper.MapHelper;
-import com.mobdeve.s18.banyoboyz.flushfinders.helper.PictureHelper;
 
 import org.mindrot.jbcrypt.BCrypt;
 
@@ -60,7 +58,7 @@ public class FirestoreHelper
     {
         Map<String, Object> data = new HashMap<>();
 
-        String hashed_password = BCrypt.hashpw(password, BCrypt.gensalt(10));
+        String hashed_password = BCrypt.hashpw(password, BCrypt.gensalt());
 
         data.put(FirestoreReferences.Accounts.NAME, name);
         data.put(FirestoreReferences.Accounts.PASSWORD, hashed_password);

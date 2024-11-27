@@ -23,6 +23,13 @@
         tools:ignore="DiscouragedApi"
         tools:targetApi="31">
         <activity
+            android:name=".mainmenu.AppPermissionsActivity"
+            android:exported="false"
+            android:theme="@style/Theme.FlushFinders" />
+        <activity
+            android:name=".mainmenu.VerificationActivity"
+            android:exported="false" />
+        <activity
             android:name=".adminmode.CreateAmenityActivity"
             android:exported="false" />
         <activity

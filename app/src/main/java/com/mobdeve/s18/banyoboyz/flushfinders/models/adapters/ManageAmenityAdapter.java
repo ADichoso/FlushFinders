@@ -11,16 +11,14 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.mobdeve.s18.banyoboyz.flushfinders.R;
 import com.mobdeve.s18.banyoboyz.flushfinders.helper.PictureHelper;
 import com.mobdeve.s18.banyoboyz.flushfinders.models.AmenityData;
-import com.mobdeve.s18.banyoboyz.flushfinders.models.FirestoreHelper;
-import com.mobdeve.s18.banyoboyz.flushfinders.models.FirestoreReferences;
+import com.mobdeve.s18.banyoboyz.flushfinders.helper.FirestoreHelper;
+import com.mobdeve.s18.banyoboyz.flushfinders.helper.FirestoreReferences;
 
 import java.util.ArrayList;
 import java.util.HashMap;

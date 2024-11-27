@@ -1,4 +1,4 @@
-package com.mobdeve.s18.banyoboyz.flushfinders.models;
+package com.mobdeve.s18.banyoboyz.flushfinders.helper;
 
 import android.content.Context;
 import android.content.SharedPreferences;

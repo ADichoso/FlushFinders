@@ -44,6 +44,7 @@
         android:id="@+id/tv_login_invalid_message"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="18dp"
         android:enabled="false"
         android:fontFamily="@font/mitr_light"
         android:letterSpacing="0.02"
@@ -51,6 +52,7 @@
         android:textColor="#FF4F4F"
         android:textSize="14sp"
         android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@+id/ll_login_form"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/register_title_group" />

@@ -14,8 +14,8 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.mobdeve.s18.banyoboyz.flushfinders.R;
 import com.mobdeve.s18.banyoboyz.flushfinders.mainmenu.MainActivity;
-import com.mobdeve.s18.banyoboyz.flushfinders.models.FirestoreHelper;
-import com.mobdeve.s18.banyoboyz.flushfinders.models.SharedPrefReferences;
+import com.mobdeve.s18.banyoboyz.flushfinders.helper.FirestoreHelper;
+import com.mobdeve.s18.banyoboyz.flushfinders.helper.SharedPrefReferences;
 
 public class AccountDeleteActivity extends AppCompatActivity
 {

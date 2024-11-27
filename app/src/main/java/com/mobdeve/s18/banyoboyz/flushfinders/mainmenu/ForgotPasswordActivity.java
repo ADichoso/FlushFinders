@@ -14,7 +14,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.mobdeve.s18.banyoboyz.flushfinders.R;
-import com.mobdeve.s18.banyoboyz.flushfinders.models.FirestoreHelper;
+import com.mobdeve.s18.banyoboyz.flushfinders.helper.FirestoreHelper;
 
 public class ForgotPasswordActivity extends AppCompatActivity
 {

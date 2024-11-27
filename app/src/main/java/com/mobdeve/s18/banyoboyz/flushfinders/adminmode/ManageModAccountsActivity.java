@@ -13,19 +13,17 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.mobdeve.s18.banyoboyz.flushfinders.R;
-import com.mobdeve.s18.banyoboyz.flushfinders.models.FirestoreHelper;
+import com.mobdeve.s18.banyoboyz.flushfinders.helper.FirestoreHelper;
 import com.mobdeve.s18.banyoboyz.flushfinders.models.RestroomData;
-import com.mobdeve.s18.banyoboyz.flushfinders.models.SharedPrefReferences;
+import com.mobdeve.s18.banyoboyz.flushfinders.helper.SharedPrefReferences;
 import com.mobdeve.s18.banyoboyz.flushfinders.models.adapters.AccountAdapter;
 import com.mobdeve.s18.banyoboyz.flushfinders.models.AccountData;
-import com.mobdeve.s18.banyoboyz.flushfinders.models.FirestoreReferences;
+import com.mobdeve.s18.banyoboyz.flushfinders.helper.FirestoreReferences;
 
 import java.time.Instant;
 import java.util.ArrayList;
-import java.util.Map;
 
 public class ManageModAccountsActivity extends AppCompatActivity
 {

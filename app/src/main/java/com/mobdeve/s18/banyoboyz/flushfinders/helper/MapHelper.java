@@ -7,8 +7,6 @@ import android.util.Log;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.mobdeve.s18.banyoboyz.flushfinders.R;
-import com.mobdeve.s18.banyoboyz.flushfinders.models.FirestoreHelper;
-import com.mobdeve.s18.banyoboyz.flushfinders.models.FirestoreReferences;
 
 import org.osmdroid.bonuspack.location.GeocoderNominatim;
 import org.osmdroid.util.BoundingBox;

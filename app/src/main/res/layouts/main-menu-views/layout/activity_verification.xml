@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".mainmenu.VerificationActivity">
+
+    <TextView
+        android:id="@+id/tv_verifications"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="15dp"
+        android:layout_weight="0"
+        android:fontFamily="@font/mitr_medium"
+        android:letterSpacing="0.02"
+        android:lineSpacingExtra="-10sp"
+        android:text="A Verification Email has been sent to you email address. Please verify your account via the email before accessing your account."
+        android:textAlignment="center"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.36" />
+
+    <Button
+        android:id="@+id/btn_main_menu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="120dp"
+        android:fontFamily="@font/mitr_regular"
+        android:onClick="mainMenuButton"
+        android:padding="10dp"
+        android:paddingStart="40dp"
+        android:paddingEnd="40dp"
+        android:text="Back to Main Menu"
+        android:textSize="24sp"
+        app:cornerRadius="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_login_acc"
+        app:layout_constraintVertical_bias="0.53" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

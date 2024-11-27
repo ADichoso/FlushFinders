@@ -8,7 +8,7 @@
     tools:context=".mainmenu.RegisterActivity">
 
     <LinearLayout
-        android:id="@+id/register_title_group"
+        android:id="@+id/ll_register_title_group"
         android:layout_width="250dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="100dp"
@@ -18,7 +18,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
-            android:id="@+id/registerIcon"
+            android:id="@+id/iv_register_icon"
             android:layout_width="50dp"
             android:layout_height="match_parent"
             android:scaleType="fitCenter"
@@ -38,6 +38,23 @@
 
     </LinearLayout>
 
+    <TextView
+        android:id="@+id/tv_invalid_message"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="18dp"
+        android:enabled="false"
+        android:fontFamily="@font/mitr_light"
+        android:letterSpacing="0.02"
+        android:text="Invalid Email/Password"
+        android:textColor="#FF4F4F"
+        android:textSize="14sp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@+id/ll_register_form"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ll_register_title_group" />
+
     <LinearLayout
         android:id="@+id/ll_register_form"
         android:layout_width="250dp"
@@ -46,7 +63,7 @@
         android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/register_title_group">>
+        app:layout_constraintTop_toBottomOf="@+id/ll_register_title_group">>
 
         <LinearLayout
             android:id="@+id/ll_register_group_name"

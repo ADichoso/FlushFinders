@@ -27,8 +27,8 @@ import androidx.core.view.WindowInsetsCompat;
 import com.mobdeve.s18.banyoboyz.flushfinders.R;
 import com.mobdeve.s18.banyoboyz.flushfinders.accounts.AccountHomeActivity;
 import com.mobdeve.s18.banyoboyz.flushfinders.helper.MapHelper;
-import com.mobdeve.s18.banyoboyz.flushfinders.models.FirestoreHelper;
-import com.mobdeve.s18.banyoboyz.flushfinders.models.FirestoreReferences;
+import com.mobdeve.s18.banyoboyz.flushfinders.helper.FirestoreHelper;
+import com.mobdeve.s18.banyoboyz.flushfinders.helper.FirestoreReferences;
 import com.mobdeve.s18.banyoboyz.flushfinders.sharedviews.SuggestRestroomLocationActivity;
 
 import org.osmdroid.bonuspack.routing.OSRMRoadManager;
@@ -204,8 +204,10 @@ public class MapHomeActivity extends AppCompatActivity implements SensorEventLis
 
 
         // Check for permissions
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED)
+        {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+            return;
         }
 
         //ROAD generation stuff
@@ -300,17 +302,23 @@ public class MapHomeActivity extends AppCompatActivity implements SensorEventLis
     {
         String location_name = et_search_restroom_name.getText().toString();
 
-        new Thread(() -> {
-            try {
+        new Thread(() ->
+        {
+            try
+            {
                 List<Address> addresses = MapHelper.getInstance().getGeocoder().getFromLocationName(location_name, 1);
-                if (addresses != null && !addresses.isEmpty()) {
-                    runOnUiThread(() -> {
+                if (addresses != null && !addresses.isEmpty())
+                {
+                    runOnUiThread(() ->
+                    {
                         GeoPoint point = new GeoPoint(addresses.get(0).getLatitude(), addresses.get(0).getLongitude());
                         toggleTracking(false);
                         map.getController().animateTo(point);
                     });
                 }
-            } catch (Exception e) {
+            }
+            catch (Exception e)
+            {
                 e.printStackTrace();
             }
         }).start();
