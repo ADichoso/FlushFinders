@@ -5,6 +5,7 @@ import android.util.Log;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class FireAuthHelper
 {
@@ -12,7 +13,8 @@ public class FireAuthHelper
 
     public static FireAuthHelper getInstance()
     {
-        if(instance == null){
+        if (instance == null)
+        {
             instance = new FireAuthHelper();
         }
 
@@ -26,13 +28,13 @@ public class FireAuthHelper
     public void createUser(String email, String password)
     {
         auth.createUserWithEmailAndPassword(email, password)
-        .addOnCompleteListener(task ->
-        {
-            if (task.isSuccessful())
-                Log.d("FireAuthHelper", "User created successfully!");
-            else
-                Log.d("FireAuthHelper", task.getException().getMessage());
-        });
+                .addOnCompleteListener(task ->
+                {
+                    if (task.isSuccessful())
+                        Log.d("FireAuthHelper", "User created successfully!");
+                    else
+                        Log.d("FireAuthHelper", task.getException().getMessage());
+                });
     }
 
     public void signInUser(String email, String password, OnCompleteListener<AuthResult> onCompleteListener)
@@ -52,7 +54,7 @@ public class FireAuthHelper
 
     public void verifyUser()
     {
-        if(!isCurrentUserSignedIn())
+        if (!isCurrentUserSignedIn())
             return;
 
         auth.getCurrentUser().sendEmailVerification().addOnCompleteListener(task ->
@@ -63,10 +65,11 @@ public class FireAuthHelper
                 Log.d("FireAuthHelper", task.getException().getMessage());
         });
     }
+
     public void signOutUser()
     {
         auth.signOut();
-        System.out.println("User signed out.");
+        Log.d("FireAuthHelper", "User signed out.");
     }
 
     public boolean isCurrentUserSignedIn()
@@ -79,4 +82,37 @@ public class FireAuthHelper
         return auth.getCurrentUser().isEmailVerified();
     }
 
+    public void updateUserPassword(String new_password)
+    {
+        FirebaseUser user = auth.getCurrentUser();
+        if (user != null)
+        {
+            user.updatePassword(new_password).addOnCompleteListener(task ->
+            {
+                if (task.isSuccessful())
+                    Log.d("FireAuthHelper", "User password updated successfully!");
+                else
+                    Log.d("FireAuthHelper", task.getException().getMessage());
+            });
+        }
+        else
+        {
+            Log.d("FireAuthHelper", "No user is signed in.");
+        }
+    }
+
+    public void sendPasswordResetEmail(String email)
+    {
+        auth.sendPasswordResetEmail(email).addOnCompleteListener(task ->
+        {
+            if (task.isSuccessful())
+            {
+                Log.d("FireAuthHelper", "Password reset email sent successfully to: " + email);
+            }
+            else
+            {
+                Log.d("FireAuthHelper", "Failed to send password reset email: " + task.getException().getMessage());
+            }
+        });
+    }
 }

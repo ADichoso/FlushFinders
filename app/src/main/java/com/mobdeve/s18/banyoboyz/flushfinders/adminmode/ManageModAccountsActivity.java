@@ -90,7 +90,6 @@ public class ManageModAccountsActivity extends AppCompatActivity
                     (
                         account_document.getId(),
                         account_document.getString(FirestoreReferences.Accounts.NAME),
-                        account_document.getString(FirestoreReferences.Accounts.PASSWORD),
                         account_document.get(FirestoreReferences.Accounts.IS_ACTIVE, Boolean.class),
                         account_document.getString(FirestoreReferences.Accounts.PROFILE_PICTURE),
                         Instant.ofEpochSecond(account_document.getLong(FirestoreReferences.Accounts.CREATION_TIME)),

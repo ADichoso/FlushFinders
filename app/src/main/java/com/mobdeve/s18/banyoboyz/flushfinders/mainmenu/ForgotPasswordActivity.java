@@ -14,6 +14,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.mobdeve.s18.banyoboyz.flushfinders.R;
+import com.mobdeve.s18.banyoboyz.flushfinders.helper.FireAuthHelper;
 import com.mobdeve.s18.banyoboyz.flushfinders.helper.FirestoreHelper;
 
 public class ForgotPasswordActivity extends AppCompatActivity
@@ -60,6 +61,7 @@ public class ForgotPasswordActivity extends AppCompatActivity
             {
                 tv_forgot_pass_invalid_message.setVisibility(View.INVISIBLE);
 
+                FireAuthHelper.getInstance().sendPasswordResetEmail(account_email);
                 //Go to the reset password activity and pass the given email there.
                 Intent intent = new Intent(ForgotPasswordActivity.this, ResetPasswordActivity.class);
                 intent.putExtra(FP_EMAIL, account_email);

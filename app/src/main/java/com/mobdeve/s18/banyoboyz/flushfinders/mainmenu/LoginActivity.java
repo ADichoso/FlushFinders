@@ -126,8 +126,8 @@ public class LoginActivity extends AppCompatActivity
             }
 
             boolean is_active = account_document.get(FirestoreReferences.Accounts.IS_ACTIVE, Boolean.class);
-            //Compare Passwords
-            if(!is_active || !BCrypt.checkpw(account_password, account_document.getString(FirestoreReferences.Accounts.PASSWORD)))
+
+            if(!is_active)
             {
                 tv_login_invalid_message.setVisibility(View.VISIBLE);
                 return;

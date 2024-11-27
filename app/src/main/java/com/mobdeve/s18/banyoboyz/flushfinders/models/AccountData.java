@@ -14,7 +14,6 @@ public class AccountData
 
     private String name;
     private String email;
-    private String password;
     private boolean isActive;
     private String profilePicture;
     private Instant creationTime;
@@ -26,7 +25,6 @@ public class AccountData
 
     public AccountData(String email,
                        String name,
-                       String password,
                        boolean isActive,
                        String profilePicture,
                        Instant creationTime,
@@ -36,7 +34,6 @@ public class AccountData
     {
         this.name = name;
         this.email = email;
-        this.password = password;
         this.isActive = isActive;
         this.profilePicture = profilePicture;
         this.creationTime = creationTime;
@@ -73,14 +70,6 @@ public class AccountData
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 
     public boolean isActive() {

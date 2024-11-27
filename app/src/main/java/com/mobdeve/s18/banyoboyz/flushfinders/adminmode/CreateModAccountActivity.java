@@ -119,7 +119,6 @@ public class CreateModAccountActivity extends AppCompatActivity
             Map<String, Object> data = FirestoreHelper.getInstance().createAccountData
             (
                     account_name,
-                    account_password,
                     true,
                     account_type,
                     default_profile_picture,

@@ -54,14 +54,11 @@ public class FirestoreHelper
         return FirebaseFirestore.getInstance().collection(FirestoreReferences.Reviews.COLLECTION);
     }
 
-    public Map<String, Object> createAccountData(String name, String password, boolean isActive, String type, Bitmap profile_picture, Long creation_time_epoch_seconds)
+    public Map<String, Object> createAccountData(String name, boolean isActive, String type, Bitmap profile_picture, Long creation_time_epoch_seconds)
     {
         Map<String, Object> data = new HashMap<>();
 
-        String hashed_password = BCrypt.hashpw(password, BCrypt.gensalt());
-
         data.put(FirestoreReferences.Accounts.NAME, name);
-        data.put(FirestoreReferences.Accounts.PASSWORD, hashed_password);
         data.put(FirestoreReferences.Accounts.IS_ACTIVE, isActive);
         data.put(FirestoreReferences.Accounts.TYPE, type);
         data.put(FirestoreReferences.Accounts.PROFILE_PICTURE, PictureHelper.encodeBitmapToBase64(profile_picture));
