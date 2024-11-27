@@ -65,20 +65,11 @@ public class ManageAmenitiesActivity extends AppCompatActivity
         rv_manage_amenities = findViewById(R.id.rv_manage_amenities);
         rv_manage_amenities.setHasFixedSize(true);
         rv_manage_amenities.setLayoutManager(new LinearLayoutManager(this));
-    }
 
-    public void createAmenityButton(View view)
-    {
-        Intent intent = new Intent(this, CreateAmenityActivity.class);
+        //Assign to recycler view
+        manage_amenity_adapter = new ManageAmenityAdapter(amenity_list, ManageAmenitiesActivity.this);
+        rv_manage_amenities.setAdapter(manage_amenity_adapter);
 
-        activity_result_launcher.launch(intent);
-    }
-
-    @Override
-    protected void onStart()
-    {
-        super.onStart();
-        
         //Get all amenities
         FirestoreHelper.getInstance().getAmenitiesDBRef().get().addOnCompleteListener(task ->
         {
@@ -86,27 +77,31 @@ public class ManageAmenitiesActivity extends AppCompatActivity
                 return;
 
             QuerySnapshot amenity_documents = task.getResult();
-            
+
             if(amenity_documents == null || amenity_documents.isEmpty())
                 return;
-            
+
             //Populate amenity list
             for(QueryDocumentSnapshot amenity_document : amenity_documents)
             {
                 Map<String, Object> data = amenity_document.getData();
                 amenity_list.add
-                (
-                    new AmenityData
-                    (
-                        amenity_document.getId(),
-                        data.get(FirestoreReferences.Amenities.PICTURE).toString()
-                    )
-                );
+                        (
+                                new AmenityData
+                                        (
+                                                amenity_document.getId(),
+                                                data.get(FirestoreReferences.Amenities.PICTURE).toString()
+                                        )
+                        );
+                manage_amenity_adapter.notifyItemInserted(amenity_list.size() - 1);
             }
-
-            //Assign to recycler view
-            manage_amenity_adapter = new ManageAmenityAdapter(amenity_list, ManageAmenitiesActivity.this);
-            rv_manage_amenities.setAdapter(manage_amenity_adapter);
         });
+    }
+
+    public void createAmenityButton(View view)
+    {
+        Intent intent = new Intent(this, CreateAmenityActivity.class);
+
+        activity_result_launcher.launch(intent);
     }
 }

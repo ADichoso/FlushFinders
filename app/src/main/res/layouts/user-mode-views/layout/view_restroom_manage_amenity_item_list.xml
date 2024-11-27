@@ -31,28 +31,36 @@
                 android:layout_height="60dp"
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
-                android:src="@android:drawable/arrow_down_float"
-                />
+                android:src="@android:drawable/arrow_down_float" />
 
-            <TextView
-                android:id="@+id/tv_amenity_description"
-                android:layout_width="150dp"
+            <LinearLayout
+                android:id="@+id/ll_rate_amenity_item_actions"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
-                android:text="Amenity Description"
-                android:textColor="@color/text_primary"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                android:gravity="center_vertical" />
+                android:orientation="vertical"
+                android:padding="5dp">
 
-            <Button
-                android:id="@+id/btn_delete_amenity"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Delete Amenity"
-                android:textColor="@color/text_on_accent"
-                android:backgroundTint="@color/accent_dark" />
+                <TextView
+                    android:id="@+id/tv_amenity_description"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:gravity="center_vertical"
+                    android:text="Amenity Description"
+                    android:textColor="@color/text_primary"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <Button
+                    android:id="@+id/btn_delete_amenity"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:backgroundTint="@color/accent_dark"
+                    android:text="Delete Amenity"
+                    android:textColor="@color/text_on_accent" />
+
+            </LinearLayout>
 
         </LinearLayout>
 
