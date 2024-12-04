@@ -35,6 +35,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+//For editing account information (Only allow editing of name & profile picture)
 public class AccountEditActivity extends AppCompatActivity
 {
     public static final String UPDATE_NAME = "UPDATE_NAME";
@@ -50,6 +51,8 @@ public class AccountEditActivity extends AppCompatActivity
     private TextView tv_invalid_message;
     private ImageView iv_pp_preview;
 
+
+    //ARL used for obtaining the new profile picture of the user
     private ActivityResultLauncher<Intent> activity_result_launcher = registerForActivityResult(
         new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>()
         {
@@ -135,6 +138,7 @@ public class AccountEditActivity extends AppCompatActivity
 
         et_edit_account_name.setText(account_name);
 
+        //Set current username and picture
         if(!account_name.isEmpty())
             et_edit_account_name.setText(account_name);
         if(!account_pp.isEmpty())

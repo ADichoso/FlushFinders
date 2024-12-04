@@ -83,6 +83,9 @@ public class SuggestRestroomLocationActivity extends AppCompatActivity{
         Intent intent = getIntent();
         caller = intent.getStringExtra("CALLER");
 
+        if(caller.equals("USER"))
+            btn_submit_restroom_location.setText("Suggest New Location");
+
         //Initialize map variables
         chosen_latitude = Double.NaN;
         chosen_longitude = Double.NaN;

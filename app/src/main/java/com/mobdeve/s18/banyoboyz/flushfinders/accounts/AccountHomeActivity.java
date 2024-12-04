@@ -28,6 +28,7 @@ import com.mobdeve.s18.banyoboyz.flushfinders.mainmenu.ResetPasswordActivity;
 import com.mobdeve.s18.banyoboyz.flushfinders.helper.SharedPrefReferences;
 import com.mobdeve.s18.banyoboyz.flushfinders.usermode.SavedRestroomsActivity;
 
+//Account Home for everyone
 public class AccountHomeActivity extends AppCompatActivity
 {
     public static final String HOME_NAME = "HOME_NAME";

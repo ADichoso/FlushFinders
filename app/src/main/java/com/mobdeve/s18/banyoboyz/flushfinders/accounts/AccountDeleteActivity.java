@@ -18,6 +18,7 @@ import com.mobdeve.s18.banyoboyz.flushfinders.mainmenu.MainActivity;
 import com.mobdeve.s18.banyoboyz.flushfinders.helper.FirestoreHelper;
 import com.mobdeve.s18.banyoboyz.flushfinders.helper.SharedPrefReferences;
 
+//For deleting your own account
 public class AccountDeleteActivity extends AppCompatActivity
 {
     private SharedPreferences shared_preference;

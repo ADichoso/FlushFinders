@@ -54,10 +54,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="64dp"
                 android:layout_weight="1"
+                android:backgroundTint="@color/secondary"
                 android:onClick="suggestRestroomButton"
                 android:scaleType="fitCenter"
-                android:backgroundTint="@color/secondary"
-                app:srcCompat="@drawable/icon_like" />
+                app:srcCompat="@drawable/icon_report" />
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
