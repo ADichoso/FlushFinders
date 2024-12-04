@@ -19,6 +19,7 @@ import com.mobdeve.s18.banyoboyz.flushfinders.R;
 
 public class MainActivity extends AppCompatActivity 
 {
+    public static final String GUEST = "GUEST";
     private SharedPreferences shared_preferences;
     private Long account_login_time;
 
@@ -59,7 +60,7 @@ public class MainActivity extends AppCompatActivity
         signout();
 
         Intent intent = new Intent(MainActivity.this, MapHomeActivity.class);
-
+        intent.putExtra(GUEST, true);
         startActivity(intent);
     }
 

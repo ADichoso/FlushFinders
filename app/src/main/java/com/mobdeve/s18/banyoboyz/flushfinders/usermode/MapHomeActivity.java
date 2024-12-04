@@ -29,6 +29,8 @@ import com.mobdeve.s18.banyoboyz.flushfinders.accounts.AccountHomeActivity;
 import com.mobdeve.s18.banyoboyz.flushfinders.helper.MapHelper;
 import com.mobdeve.s18.banyoboyz.flushfinders.helper.FirestoreHelper;
 import com.mobdeve.s18.banyoboyz.flushfinders.helper.FirestoreReferences;
+import com.mobdeve.s18.banyoboyz.flushfinders.mainmenu.MainActivity;
+import com.mobdeve.s18.banyoboyz.flushfinders.mainmenu.RegisterActivity;
 import com.mobdeve.s18.banyoboyz.flushfinders.sharedviews.SuggestRestroomLocationActivity;
 
 import org.osmdroid.bonuspack.routing.OSRMRoadManager;
@@ -67,7 +69,7 @@ public class MapHomeActivity extends AppCompatActivity implements SensorEventLis
     private SensorManager sensor_manager;
     private float[] gravity;
     private float[] geomagnetic;
-
+    private boolean guestMode;
     private CardView cv_building_info;
     private CardView cv_route_tracking;
     private CardView cv_restroom_rating;
@@ -203,6 +205,7 @@ public class MapHomeActivity extends AppCompatActivity implements SensorEventLis
         Intent intent = getIntent();
         building_id = intent.getStringExtra(BUILDING_ID);
         restroom_id = intent.getStringExtra(RESTROOM_ID);
+        guestMode = intent.getBooleanExtra(MainActivity.GUEST, false);
 
         toggleTracking(true);
 
@@ -380,6 +383,9 @@ public class MapHomeActivity extends AppCompatActivity implements SensorEventLis
     public void accountHomeButton(View view)
     {
         Intent intent = new Intent(MapHomeActivity.this, AccountHomeActivity.class);
+
+        if(guestMode)
+            intent = new Intent(MapHomeActivity.this, RegisterActivity.class);
 
         startActivity(intent);
     }
