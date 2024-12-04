@@ -377,6 +377,9 @@ public class MapHomeActivity extends AppCompatActivity implements SensorEventLis
         intent.putExtra(LATITUDE, curr_location.getLatitude());
         intent.putExtra(LONGITUDE, curr_location.getLongitude());
 
+        if(guestMode)
+            intent = new Intent(MapHomeActivity.this, RegisterActivity.class);
+
         startActivity(intent);
     }
 
@@ -397,6 +400,9 @@ public class MapHomeActivity extends AppCompatActivity implements SensorEventLis
 
         Intent intent = new Intent(MapHomeActivity.this, ReviewReportRestroomActivity.class);
 
+        if(guestMode)
+            intent = new Intent(MapHomeActivity.this, RegisterActivity.class);
+
         intent.putExtra(BUILDING_ID, building_id);
         intent.putExtra(RESTROOM_ID, restroom_id);
 
@@ -412,6 +418,9 @@ public class MapHomeActivity extends AppCompatActivity implements SensorEventLis
     public void suggestRestroomButton(View view)
     {
         Intent intent = new Intent(MapHomeActivity.this, SuggestRestroomLocationActivity.class);
+
+        if(guestMode)
+            intent = new Intent(MapHomeActivity.this, RegisterActivity.class);
 
         intent.putExtra(SuggestRestroomLocationActivity.CALLER, "USER");
         startActivity(intent);
